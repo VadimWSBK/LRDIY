@@ -1,5 +1,4 @@
 (function() {
-
 document.addEventListener('DOMContentLoaded', function () {
     const products = [
         {
