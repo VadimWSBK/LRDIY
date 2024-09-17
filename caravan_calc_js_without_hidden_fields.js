@@ -1,3 +1,5 @@
+<script>
+
 (function() {
     document.addEventListener('DOMContentLoaded', function () {
         const products = [
@@ -113,29 +115,10 @@
             const length = parseFloat(document.getElementById('caravan-length').value);
             const width = parseFloat(document.getElementById('caravan-width').value);
             const roofType = document.getElementById('caravan-roof-type').value;
-
-            // Ensure hidden elements are displayed only once
-            if (!document.getElementById('caravan-buy-now-button').style.display || document.getElementById('caravan-buy-now-button').style.display === 'none') {
-                document.getElementById('caravan-buy-now-button').style.display = 'flex';
-                document.querySelector('.caravan-subheading-container').style.display = 'block';
-                document.querySelector('.caravan-product-list-container').style.display = 'block';
-                document.querySelector('.caravan-total-area').style.display = 'flex';
-                document.querySelector('.caravan-total-price-container').style.display = 'flex';
-                document.querySelector('.caravan-total-price').style.display = 'flex';
-                document.querySelector('.caravan-total-price-text').style.display = 'flex';
-                document.querySelector('.caravan-product-gst_shipping').style.display = 'flex';
-                document.querySelector('.caravan-total-savings-text').style.display = 'flex';
-                document.querySelector('.caravan-total-savings').style.display = 'flex';
-                document.querySelector('.caravan-total-savings-info').style.display = 'flex';
-                document.querySelector('.caravan-discounted-price').style.display = 'flex';
-            }
-            
-            // Clear any previously rendered products to avoid duplication
-            document.getElementById('caravan-product-list').innerHTML = '';
-
             ccalc_updatePrimerProduct(roofType);
             ccalc_displayProducts(length, width, roofType);
         });
+
 
         // Event listeners for input fields to enforce max values
         document.getElementById('caravan-length').addEventListener('input', function () {
@@ -160,6 +143,15 @@
             }
             return value;
         }
+
+        // Initialize the correct primer product on page load
+            window.onload = function () {
+                const length = parseFloat(document.getElementById('caravan-length').value);
+                const width = parseFloat(document.getElementById('caravan-width').value);
+                const roofType = document.getElementById('caravan-roof-type').value;
+                ccalc_updatePrimerProduct(roofType);
+                ccalc_displayProducts(length, width, roofType);
+            };
 
         // Function to display products
         function ccalc_displayProducts(length = 6, width = 2.5, roofType = 'painted') {
@@ -512,3 +504,6 @@
         });
     });
 })();
+
+
+</script>
