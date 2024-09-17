@@ -1,4 +1,3 @@
-<script>
 (function() {
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -577,4 +576,3 @@ function calculateBucketSizes(product, length, width, roofType) {
         });
     });
 })();
-</script>
