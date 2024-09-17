@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caravan Roof Coating Kit Builder</title>
+
+<!----------- Styles ----------->
+<style>
+    .caravan-calculator-container {
+        width: 100%;
+        margin: auto;
+    }
+
+/* -------INITIALLY HIDDEN FIELDS----*/
+    #caravan-calculator-container .caravan-subheading-container,
+    #caravan-calculator-container .caravan-product-list-container,
+    #caravan-calculator-container .caravan-total-area,
+    #caravan-calculator-container .caravan-buy-now-button,
+    #caravan-calculator-container .caravan-total-price-container,
+    #caravan-calculator-container .caravan-total-price,
+    #caravan-calculator-container .caravan-total-price-text,
+    #caravan-calculator-container .caravan-product-gst_shipping,
+    #caravan-calculator-container .caravan-total-savings-text,
+    #caravan-calculator-container .caravan-total-savings,
+    #caravan-calculator-container .caravan-total-savings-info,
+    #caravan-calculator-container .caravan-discounted-price {
+        display: none;
+    }
+
+
+/* -------MAIN BOX CONTAINER --------*/
+    #caravan-calculator-container .caravan-calculator-container {
+        background-color: black;
+        padding: 20px;
+        max-width: 600px;
+        border-radius: 20px;
+        box-shadow: 
+            inset 0 6px 15px rgba(0, 166, 45, 0.5), /* Inner shadow */
+            0 6px 15px rgba(0, 0, 0, 0.3); /* Outer shadow */
+        font-family: Helvetica, sans-serif;
+        position: relative;
+    }
+
+
+
+/* -------HEADING CONTAINER --------*/
+    #caravan-calculator-container .caravan-heading-container {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+    #caravan-calculator-container .caravan-heading-container h1 {
+        color: #00A62D;
+        margin-bottom: 3px;
+        font-weight: 700;
+        font-size: clamp(18px, 6vw, 32px); /* Min: 18px, Ideal: 5vw, Max: 48px */
+    }
+    #caravan-calculator-container .caravan-heading-container p {
+        color: black;
+        margin-top: 0;
+        font-weight: 700;
+        font-size: clamp(14px, 3vw, 20px); /* Dynamic font size for subheadline */
+    }
+
+
+
+/* ------- INPUT SECTION --------  */
+    #caravan-calculator-container .caravan-input-row {
+        display: flex;
+        gap: 8px;
+        align-items: center; /* Vertically align items */
+        justify-content: flex-start; /* Align all elements to the left */
+        width: 100%; /* Ensure the row uses full width */
+    }
+    #caravan-calculator-container .caravan-input-container {
+        gap: 10px;
+        background-color: black;
+        padding: 5px;
+        border-radius: 10px;
+        display: block; /* Use full width to avoid stretching */
+        width: 100%;
+        justify-content: bottom;
+        flex: 1; /* Ensure equal width distribution for Length and Width inputs */
+    }
+    #caravan-calculator-container .caravan-input-container label {
+        font-weight: bold;
+        display: block;
+        color: whitesmoke;
+        margin-bottom: 5px;
+        text-align: left;
+        font-size: clamp(16px, 2vw, 18px); /* Min: 18px, Ideal: 5vw, Max: 48px */
+    }
+    #caravan-calculator-container .caravan-input-container input,
+    .caravan-input-container select {
+        padding: 10px;
+        font-size: clamp(16px, 5vw, 20px); /* Min: 18px, Ideal: 5vw, Max: 48px */
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        width: auto;
+        text-align: center;
+        flex: 1;
+        box-shadow: 0 6px 15px rgba(0, 166, 45, 0.5);
+        background-color: whitesmoke;
+        font-weight: 600 ;
+
+    }
+    #caravan-calculator-container .caravan-input-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    #caravan-calculator-container .caravan-input-wrapper input {
+        width: 100%; /* Ensures input takes most of the space */
+        padding-right: 15px; /* Adds space for the "m" */
+    }
+
+    #caravan-calculator-container .caravan-unit {
+        margin-left: 5px;
+        font-size: clamp(14px, 5vw, 18px); /* Match the font size of input */
+        color: #000; /* Optional: Set the color for the unit */
+    }
+
+
+
+
+/*------ CALCULATE BUTTON AND TOTAL AREA -------*/
+    #caravan-calculator-container .caravan-calculate-button-container {
+        background-color: black;
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #caravan-calculator-container  .caravan-calculate-button {
+        background-color: #00A62D;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-size: clamp(16px, 5vw, 20px);
+        border: none;
+        cursor: pointer;
+        margin-top: 5px;
+        box-shadow: 0 4px 10px rgba(0, 166, 45, 0.5);
+        transition: transform 0.2s, background-color 0.2s;
+    }
+    #caravan-calculator-container .caravan-calculate-button:hover {
+        background-color: #00A62D;
+        transform: scale(1.05);
+    }
+
+    #caravan-calculator-container .caravan-total-area {
+        color: whitesmoke;
+        font-size: clamp(14px, 5vw, 20px);
+        padding: 10px;
+        font-style: bold;
+        border-radius: 10px;
+        margin-right: 10px;
+
+    }
+
+
+
+/* -------SUB_HEADING CONTAINER --------*/
+    #caravan-calculator-container .caravan-subheading-container {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+    #caravan-calculator-container .caravan-subheading-container h2 {
+        color: whitesmoke;
+        margin-bottom: 2px;
+        font-size: clamp(12px, 5vw, 20px); /* Min: 18px, Ideal: 5vw, Max: 48px */
+    }
+    #caravan-calculator-container .caravan-subheading-container p {
+        color: white;
+        margin-top: 0;
+        font-size: clamp(14px, 5vw, 14px); /* Dynamic font size for subheadline */
+        font-weight: 700;
+        text-align: center;
+    }
+
+
+    /* ------ ADD-TO-CART-BUTTON AND TOTAL PRICE ------*/
+    .caravan-total-price-button-container {
+        background-color: black;
+        border-radius: 10px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between; /* Space between button and pricing info */
+        align-items: center;
+        }
+
+    #caravan-calculator-container .caravan-buy-now-button {
+        background-color: #00A62D;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-size: clamp(14px, 4vw, 20px);
+        border: none;
+        cursor: pointer;
+        margin-top: 5px;
+        box-shadow: 0 4px 10px rgba(0, 166, 45, 0.5);
+        transition: transform 0.2s, background-color 0.2s;
+        flex-direction: column; /* Stack text and subtext vertically */
+        align-items: center; /* Center-align text and subtext */
+        text-align: center; /* Center-align text inside the button */
+    }
+
+    #caravan-calculator-container .caravan-buy-now-button:hover {
+        background-color: #00A62D;
+        transform: scale(1.05);
+    }
+    .caravan-buy-now-button-subtext {
+        font-size: clamp(12px, 4vw, 16px); /* Adjust size if needed */
+        margin-top: 2px; /* Space between main text and subtext */
+    }
+        
+
+    #caravan-calculator-container .caravan-total-price-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end; /* Align items to the right */
+        gap: 5px; /* Space between each element */
+    }
+
+    #caravan-calculator-container .caravan-total-price-info {
+        display: flex;
+        gap: 5px; /* Space between total and discounted price */
+    }
+
+    #caravan-calculator-container .caravan-total-price-text {
+        color: whitesmoke;
+        font-size: clamp(14px, 5vw, 20px);
+        font-weight: 600;
+    }
+
+    #caravan-calculator-container .caravan-total-price {
+        margin: 0;
+        color: #B04327;
+        text-decoration: line-through;
+        font-size: clamp(14px, 5vw, 20px);
+        border-right: 1px solid white; /* Right border in white */
+        padding-right: 5px; /* Space between text and border */
+    }
+    #caravan-calculator-container .caravan-discounted-price {
+        color: #00A62D;
+        font-size: clamp(14px, 5vw, 20px);
+        font-weight: 600;
+    }
+
+    #caravan-calculator-container .caravan-total-savings-info {
+        align-items: center;
+        font-weight: 600;
+    }
+
+    #caravan-calculator-container .caravan-total-savings {
+        color: #00A62D;
+        font-size: clamp(12px, 5vw, 14px);
+        margin-top: 2px;
+        display: flex;
+        font-weight: 600;
+    }
+    #caravan-calculator-container .caravan-total-savings-text {
+        color: whitesmoke;
+        font-size: clamp(12px, 5vw, 14px);
+        font-weight: 600;
+        margin-right: 5px;
+        display: flex;
+    }
+
+    #caravan-calculator-container .caravan-product-gst_shipping {
+        color: whitesmoke;
+        padding: 0px;
+        margin-top: 2px; /* Space between savings and GST + Shipping */
+    }
+
+    #caravan-calculator-container .caravan-product-gst_shipping p {
+        font-size: clamp(8px, 5vw, 10px);
+        margin: 0; /* Remove default margin */
+    }
+
+
+/* ------- PRODUCT LIST --------  */
+    #caravan-calculator-container .caravan-product-list-container {
+        margin-bottom: 20px;
+        background-color: black;
+    }
+    #caravan-calculator-container .caravan-product-container {
+        display: flex;
+        margin-bottom: 10px;
+        border: 1px solid;
+        border-color: #ccc;
+        border-radius: 10px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: whitesmoke;
+        box-shadow: 0 6px 12px rgba(0, 166, 45, 0.5);
+    }
+    #caravan-calculator-container .caravan-product-image-container {
+        position: relative;
+    }
+    #caravan-calculator-container .caravan-product-image-container img {
+        width: 100px;
+    }
+    #caravan-calculator-container input[type="checkbox"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 14px;
+        height: 14px;
+        accent-color: #00A62D;
+        transform: scale(1.3);
+        transform-origin: 0 0;
+    }
+    #caravan-calculator-container .caravan-product-name {
+        color: black;
+        font-weight: bold;
+    }
+
+    #caravan-calculator-container .caravan-info-popup {
+        display: none;
+        position: absolute;
+        background-color: #00A62D;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 12px;
+        max-width: 200px;
+        z-index: 120;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+    }
+    #caravan-calculator-container .caravan-info-popup.active {
+        display: block;
+    }
+    #caravan-calculator-container .caravan-info-popup::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        border-width: 10px;
+        border-style: solid;
+        border-color: transparent transparent green transparent;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    #caravan-calculator-container .caravan-product-details {
+        flex-grow: 1;
+        margin-left: 20px;
+        position: relative;
+        font-size: clamp(16px, 5vw, 18px);
+    }
+    #caravan-calculator-container .caravan-info-link {
+        color: #00A62D;
+        text-decoration: underline;
+        cursor: pointer;
+        font-size: 12px;
+    }
+    #caravan-calculator-container .caravan-product-quantity {
+        display: flex;
+        flex-direction: column;
+        gap: 2px; /* Reduces the space between items */
+    }
+    #caravan-calculator-container .caravan-quantity-item {
+        display: inline-block; /* Makes each size item inline and prevents large margins */
+        margin: 0; /* Ensure there's no extra margin */
+        padding: 0; /* Ensure there's no extra padding */
+        line-height: 1; /* Adjust line-height for smaller vertical space */
+        font-size: clamp(13px, 3vw, 16px); /* Adjust font size as needed */
+    } 
+    #caravan-calculator-container .caravan-product-price {
+        color: #00A62D;
+        font-weight: bold;
+        font-size: clamp(14px, 3vw, 18px);
+        margin-left: 20px;
+    }
+
+/* -------ALERT POPUP------------- */
+
+    #caravan-calculator-container .caravan-alert-popup {
+        background-color: #B04327;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 13px;
+        max-width: 200px;
+        z-index: 120;
+        display: block;
+        border-color: transparent transparent #00A62D transparent;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-top: 10px;
+    }
+
+/* -------Responsive Styles ------------- */
+
+/* Small devices (portrait tablets and large phones, 481px and up) */          
+@media (max-width: 767px) {
+
+    #caravan-calculator-container .caravan-input-container {
+            flex: 1 1 45%; /* Keep Length and Width inputs side by side with equal width */
+        }
+    /* Make sure the "Select Roof Surface" takes full width below the inputs */
+    #caravan-calculator-container .caravan-input-container:nth-child(3) {
+            flex: 1 1 100%; /* The dropdown takes full width */
+        }
+    #caravan-calculator-container .caravan-product-price {
+            margin-left: 10px;
+    }
+}
+/* -------- MAX PHONES ----------- */
+@media (max-width: 520px) {  
+        #caravan-calculator-container .caravan-subheading-container h2 {
+        color: whitesmoke;
+        margin-bottom: 2px;
+        font-size: clamp(12px, 5vw, 16px); /* Min: 18px, Ideal: 5vw, Max: 48px */
+    }
+    #caravan-calculator-container .caravan-product-quantity {
+        font-size: clamp(12px, 5vw, 14px);
+        margin-right: 10px;
+    }
+    #caravan-calculator-container .caravan-product-details {
+        flex-grow: 1;
+        margin-left: 5px; /* Moves Product Name closer to Image */
+        position: relative;
+     }
+     #caravan-calculator-container .caravan-input-row {
+        display: block;
+        gap: 10px;
+        align-items: center;
+    }
+    #caravan-calculator-container .caravan-input-container {
+        gap: 10px;
+        padding: 5px;
+        border-radius: 10px;
+        display: block;
+        min-width: 10%;
+    }
+}
+/* ------ Iphone 13/14 max---------- */
+@media (max-width: 500px) {
+    #caravan-calculator-container .caravan-product-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        position: relative;
+    }
+    #caravan-calculator-container .caravan-product-image-container {
+        flex-basis: 20%;
+    }
+    #caravan-calculator-container .caravan-product-details {
+        position: absolute; /* Fix the price to the right side */
+        left: 120px; /* Keep it a bit away from the right edge */
+        top: 30px; /* Align it with the top of the container */
+        flex-basis: auto;
+    }
+    #caravan-calculator-container .caravan-product-quantity {
+        position: absolute; /* Fix the price to the right side */
+        left: 125px; /* Keep it a bit away from the right edge */
+        top: 80px; /* Align it with the top of the container */
+        flex-basis: auto;
+    }
+    #caravan-calculator-container .caravan-quantity-item {
+        font-size: clamp(12px, 3vw, 14px);
+    }
+    #caravan-calculator-container .caravan-product-price {
+        position: absolute; /* Fix the price to the right side */
+        right: 10px; /* Keep it a bit away from the right edge */
+        top: 45%; /* Align it with the top of the container */
+        flex-basis: auto;
+    }
+    #caravan-calculator-container .caravan-total-price-text {
+        font-size: clamp(12px, 5vw, 16px);
+    }
+    #caravan-calculator-container .caravan-total-price {
+        font-size: clamp(12px, 5vw, 16px);
+    }
+    #caravan-calculator-container .caravan-discounted-price {
+        font-size: clamp(12px, 5vw, 16px); 
+    }
+    #caravan-calculator-container .caravan-product-gst_shipping {
+        color: whitesmoke;
+        font-size: clamp(12px, 3vw, 14px);
+    }
+}
+/* ------ Iphone 13/14 ---------- */
+@media (max-width: 420px) {
+
+    #caravan-calculator-container .caravan-total-price-button-container {
+        align-items: center;
+        flex-direction: column;
+    }
+    #caravan-calculator-container .caravan-total-price-container {
+        align-items: center; 
+    }
+    #caravan-calculator-container .caravan-buy-now-button {
+        width: 100%;
+        justify-content: center;
+        font-weight: 600;
+        font-size: clamp(16px, 4vw, 20px);
+        margin-bottom: 20px;
+    }
+    #caravan-calculator-container .caravan-buy-now-button-subtext {
+        font-size: clamp(12px, 4vw, 16px); /* Adjust size if needed */
+        margin-top: 2px; /* Space between main text and subtext */
+    }
+    #caravan-calculator-container .caravan-product-details {
+        font-size: clamp(14px, 4vw, 14px);
+    }
+    #caravan-calculator-container .caravan-product-quantity {
+        font-size: clamp(12px, 3vw, 14px);
+    }
+    #caravan-calculator-container .caravan-quantity-item {
+        font-size: clamp(12px, 3vw, 14px);
+    }
+    #caravan-calculator-container .caravan-total-price-text {
+        font-size: clamp(14px, 5vw, 16px);
+    }
+
+    #caravan-calculator-container .caravan-total-price {
+        font-size: clamp(14px, 5vw, 16px);
+    }
+    #caravan-calculator-container .caravan-discounted-price {
+
+        font-size: clamp(14px, 5vw, 16px); 
+    }
+    #caravan-calculator-container .caravan-product-gst_shipping {
+        color: whitesmoke;
+        font-size: clamp(14px, 3vw, 14px);
+    }
+}
+
+    </style>
+</head>
+
+<!----------- BODY START ----------->
+
+<body>
+
+<!-- Caravan Roof Coating Calculator Start -->
+
+<div id="caravan-calculator-container">
+    <!-- Calculator Container -->
+
+    <div class="caravan-calculator-container">
+        <!-- Heading -->
+        <div class="caravan-heading-container">
+            <h1>How Big Is Your Caravan? </h1>
+        </div>
+
+        <!-- Input Container -->
+        <div class="caravan-input-row">
+            <!-- Caravan Length Input -->
+            <div class="caravan-input-container">
+                <label for="caravan-length">Enter Length:</label>
+                <div class="caravan-input-wrapper">
+                    <input type="number" id="caravan-length" value="6" min="0" max="20" step="0.1" />
+                    <span class="caravan-unit">m</span>
+                </div>
+            </div>
+            <!-- Caravan Width Input -->
+            <div class="caravan-input-container">
+                <label for="caravan-width">Enter Width:</label>
+                <div class="caravan-input-wrapper">
+                    <input type="number" id="caravan-width" value="2.5" min="0" max="3" step="0.1" />
+                    <span class="caravan-unit">m</span>
+                </div>
+            </div>
+            <!-- Roof Type Input -->
+            <div class="caravan-input-container">
+                <label for="caravan-roof-type">Select Roof Surface:</label>
+                <select id="caravan-roof-type">
+                    <option value="painted" selected>Painted Surface</option>
+                    <option value="metal">Raw Metal Surface</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Calculate Button and Total Area -->
+        <div class="caravan-calculate-button-container">
+            <button id="caravan-calculate-button" class="caravan-calculate-button">👉 Calculate</button>
+            <div class="caravan-total-area" id="caravan-total-area">Total Area: 15.00 m²</div>
+        </div>
+
+        <!-- Subheading -->
+        <div class="caravan-subheading-container">
+            <h2>👇 Everything You Need To Seal Your Caravan Roof.</h2>
+        </div>
+
+        <!-- Product List -->
+        <div id="caravan-product-list" class="caravan-product-list-container"></div>
+
+        <!-- Popup element (initially hidden) -->
+        <div id="caravan-alert-popup" class="caravan-alert-popup" style="display: none;">
+            Please select at least one product before adding the BONUS product.
+        </div>
+        
+        <!-- BUY NOW AND PRICE -->
+        <div class="caravan-total-price-button-container">
+            <button id="caravan-buy-now-button" class="caravan-buy-now-button">
+                <span class="caravan-buy-now-button-text">ADD KIT TO CART</span>
+                <span class="caravan-buy-now-button-subtext">And Save 10%</span>
+            </button>
+            <div class="caravan-total-price-container">
+                <div class="caravan-total-price-info">
+                    <span class="caravan-total-price-text">Total:</span>
+                    <div class="caravan-total-price" id="caravan-total-price">$0.00</div>
+                    <div class="caravan-discounted-price" id="caravan-discounted-price">$0.00</div>
+                </div>
+                <div class="caravan-total-savings-info">
+                    <div class="caravan-total-savings">
+                        <span class="caravan-total-savings-text">Total Savings:</span>
+                        <div id="caravan-total-savings">$0.00</div>
+                    </div>
+                </div>
+                <div class="caravan-product-gst_shipping">
+                    <p>GST Included + FREE Shipping</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/caravan-calculator.js"></script>
+
+</body>
+</html>
