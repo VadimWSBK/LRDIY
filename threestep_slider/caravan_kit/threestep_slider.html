@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Unique Swiper container for the threestepsslider */
+    .threestepsslider-container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+      font-family: Helvetica, sans-serif;
+    }
+
+    /* Slide wrapper */
+    .threestepsslider-wrapper {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    /* Swiper slide container for image and text */
+    .threestepsslider-slide {
+      min-width: 100%;
+      display: flex;
+      padding: 40px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: top;
+      box-sizing: border-box;
+    }
+
+    /* Image within the Swiper slide */
+    .threestepsslider-slide img {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+      object-fit: cover;
+    }
+
+    /* Text content */
+    .threestepsslider-text-content {
+      text-align: left;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    /* Headline text */
+    .threestepsslider-headline {
+      font-weight: bold;
+      font-size: 1.4em;
+      margin-bottom: 5px;
+      color: #00A62D;
+    }
+
+    /* Subheadline text */
+    .threestepsslider-subheadline {
+      font-size: 1.2em;
+      margin: 5px 0;
+      font-weight: bold;
+    }
+
+    /* Bullet points */
+    .threestepsslider-bulletpoints {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .threestepsslider-bulletpoints li {
+      margin: 5px 0;
+    }
+
+    /* Navigation buttons */
+    .threestepsslider-button-next, .threestepsslider-button-prev {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: transparent;
+      color: #00A62D;
+      border: none;
+      cursor: pointer;
+      font-size: 30px;
+    }
+
+    .threestepsslider-button-prev {
+      left: 10px;
+    }
+
+    .threestepsslider-button-next {
+      right: 10px;
+    }
+
+    /* Responsive breakpoints */
+    @media (min-width: 1024px) {
+      .threestepsslider-slide {
+        min-width: 33.33%;
+      }
+      .threestepsslider-button-next, .threestepsslider-button-prev {
+      display: none;
+    }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .threestepsslider-slide {
+        min-width: 50%;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .threestepsslider-slide {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Slider container -->
+  <div class="threestepsslider-container">
+    <div class="threestepsslider-wrapper">
+        <!-- Slide 1 -->
+        <div class="threestepsslider-slide">
+          <div class="threestepsslider-content">
+            <img src="https://assets.cdn.filesafe.space/ewm9gNGbZG828XI4tybh/media/66d56eb708d9605e507d0fa7.jpeg" alt="caravan_detailing_liquidrubberdiy">
+            <div class="threestepsslider-text-content">
+              <div class="threestepsslider-headline">Step 1:</div>
+              <div class="threestepsslider-subheadline">Cleaning and Detailing</div>
+              <ul class="threestepsslider-bulletpoints">
+                <li>👉 Wash/water-blast the entire surface.</li>
+                <li>👉 Apply Waterproof Sealant with brush to seams, joins, cracks, holes or rusty areas before embedding the pre-cut Geo-Textile.</li>
+                <li>👉 Apply 2 coats of Waterproof Sealant with brush or roller to the defected areas.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="threestepsslider-slide">
+            <div class="threestepsslider-content">
+              <img src="https://assets.cdn.filesafe.space/ewm9gNGbZG828XI4tybh/media/66d56eb7f10da4af4ddc4b32.jpeg" alt="caravan_roof_restoration_liquidrubberdiy">
+              <div class="threestepsslider-text-content">
+                <div class="threestepsslider-headline">Step 2:</div>
+                <div class="threestepsslider-subheadline">Apply Primer and 1 Coat of Thermal Coating</div>
+                <ul class="threestepsslider-bulletpoints">
+                  <li>👉 Apply Sealer/Primer to the entire surface.</li>
+                  <li>👉 Apply one coat of Thermal Coating over the Waterproof Sealant.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        <!-- Slide 3 -->
+        <div class="threestepsslider-slide">
+            <div class="threestepsslider-content">
+              <img src="https://assets.cdn.filesafe.space/ewm9gNGbZG828XI4tybh/media/66d56eb7cccab23a7649dc3b.jpeg" alt="Step 3">
+              <div class="threestepsslider-text-content">
+                <div class="threestepsslider-headline">Step 3:</div>
+                <div class="threestepsslider-subheadline">Apply 2 Coats of Thermal Coating</div>
+                <ul class="threestepsslider-bulletpoints">
+                  <li>👉 Apply 2 coats of Thermal Coating to the entire surface.</li>
+                  <li>👉 DONE! Good Job 👍</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <!-- Navigation buttons -->
+    <button class="threestepsslider-button-prev" onclick="prevSlide1()">&#10094;</button>
+    <button class="threestepsslider-button-next" onclick="nextSlide1()">&#10095;</button>
+  </div>
+
+  <script>
+    let currentIndex1 = 0;
+    const slides1 = document.querySelectorAll('.threestepsslider-slide'); // Corrected querySelectorAll
+    const totalSlides1 = slides1.length; // Corrected from length1 to length
+  
+    // Get the number of visible slides based on the screen width
+    function getSlidesPerView1() {
+      if (window.innerWidth >= 1024) { // Corrected window.innerWidth1 to window.innerWidth
+        return 3; // 3 slides on desktop
+      } else if (window.innerWidth >= 768) { // Corrected window.innerWidth1 to window.innerWidth
+        return 2; // 2 slides on tablet
+      } else {
+        return 1; // 1 slide on mobile
+      }
+    }
+  
+    // Function to show the current slide
+    function showSlide1(index1) {
+      const slidesPerView1 = getSlidesPerView1();
+      const wrapper1 = document.querySelector('.threestepsslider-wrapper'); // Corrected querySelector
+  
+      // Limit the index to ensure we don't slide into an empty space
+      if (index1 < 0) {
+        currentIndex1 = 0;
+      } else if (index1 > totalSlides1 - slidesPerView1) {
+        currentIndex1 = totalSlides1 - slidesPerView1;
+      } else {
+        currentIndex1 = index1;
+      }
+  
+      // Move the slider by adjusting the transform property
+      wrapper1.style.transform = `translateX(-${currentIndex1 * (100 / slidesPerView1)}%)`; // Corrected wrapper.style.transform1 to wrapper1.style.transform
+    }
+  
+    // Function to move to the next slide
+    function nextSlide1() {
+      const slidesPerView1 = getSlidesPerView1();
+      if (currentIndex1 < totalSlides1 - slidesPerView1) {
+        showSlide1(currentIndex1 + 1);
+      }
+    }
+  
+    // Function to move to the previous slide
+    function prevSlide1() {
+      if (currentIndex1 > 0) { // Corrected currentInde1x to currentIndex1
+        showSlide1(currentIndex1 - 1);
+      }
+    }
+  
+    // Recalculate the visible slides on window resize and reset the slider position
+    window.addEventListener('resize', () => { // Corrected addEventListener1 to addEventListener
+      showSlide1(currentIndex1);
+    });
+  
+    // Initialize the slider by showing the first slide
+    showSlide1(currentIndex1);
+  </script>
+  
+  
+
+</body>
+</html>
