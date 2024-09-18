@@ -1,6 +1,7 @@
-document.addEventListener('DOMContentLoaded', () => {// Define the custom element
-class CaravanRoofCalculator extends HTMLElement {
-    constructor() {
+document.addEventListener('DOMContentLoaded', () => {
+    // Define the custom element
+    class CaravanRoofCalculator extends HTMLElement {
+        constructor() {
         super();
         // Create a shadow root
         const shadow = this.attachShadow({ mode: 'open' });
@@ -482,7 +483,7 @@ class CaravanRoofCalculator extends HTMLElement {
     }
         `;
 
-        // Create the HTML structure
+        // Create the container
         const container = document.createElement('div');
         container.innerHTML = `
             <div class="caravan-calculator-container">
