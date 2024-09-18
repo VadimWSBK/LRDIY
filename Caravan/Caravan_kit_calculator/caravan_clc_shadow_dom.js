@@ -11,7 +11,7 @@ class CaravanCalculator extends HTMLElement {
         // Add styles
         const style = document.createElement('link');
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY/caravan_calc_style.css');
+        style.setAttribute('href', 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/Caravan/Caravan_kit_calculator/caravan_clc.css');
 
         // Set inner HTML
         container.innerHTML = `
@@ -86,7 +86,7 @@ class CaravanCalculator extends HTMLElement {
 
         // Load JavaScript
         const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY/caravan_calc_js_without_hidden_fields.js';
+        script.src = 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/Caravan/Caravan_kit_calculator/caravan_clc.js';
         shadow.appendChild(script);
     }
 }
