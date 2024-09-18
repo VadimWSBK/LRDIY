@@ -95,11 +95,10 @@ class CaravanCalculator extends HTMLElement {
             const roofType = this.shadowRoot.getElementById('caravan-roof-type').value;
             
             this.ccalc_updatePrimerProduct(roofType);
-            this.ccalc_displayProducts(length, width, roofType);
-
+            this.ccalc_displayProducts(length, width, roofType); // Ensure initial values are used
+        
             // Add event listeners
             this.shadowRoot.getElementById('caravan-calculate-button').addEventListener('click', () => {
-                // Recalculate on button click
                 const newLength = parseFloat(this.shadowRoot.getElementById('caravan-length').value);
                 const newWidth = parseFloat(this.shadowRoot.getElementById('caravan-width').value);
                 const newRoofType = this.shadowRoot.getElementById('caravan-roof-type').value;
