@@ -1,3 +1,4 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;">
 // Create a shadow root in your desired container
 const container = document.createElement('div');
 document.body.appendChild(container);
