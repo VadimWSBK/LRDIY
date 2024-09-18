@@ -193,50 +193,42 @@ class CaravanCalculator extends HTMLElement {
 
     displayProducts(length = 6, width = 2.5, roofType = 'painted') {
         const productList = this.shadowRoot.getElementById('caravan-product-list');
-        console.log(productList, this.shadowRoot.getElementById('caravan-total-area'), this.shadowRoot.getElementById('caravan-total-price'));
-
-        let totalPrice = 0;
-
-        // Reset product list to prevent duplication
-        productList.innerHTML = '';
-
+        productList.innerHTML = ''; // Clear previous products
+    
         const area = length * width;
         this.shadowRoot.getElementById('caravan-total-area').innerText = `Area: ${area.toFixed(2)} m²`;
-
+    
+        let totalPrice = 0;
+    
         this.products.forEach((product) => {
             if (!product.name || !product.image) return;
-
-            // Create product elements
+    
             const productContainer = document.createElement('div');
-            productContainer.classList.add('caravan-product-container');
-
-            const productImageContainer = document.createElement('div');
-            productImageContainer.classList.add('caravan-product-image-container');
             const productImage = document.createElement('img');
             productImage.src = product.image;
-
+    
             const productCheckbox = document.createElement('input');
             productCheckbox.type = 'checkbox';
             productCheckbox.checked = true;
-
-            // Checkbox change function
+    
+            // Initial price calculation
+            totalPrice += this.calculateProductPrice(product, length, width, roofType);
+    
             productCheckbox.addEventListener('change', () => {
                 const priceForProduct = this.calculateProductPrice(product, length, width, roofType);
                 totalPrice += productCheckbox.checked ? priceForProduct : -priceForProduct;
                 this.shadowRoot.getElementById('caravan-total-price').innerText = `Total Price: $${totalPrice.toFixed(2)}`;
             });
-
-            productImageContainer.appendChild(productImage);
-            productImageContainer.appendChild(productCheckbox);
-            productContainer.appendChild(productImageContainer);
+    
+            productContainer.appendChild(productImage);
+            productContainer.appendChild(productCheckbox);
             productList.appendChild(productContainer);
         });
-
+    
         // Update total price display
         this.shadowRoot.getElementById('caravan-total-price').innerText = `Total Price: $${totalPrice.toFixed(2)}`;
-        console.log('Price for product:', priceForProduct);
-
     }
+    
 
     calculateProductPrice(product, length, width, roofType) {
         const area = length * width;
