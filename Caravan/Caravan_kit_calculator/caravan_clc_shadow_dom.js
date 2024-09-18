@@ -10,7 +10,7 @@ class CaravanCalculator extends HTMLElement {
         // Add styles
         const style = document.createElement('link');
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY/caravan_calc_style.css');
+        style.setAttribute('href', 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/Caravan/Caravan_kit_calculator/caravan_clc.css');
 
         // Set inner HTML
         container.innerHTML = `
@@ -64,8 +64,33 @@ class CaravanCalculator extends HTMLElement {
     }
 
     init() {
-        // Your initialization logic here
+        // Ensure elements are available
+        const lengthInput = this.shadowRoot.getElementById('caravan-length');
+        const widthInput = this.shadowRoot.getElementById('caravan-width');
+        const roofTypeSelect = this.shadowRoot.getElementById('caravan-roof-type');
+
+        // Validate that inputs are present
+        if (!lengthInput || !widthInput || !roofTypeSelect) {
+            console.error('Input elements not found.');
+            return;
+        }
+
+        const length = parseFloat(lengthInput.value);
+        const width = parseFloat(widthInput.value);
+        const roofType = roofTypeSelect.value;
+
+        this.ccalc_updatePrimerProduct(roofType);
+        this.ccalc_displayProducts(length, width, roofType); // Ensure initial values are used
+
+        // Add event listeners
+        this.shadowRoot.getElementById('caravan-calculate-button').addEventListener('click', () => {
+            const newLength = parseFloat(lengthInput.value);
+            const newWidth = parseFloat(widthInput.value);
+            const newRoofType = roofTypeSelect.value;
+            this.ccalc_displayProducts(newLength, newWidth, newRoofType);
+        });
     }
 }
 
 customElements.define('caravan-calculator', CaravanCalculator);
+
