@@ -52,9 +52,9 @@ class CaravanCalculator extends HTMLElement {
 
         // Load external script
         const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/Caravan/Caravan_kit_calculator/caravan_clc.js';
+        script.src = 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/Caravan/Caravan_kit_calculator/shadowdom_clc_modified_script.js';
         script.onload = () => {
-            // Call a function from the external script if needed after it's loaded
+            // Call a function from the external script after it's loaded
             if (typeof initCalculator === 'function') {
                 initCalculator(shadow);
             }
