@@ -1,3 +1,6 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Your existing JavaScript code
 class CaravanCalculator extends HTMLElement {
     constructor() {
         super();
@@ -84,3 +87,4 @@ class CaravanCalculator extends HTMLElement {
 }
 
 customElements.define('caravan-calculator', CaravanCalculator);
+});
