@@ -142,8 +142,9 @@ class CaravanCalculator extends HTMLElement {
         const width = parseFloat(this.shadowRoot.getElementById('caravan-width').value) || 0;
         const roofType = this.shadowRoot.getElementById('caravan-roof-type').value;
         this.updatePrimerProduct(roofType);
-        this.displayProducts(length, width, roofType); // Call to display products
-        this.calculate(); // Call to ensure calculations are correct on load
+        
+        // Calculate products and display them
+        this.calculate(); // Ensure it shows the products and calculates the total area
     }
 
     updatePrimerProduct(roofType) {
