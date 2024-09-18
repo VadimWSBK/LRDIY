@@ -480,6 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         
             `);
+            shadow.adoptedStyleSheets = [stylesheet];
             
             const container = document.createElement('div');
             container.innerHTML = `
