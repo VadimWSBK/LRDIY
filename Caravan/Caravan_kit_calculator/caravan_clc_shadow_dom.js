@@ -1,3 +1,5 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;">
+
 class CaravanCalculator extends HTMLElement {
     constructor() {
         super();
