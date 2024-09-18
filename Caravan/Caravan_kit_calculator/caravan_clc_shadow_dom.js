@@ -551,16 +551,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             shadow.appendChild(container);
-            this.products = this.initializeProducts();
 
+        
+            this.products = this.initializeProducts();
+    
             // Add event listeners
             this.calculateButton = shadow.getElementById('caravan-calculate-button');
             this.calculateButton.addEventListener('click', this.calculate.bind(this));
-
-            shadow.getElementById('caravan-roof-type').addEventListener('change', this.updateProducts.bind(this));
+    
+            shadow.getElementById('caravan-roof-type').addEventListener('change', this.updatePrimerProduct.bind(this));
             shadow.getElementById('caravan-length').addEventListener('input', this.enforceMaxValue.bind(this, 20));
             shadow.getElementById('caravan-width').addEventListener('input', this.enforceMaxValue.bind(this, 3));
-
+    
             // Initialize products on load
             this.init();
         }
@@ -619,10 +621,10 @@ document.addEventListener('DOMContentLoaded', () => {
             this.updatePrimerProduct(roofType);
             
             // Calculate products and display them
-            this.calculate(); // Ensure it shows the products and calculates the total area
+            this.calculate();
         }
 
-        function ccalc_updatePrimerProduct(roofType) {
+        ccalc_updatePrimerProduct(roofType) {
             let primerProduct = {
                 name: roofType === 'painted' ? 'Sealer/Primer' : 'Etch Primer',
                 image: roofType === 'painted'
