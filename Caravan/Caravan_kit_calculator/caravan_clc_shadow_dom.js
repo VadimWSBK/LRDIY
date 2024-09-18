@@ -145,8 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.calculate(); // Ensure it shows the products and calculates the total area
         }
 
-        updatePrimerProduct(roofType) {
-            const primerProduct = {
+        function ccalc_updatePrimerProduct(roofType) {
+            let primerProduct = {
                 name: roofType === 'painted' ? 'Sealer/Primer' : 'Etch Primer',
                 image: roofType === 'painted'
                     ? 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d57ded61d9850ff720ed71.webp'
@@ -165,11 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 ],
                 infoText: roofType === 'painted'
-                ? 'Sealer/Primer is used to protect painted roof surfaces.'
-                : 'Etch Primer is essential for raw metal surfaces.'
+                ? 'Sealer/Primer is used to protect painted roof surfaces to improve adhesion.'
+                : 'Etch Primer is essential for raw metal surfaces to improve adhesion.'
         };
-        this.products[2] = primerProduct; // Update the products list
+
+        products[2] = primerProduct; // Update the third product in the array
     }
+        
 
     enforceMaxValue(maxValue, event) {
         if (event.target.value > maxValue) {
