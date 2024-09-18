@@ -5,27 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caravan Roof Coating Kit Builder</title>
     <link rel="stylesheet" href="https://raw.githubusercontent.com/VadimWSBK/LRDIY/main/caravan_calc_style.css"> <!-- Link to your CSS -->
-<style>
-    
+    <style>
+        /* You can add additional styles here if needed */
+    </style>
 </head>
-
-
 <body>
 
 <!-- Caravan Roof Coating Calculator Start -->
 
 <div id="rv-calculator-container">
-    <!-- Calculator Container -->
-
     <div class="caravan-calculator-container">
-        <!-- Heading -->
         <div class="caravan-heading-container">
             <h1>How Big Is Your Caravan? </h1>
         </div>
 
-        <!-- Input Container -->
         <div class="caravan-input-row">
-            <!-- Caravan Length Input -->
             <div class="caravan-input-container">
                 <label for="caravan-length">Enter Length:</label>
                 <div class="caravan-input-wrapper">
@@ -33,7 +27,6 @@
                     <span class="caravan-unit">m</span>
                 </div>
             </div>
-            <!-- Caravan Width Input -->
             <div class="caravan-input-container">
                 <label for="caravan-width">Enter Width:</label>
                 <div class="caravan-input-wrapper">
@@ -41,10 +34,9 @@
                     <span class="caravan-unit">m</span>
                 </div>
             </div>
-            <!-- Roof Type Input -->
             <div class="caravan-input-container">
-                    <label for="caravan-roof-type">Select Roof Surface:</label>
-                    <div class="caravan-input-wrapper">
+                <label for="caravan-roof-type">Select Roof Surface:</label>
+                <div class="caravan-input-wrapper">
                     <select id="caravan-roof-type">
                         <option value="painted" selected>Painted Surface</option>
                         <option value="metal">Raw Metal Surface</option>
@@ -53,26 +45,21 @@
             </div>
         </div>
 
-        <!-- Calculate Button and Total Area -->
         <div class="caravan-calculate-button-container">
             <button id="caravan-calculate-button" class="caravan-calculate-button">👉 Calculate</button>
             <div class="caravan-total-area" id="caravan-total-area">Total Area: 15.00 m²</div>
         </div>
 
-        <!-- Subheading -->
         <div class="caravan-subheading-container">
             <h2>👇 Everything You Need To Seal Your Caravan Roof.</h2>
         </div>
 
-        <!-- Product List -->
         <div id="caravan-product-list" class="caravan-product-list-container"></div>
 
-        <!-- Popup element (initially hidden) -->
         <div id="caravan-alert-popup" class="caravan-alert-popup" style="display: none;">
             Please select at least one product before adding the BONUS product.
         </div>
         
-        <!-- BUY NOW AND PRICE -->
         <div class="caravan-total-price-button-container">
             <button id="caravan-buy-now-button" class="caravan-buy-now-button">
                 <div class="caravan-buy-now-button-text">ADD KIT TO CART</div>
@@ -98,7 +85,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY/caravan_calc_js_without_hidden_fields.js"></script>
-
-
 </body>
 </html>
+
