@@ -10,7 +10,7 @@ class CaravanCalculator extends HTMLElement {
         // Add styles
         const style = document.createElement('link');
         style.setAttribute('rel', 'stylesheet');
-        style.setAttribute('href', 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/Caravan/Caravan_kit_calculator/caravan_clc.css');
+        style.setAttribute('href', 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY/caravan_calc_style.css');
 
         // Set inner HTML
         container.innerHTML = `
@@ -51,10 +51,15 @@ class CaravanCalculator extends HTMLElement {
         shadow.appendChild(style);
         shadow.appendChild(container);
 
-        // Add the external script
+        // Load the external script
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/Caravan/Caravan_kit_calculator/caravan_clc.js'; // Replace with your external .js file link
-        script.onload = () => this.init();
+        script.onload = () => {
+            this.init(); // Call init after the script is loaded
+        };
+        script.onerror = () => {
+            console.error('Failed to load the external script.');
+        };
         shadow.appendChild(script);
     }
 
