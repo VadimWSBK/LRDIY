@@ -1,4 +1,4 @@
-// Define the custom element
+document.addEventListener('DOMContentLoaded', () => {// Define the custom element
 class CaravanRoofCalculator extends HTMLElement {
     constructor() {
         super();
@@ -728,3 +728,5 @@ class CaravanRoofCalculator extends HTMLElement {
 }
 
 customElements.define('caravan-roof-calculator', CaravanRoofCalculator);
+
+}
