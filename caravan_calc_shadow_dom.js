@@ -1,23 +1,24 @@
 class CaravanCalculator extends HTMLElement {
     constructor() {
         super();
+        // Attach a shadow root to the custom element
         const shadow = this.attachShadow({ mode: 'open' });
 
-        // Create a link element for the stylesheet
-        const link = document.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('href', 'https://raw.githubusercontent.com/VadimWSBK/LRDIY/main/caravan_calc_style.css');
-
-        // Create the calculator container
+        // Create a container for the calculator
         const container = document.createElement('div');
         container.setAttribute('id', 'rv-calculator-container');
         
+        // Add styles
+        const style = document.createElement('link');
+        style.setAttribute('rel', 'stylesheet');
+        style.setAttribute('href', 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY/caravan_calc_style.css');
+
+        // Set inner HTML
         container.innerHTML = `
             <div class="caravan-calculator-container">
                 <div class="caravan-heading-container">
                     <h1>How Big Is Your Caravan? </h1>
                 </div>
-
                 <div class="caravan-input-row">
                     <div class="caravan-input-container">
                         <label for="caravan-length">Enter Length:</label>
@@ -43,22 +44,17 @@ class CaravanCalculator extends HTMLElement {
                         </div>
                     </div>
                 </div>
-
                 <div class="caravan-calculate-button-container">
                     <button id="caravan-calculate-button" class="caravan-calculate-button">👉 Calculate</button>
                     <div class="caravan-total-area" id="caravan-total-area">Total Area: 15.00 m²</div>
                 </div>
-
                 <div class="caravan-subheading-container">
                     <h2>👇 Everything You Need To Seal Your Caravan Roof.</h2>
                 </div>
-
                 <div id="caravan-product-list" class="caravan-product-list-container"></div>
-
                 <div id="caravan-alert-popup" class="caravan-alert-popup" style="display: none;">
                     Please select at least one product before adding the BONUS product.
                 </div>
-
                 <div class="caravan-total-price-button-container">
                     <button id="caravan-buy-now-button" class="caravan-buy-now-button">
                         <div class="caravan-buy-now-button-text">ADD KIT TO CART</div>
@@ -84,39 +80,14 @@ class CaravanCalculator extends HTMLElement {
             </div>
         `;
 
-        shadow.appendChild(link);
+        // Append styles and container to shadow root
+        shadow.appendChild(style);
         shadow.appendChild(container);
 
-        // Add the external JavaScript
+        // Load JavaScript
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY/caravan_calc_js_without_hidden_fields.js';
-        script.onload = () => this.init();
         shadow.appendChild(script);
-    }
-
-    init() {
-        // Initialize the calculator logic here, similar to how you previously handled it.
-        const length = parseFloat(this.shadowRoot.getElementById('caravan-length').value);
-        const width = parseFloat(this.shadowRoot.getElementById('caravan-width').value);
-        const roofType = this.shadowRoot.getElementById('caravan-roof-type').value;
-
-        // Example initialization function calls
-        this.ccalc_updatePrimerProduct(roofType);
-        this.ccalc_displayProducts(length, width, roofType);
-        
-        // Add event listeners here if needed
-        this.shadowRoot.getElementById('caravan-calculate-button').addEventListener('click', () => {
-            // Recalculate logic
-        });
-    }
-
-    // Add your calculation functions here
-    ccalc_updatePrimerProduct(roofType) {
-        // Implementation...
-    }
-
-    ccalc_displayProducts(length, width, roofType) {
-        // Implementation...
     }
 }
 
