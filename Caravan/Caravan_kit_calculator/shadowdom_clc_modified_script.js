@@ -1,5 +1,6 @@
 (function() {
     document.addEventListener('DOMContentLoaded', function () {
+        const shadowRoot = document.getElementById('rv-calculator-container').attachShadow({ mode: 'open' });
         const products = [
             {
                 name: 'Waterproof Sealant',
@@ -89,12 +90,10 @@
 
         window.addEventListener('click', function (event) {
             if (!event.target.matches('.caravan-info-link')) {
-                const popups = document.querySelectorAll('.caravan-info-popup');
+                const popups = shadowRoot.querySelectorAll('.caravan-info-popup');
                 popups.forEach(popup => popup.classList.remove('active'));
             }
         });
-
-        const shadowRoot = document.getElementById('rv-calculator-container').shadowRoot; // Adjust as necessary
 
         shadowRoot.getElementById('caravan-roof-type').addEventListener('change', function () {
             const length = parseFloat(shadowRoot.getElementById('caravan-length').value);
@@ -166,9 +165,7 @@
 
                     if (product.name === 'BONUS') {
                         if (this.checked) {
-                            if (globalProductSelections.length === 0 || globalProductSelections.every(p => p.variantId === product.variants[0].variantId)) {
-                                globalProductSelections.push(product.variants[0]);
-                            }
+                            globalProductSelections.push(product.variants[0]);
                         } else {
                             globalProductSelections = globalProductSelections.filter(p => p.variantId !== product.variants[0].variantId);
                         }
