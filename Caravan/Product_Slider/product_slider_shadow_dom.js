@@ -172,7 +172,7 @@ class ProductSlider extends HTMLElement {
           link: 'https://liquidrubberdiy.com.au/products/etch-primer?sca_ref=3419258.V3jzDInQbZ',
         },
         {
-          img: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d57ded61d985c90720ed72.webp',
+          img: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66ec0551c9252b9fe1fb1f5d.webp',
           title: 'Thermal Coating',
           text: 'Reflects heat and withstands harsh UV rays.',
           link: 'https://liquidrubberdiy.com.au/products/protective-top-coat?sca_ref=3419258.V3jzDInQbZ',
