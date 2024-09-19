@@ -1,7 +1,7 @@
 // src/components/Calculator.js
 
 import React, { useState } from 'react';
-import './Calculator.css';  // Create a CSS file if needed
+import './Users/vadimw/GitHub_LRDIY/LRDIY/Caravan/react_rv_calc_app/src/styles/rv-calculator.css';  // Create a CSS file if needed
 
 const Calculator = () => {
     const [length, setLength] = useState('');
