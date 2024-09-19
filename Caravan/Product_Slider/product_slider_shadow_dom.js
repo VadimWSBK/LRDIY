@@ -148,19 +148,19 @@ class ProductSlider extends HTMLElement {
     getSlides() {
       const slidesData = [
         {
-          img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/ewm9gNGbZG828XI4tybh/media/66d2066e697100ccddc6e54f.webp',
+          img: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d2066e697100ccddc6e54f.webp',
           title: 'Waterproof Sealant',
           text: 'This is the main player. Super durable, flexible, and waterproof.',
           link: 'https://liquidrubberdiy.com.au/products/waterproof-sealant?sca_ref=3419258.V3jzDInQbZ',
         },
         {
-          img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/ewm9gNGbZG828XI4tybh/media/66d206a057f60d1680e999ad.webp',
+          img: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d206a057f60d1680e999ad.webp',
           title: 'Geo Textile',
           text: 'Reinforce cracks and boost sealant performance with this textile.',
           link: 'https://liquidrubberdiy.com.au/products/geo-textile?sca_ref=3419258.V3jzDInQbZ',
         },
         {
-          img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/ewm9gNGbZG828XI4tybh/media/66d57ded61d9850ff720ed71.webp',
+          img: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d57ded61d9850ff720ed71.webp',
           title: 'Sealer / Primer',
           text: 'Enhances adhesion and protects pre-coated surfaces.',
           link: 'https://liquidrubberdiy.com.au/products/sealer?sca_ref=3419258.V3jzDInQbZ',
@@ -172,7 +172,7 @@ class ProductSlider extends HTMLElement {
           link: 'https://liquidrubberdiy.com.au/products/etch-primer?sca_ref=3419258.V3jzDInQbZ',
         },
         {
-          img: 'https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://ewm9gNGbZG828XI4tybh/media/66d57ded61d985c90720ed72.webp',
+          img: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d57ded61d985c90720ed72.webp',
           title: 'Thermal Coating',
           text: 'Reflects heat and withstands harsh UV rays.',
           link: 'https://liquidrubberdiy.com.au/products/protective-top-coat?sca_ref=3419258.V3jzDInQbZ',
