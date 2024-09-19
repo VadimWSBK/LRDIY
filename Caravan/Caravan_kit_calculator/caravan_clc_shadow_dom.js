@@ -86,13 +86,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     shadow.appendChild(wrapper);
 
-                    // Add the external script
-                    const script = document.createElement('script');
-                    script.src = 'https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@main/Caravan/Caravan_kit_calculator/caravan_clc.js';
-                    shadow.appendChild(script);
-                }
-            }
+                              // Add the event listeners after the elements are created
+            this.setupEventListeners();
+        }
 
-            // Define the new element
-            customElements.define('caravan-kit-creator-calculator', CaravanShadowComponent);
-        });
+        setupEventListeners() {
+            const calculateButton = this.shadowRoot.getElementById('caravan-calculate-button');
+            calculateButton.addEventListener('click', () => {
+                this.calculateArea();
+            });
+        }
+
+        calculateArea() {
+            const length = parseFloat(this.shadowRoot.getElementById('caravan-length').value);
+            const width = parseFloat(this.shadowRoot.getElementById('caravan-width').value);
+            const totalArea = (length * width).toFixed(2);
+            this.shadowRoot.getElementById('caravan-total-area').textContent = `Total Area: ${totalArea} m²`;
+        }
+    }
+
+    // Define the new element
+    customElements.define('caravan-kit-creator-calculator', CaravanShadowComponent);
+});
