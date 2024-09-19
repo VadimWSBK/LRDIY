@@ -65,3 +65,16 @@ button:hover {
     font-size: clamp(14px, 5vw, 20px);
     text-align: center;
 }
+
+
+.error-message {
+    color: red;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+input:focus,
+select:focus,
+button:focus {
+    outline: 2px solid #00A62D; /* Highlight on focus */
+}
