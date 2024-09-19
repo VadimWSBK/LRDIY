@@ -1,7 +1,7 @@
 // src/components/Calculator.js
 
 import React, { useState } from 'react';
-import './Users/vadimw/GitHub_LRDIY/LRDIY/Caravan/react_rv_calc_app/src/styles/rv-calculator.css';  // Adjust the path as necessary
+import './styles/rv-calculator.css';  // Adjust the path as necessary
 
 const Calculator = () => {
     const [length, setLength] = useState(6);
