@@ -1,22 +1,22 @@
 // src/store/store.js
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { configureStore } from '@reduxjs/toolkit'; // Import the correct method
 import calculatorReducer from './Reducers/reducer'; // Import your custom calculator reducer
 import productDetailsReducer from './productDetailsSlice'; // Import the product details slice
 import priceCalculationsReducer from './priceCalculationsSlice'; // Import the price calculations slice
-import thunk from 'redux-thunk'; // Middleware for handling async actions
+import widthReducer from './widthSlice'; // Import the width reducer
+import lengthReducer from './lengthSlice'; // Import the length reducer
 
-// Combine all reducers into a rootReducer
-const rootReducer = combineReducers({
-    calculator: calculatorReducer, 
-    productDetails: productDetailsReducer,
-    priceCalculations: priceCalculationsReducer,
+// Configure the store using Redux Toolkit's configureStore method
+const store = configureStore({
+    reducer: {
+        calculator: calculatorReducer, 
+        productDetails: productDetailsReducer,
+        priceCalculations: priceCalculationsReducer,
+        width: widthReducer,
+        length: lengthReducer
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(), // Add any additional middleware here if needed
+    devTools: process.env.NODE_ENV !== 'production', // Enable Redux DevTools in development mode
 });
-
-// Enable Redux DevTools and middleware
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-    rootReducer, 
-    composeEnhancers(applyMiddleware(thunk)) // Apply middleware
-);
 
 export default store;
