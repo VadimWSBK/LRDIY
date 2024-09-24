@@ -1,43 +1,18 @@
-// src/components/Calculator.js
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectProducts } from '../store/productDetailsSlice';
 import RoofTypeSelect from './RoofTypeSelect'; 
 import LengthInput from './LengthInput'; 
 import WidthInput from './WidthInput';
-import ProductListContainer from './Products/ProductListContainer';
 import '../styles/rv-calculator.css';
+import ProductListContainer from './Products/ProductListContainer';
 
 const Calculator = () => {
-    const products = useSelector(selectProducts);
-    const [length, setLength] = useState(6);
-    const [width, setWidth] = useState(2.5);
-    const [roofType, setRoofType] = useState('painted');
-    const [totalArea, setTotalArea] = useState(15);
-    const [selectedProducts, setSelectedProducts] = useState([]);
-    const [overallTotal, setOverallTotal] = useState(0); 
-    const [totalSavings, setTotalSavings] = useState(0);
-    const [discountedPrice, setDiscountedPrice] = useState(0);
-
-    // Update total area based on length and width
-    useEffect(() => {
-        setTotalArea(length * width || 0);
-    }, [length, width]);
-
-    // Set initial selected products based on available products
-    useEffect(() => {
-        if (products && Object.keys(products).length > 0) {
-            const initialSelectedProducts = Object.keys(products).map(productName => products[productName].name);
-            setSelectedProducts(initialSelectedProducts);
-        }
-    }, [products]);
-
-    // Calculate the discounted price based on overall total and savings
-    useEffect(() => {
-        const discount = overallTotal > 0 ? overallTotal * 0.10 : 0; // Calculate 10% savings
-        setTotalSavings(discount);
-        setDiscountedPrice(Math.max(overallTotal - discount, 0)); // Calculate the final discounted price
-    }, [overallTotal]);
+    // Access state values using useSelector
+    const totalArea = useSelector((state) => state.calculator.totalArea); // Directly get the calculated totalArea from Redux
+    const roofType = useSelector((state) => state.calculator.roofType);
+    const overallTotal = useSelector((state) => state.priceCalculations.overallTotal);
+    const totalSavings = useSelector((state) => state.priceCalculations.totalSavings);
+    const discountedPrice = useSelector((state) => state.priceCalculations.discountedPrice);
 
     return (
         <div id="rv-calculator-container">
@@ -49,19 +24,19 @@ const Calculator = () => {
                 <div className="caravan-input-row">
                     <div className="caravan-width-length-container">
                         <div className="caravan-input-container">
-                            <LengthInput length={length} setLength={(value) => dispatch(setLength(value))} />
+                            <LengthInput />
                         </div>
                         <div className="caravan-input-container">
-                            <WidthInput width={width} setWidth={(value) => dispatch(setWidth(value))} />
+                            <WidthInput />
                         </div>
                     </div>
                     <div className="caravan-input-container">
-                        <RoofTypeSelect roofType={roofType} setRoofType={(value) => dispatch(setRoofType(value))} />
+                        <RoofTypeSelect />
                     </div>
                 </div>
 
                 <div className="caravan-total-area">
-                    <div>Total Area: {totalArea.toFixed(2)} m²</div>
+                    <div>Total Area: {totalArea.toFixed(2)} m²</div> {/* Display the calculated totalArea */}
                 </div>
 
                 <div className="caravan-subheading-container">
@@ -70,11 +45,9 @@ const Calculator = () => {
 
                 <div className="caravan-product-list-container">
                     <div className="caravan-product-list">
-                        <ProductListContainer
-                            totalArea={totalArea}
-                            roofType={roofType}
-                            selectedProducts={selectedProducts}
-                            setOverallTotal={(total) => dispatch(setOverallTotal(total))}
+                        <ProductListContainer 
+                            totalArea={totalArea} // Pass the totalArea from Redux
+                            roofType={roofType} // Pass the roofType from Redux
                         />
                     </div>
                 </div>
@@ -92,7 +65,7 @@ const Calculator = () => {
                             <span className="caravan-total-price-text">Total:</span>
                         </div>
                         <div className="caravan-total-price">
-                            ${discountedPrice.toFixed(2)}
+                            ${discountedPrice.toFixed(2)}                        
                         </div>
                         <div className="caravan-discounted-price">
                             ${overallTotal.toFixed(2)}

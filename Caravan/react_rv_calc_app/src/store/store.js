@@ -1,22 +1,26 @@
 // src/store/store.js
-import { configureStore } from '@reduxjs/toolkit'; // Import the correct method
-import calculatorReducer from './Reducers/reducer'; // Import your custom calculator reducer
-import productDetailsReducer from './productDetailsSlice'; // Import the product details slice
-import priceCalculationsReducer from './priceCalculationsSlice'; // Import the price calculations slice
-import widthReducer from './widthSlice'; // Import the width reducer
-import lengthReducer from './lengthSlice'; // Import the length reducer
+import { configureStore } from '@reduxjs/toolkit';
+import calculatorReducer from './calculatorSlice';
+import productDetailsReducer from './productDetailsSlice';
+import priceCalculationsReducer from './priceCalculationsSlice';
+import productSelectionReducer from './productSelectionSlice';
+import widthReducer from './widthSlice';
+import lengthReducer from './lengthSlice';
+import { thunk } from 'redux-thunk'; // Use named import for `thunk`
 
-// Configure the store using Redux Toolkit's configureStore method
+// Configure the Redux store
 const store = configureStore({
     reducer: {
-        calculator: calculatorReducer, 
+        calculator: calculatorReducer,
         productDetails: productDetailsReducer,
         priceCalculations: priceCalculationsReducer,
+        productSelection: productSelectionReducer,
         width: widthReducer,
-        length: lengthReducer
+        length: lengthReducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(), // Add any additional middleware here if needed
-    devTools: process.env.NODE_ENV !== 'production', // Enable Redux DevTools in development mode
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(thunk), // Apply middleware using a callback function
+    devTools: process.env.NODE_ENV !== 'production', // Enable Redux DevTools in development
 });
 
 export default store;

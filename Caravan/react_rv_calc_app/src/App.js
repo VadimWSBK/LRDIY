@@ -1,13 +1,14 @@
-// src/index.js or src/App.js
+// src/App.js
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import store from './store/store'; // Adjust path if necessary
-import Calculator from './components/Calculator'; // Adjust path if necessary
+import Calculator from './components/Calculator'; // Import the Calculator component
 
-ReactDOM.render(
-  <Provider store={store}>
+// Main App component which can include other components or just Calculator
+const App = () => {
+    return (
+        <div>
             <Calculator />
-            </Provider>,
-  document.getElementById('root')
-);
+        </div>
+    );
+};
+
+export default App;

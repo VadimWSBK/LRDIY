@@ -1,27 +1,17 @@
 // src/components/CalculatorFunctions/Checkbox.js
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectProduct, deselectProduct } from '../../store/actions';
 
-const Checkbox = ({ productName }) => {
-    const dispatch = useDispatch();
-    const selectedProducts = useSelector((state) => state.calculator.selectedProducts); // Get selected products from Redux store
-
-    const isSelected = selectedProducts.includes(productName); // Check if product is selected
-
+const Checkbox = ({ productName, isSelected, toggleProductSelection }) => {
+    // Handle checkbox toggle
     const handleToggle = () => {
-        if (isSelected) {
-            dispatch(deselectProduct(productName)); // Deselect product
-        } else {
-            dispatch(selectProduct(productName)); // Select product
-        }
+        toggleProductSelection(productName); // Call the toggle function with the product name
     };
 
     return (
         <input 
             type="checkbox" 
-            checked={isSelected} // Control checked state
-            onChange={handleToggle} // Handle change with Redux dispatch
+            checked={isSelected} // Control checked state based on isSelected prop
+            onChange={handleToggle} // Call handleToggle on checkbox change
         />
     );
 };

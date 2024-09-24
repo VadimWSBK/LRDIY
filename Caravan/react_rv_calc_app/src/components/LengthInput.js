@@ -1,17 +1,18 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateLength } from '../store/lengthSlice'; // Ensure this path and action name are correct
+import { setLength, updateTotalArea } from '../store/calculatorSlice'; // Update with correct imports
 
 const LengthInput = () => {
     const dispatch = useDispatch(); // Get dispatch function
-    const length = useSelector(state => state.length.length); // Access length from Redux store
+    const length = useSelector(state => state.calculator.length); // Access length from the calculator slice
 
     const handleLengthChange = (e) => {
         const value = e.target.value;
         if (value === '' || /^\d*\.?\d*$/.test(value)) {
             const parsedValue = value === '' ? '' : parseFloat(value);
             const newLength = parsedValue > 20 ? 20 : parsedValue; // Limit to max 20 meters
-            dispatch(updateLength(newLength)); // Dispatch the correct action
+            dispatch(setLength(newLength)); // Update the length in calculator slice
+            dispatch(updateTotalArea()); // Update the total area based on new length
         }
     };
 
@@ -32,3 +33,4 @@ const LengthInput = () => {
 };
 
 export default LengthInput;
+

@@ -1,22 +1,11 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import Product_Layout from './Product_Layout'; 
-import { selectProducts } from '../../store/productDetailsSlice'; // Import the selector to access products from Redux store
-import { updateSubtotal } from '../../store/priceCalculationsSlice'; // Import the action to update subtotal
+import { selectProducts } from '../../store/productDetailsSlice';
 
-const ProductListContainer = ({ 
-    totalArea, 
-    roofType, 
-    selectedProducts, 
-    setSelectedProducts 
-}) => {
-    const products = useSelector(selectProducts); // Use Redux selector to get all products from the store
-    const dispatch = useDispatch(); // Use dispatch to update the Redux store
-
-    // Function to update subtotal for each product in Redux store
-    const handleUpdateSubtotal = (productName, newSubtotal) => {
-        dispatch(updateSubtotal({ productName, subtotal: newSubtotal }));
-    };
+const ProductListContainer = ({ totalArea, roofType }) => {
+    const products = useSelector(selectProducts); // Get all products from the store
+    const selectedProducts = useSelector(state => state.calculator.selectedProducts); // Get selected products from Redux store
 
     // Determine which products to show based on the roof type
     const allProducts = [
@@ -33,8 +22,11 @@ const ProductListContainer = ({
             {allProducts.map(({ name, show }, index) => {
                 if (!show) return null;
 
-                const productData = products[name.toLowerCase().replace(/\s/g, '')]; // Normalize product name to access the product
+                const normalizedProductName = name.toLowerCase().replace(/\s/g, ''); // Normalize product name
+                const productData = products[normalizedProductName]; // Access the product using normalized name
+
                 if (!productData) {
+                    console.error(`Product not found for: ${normalizedProductName}`);
                     return <div key={index}>Product not found</div>; // Fallback UI if product data is not found
                 }
 
@@ -44,8 +36,6 @@ const ProductListContainer = ({
                         product={productData} 
                         totalArea={totalArea} 
                         selectedProducts={selectedProducts} 
-                        setSelectedProducts={setSelectedProducts} 
-                        setSubtotal={(newSubtotal) => handleUpdateSubtotal(name, newSubtotal)} // Function to update each product's subtotal in Redux
                     />
                 );
             })}

@@ -1,75 +1,86 @@
+// src/components/Products/Product_Layout.js
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'; // Import shallowEqual from react-redux
 import Checkbox from '../CalculatorFunctions/Checkbox';
 import InfoPopup from '../CalculatorFunctions/InfoPopup';
-import ProductCalculations from '../CalculatorFunctions/ProductCalculations';
-import { updateSubtotal } from '../../store/priceCalculationsSlice'; // Import the updateSubtotal action
+import { selectProduct, deselectProduct } from '../../store/calculatorSlice';
+import { selectBucketsNeeded } from '../../store/productSelectionSlice'; // Import the memoized selector
+import { useVariantCalculations } from '../CalculatorFunctions/Variant_Calculations';
 
 const Product_Layout = ({ 
     product, 
     totalArea, 
-    selectedProducts, 
-    setSelectedProducts 
+    selectedProducts 
 }) => {
-    const dispatch = useDispatch(); // Initialize dispatch
-    const productSubtotals = useSelector(state => state.priceCalculations.subtotals); // Access subtotals from Redux
-    const localSubtotal = productSubtotals[product.name] || 0; // Get the local subtotal for this product
+    const dispatch = useDispatch();
 
-    // Function to update subtotal using Redux action
-    const handleUpdateSubtotal = (newSubtotal) => {
-        if (localSubtotal !== newSubtotal) {
-            // Dispatch action only if subtotal has changed to prevent unnecessary re-renders
-            dispatch(updateSubtotal({ productName: product.name, subtotal: newSubtotal }));
+    // Function to toggle product selection
+    const toggleProductSelection = (productName) => {
+        if (selectedProducts.includes(productName)) {
+            dispatch(deselectProduct(productName)); // Deselect the product
+        } else {
+            dispatch(selectProduct(productName)); // Select the product
         }
     };
 
-    // Check if product data is missing or invalid
+    // Use memoized selector to avoid returning new references on each render
+    const bucketsNeeded = useSelector(
+        (state) => selectBucketsNeeded(state, product.name),
+        shallowEqual // Using shallowEqual to prevent unnecessary re-renders
+    );
+    
+    const { recommendedVariant } = useVariantCalculations(totalArea, product.variants, product.name);
+
+    // Check if product is undefined or missing properties
     if (!product || !product.image || !product.name) {
         return <div>Loading product data...</div>; // Fallback UI while data is loading or missing
     }
 
     return (
         <div className="caravan-product-container">
-            {/* COLUMN 1 - Product Image and Checkbox */}
-            <div className="product-image">
+            {/* ------ COLUMN 1 - IMG AND CHECKBOX ------ */}
+            <div className='product-image'>
                 <img src={product.image} alt={product.name} />
                 <label>
                     <Checkbox
                         productName={product.name}
-                        selectedProducts={selectedProducts}
-                        setSelectedProducts={setSelectedProducts}
+                        isSelected={selectedProducts.includes(product.name)} // Use boolean for selection state
+                        toggleProductSelection={toggleProductSelection} // Use toggle function for selection management
                     />
                 </label>
             </div>
 
-            {/* COLUMN 2 - Product Name and Info Link */}
-            <div className="nested-grid-for-mobile">
-                <div className="product-name-and-link-container">
+            {/* ------ COLUMN 2 - NAME AND INFOLINK ------ */}
+            <div className='nested-grid-for-mobile'>
+                <div className='product-name-and-link-container'>
                     <div className="product-name">
                         {product.name}
                     </div>
-                    <div className="info-popup-link-style">
+                    <div className='info-popup-link-style'>
                         <InfoPopup infoText={product.infoText} />
                     </div>
                 </div>
 
-                {/* COLUMN 3 - Product Calculations */}
+                {/* ------ COLUMN 3 - ITEMS ------- */}
                 <div className="product-item-container">
-                    <ProductCalculations
-                        totalArea={totalArea}
-                        setSubtotal={handleUpdateSubtotal} // Update subtotal using Redux
-                        productVariants={product.variants} // Pass variants if available
-                        coveragePerLitre={product.coveragePerLitre} // Pass coverage per litre for bucket-based products
-                        productBuckets={product.buckets} // Pass bucket details if available
-                        productType={product.type} // Pass the product type (e.g., 'geoTextile' or 'bonusProduct')
-                    />
-                </div>
-            </div>
+                    {bucketsNeeded.length > 0 && (
+                        <div>
+                            <h4>Items</h4>
+                            {bucketsNeeded.map((bucket, index) => (
+                                // Ensure a unique key for each bucket
+                                <div key={`${bucket.size}-${index}`}>
+                                    {bucket.count} x {bucket.size}L Bucket
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
-            {/* COLUMN 4 - Subtotal Display */}
-            <div className="subtotal-price-container">
-                <div className="subtotal-price">
-                    <strong>${localSubtotal.toFixed(2)}</strong> {/* Display the calculated subtotal from Redux */}
+                    {recommendedVariant && (
+                        <div>
+                            <h4>Items</h4>
+                            1 x {recommendedVariant.name}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

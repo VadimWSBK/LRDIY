@@ -42,9 +42,9 @@ export const setDiscountedPrice = (price) => ({
 });
 
 // Action to set the recommended variant
-export const setRecommendedVariant = (productType, variant) => ({
+export const setRecommendedVariant = (variant) => ({
     type: actionTypes.SET_RECOMMENDED_VARIANT,
-    payload: { productType, variant },
+    payload: variant, // Directly passing the variant
 });
 
 // Action to set the calculated buckets
