@@ -1,10 +1,10 @@
 
 /* ------------Main Container------------ */
-#rv-calculator-container {
+.rv-calculator-container {
     max-width: 650px;
     background-color: black;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 15px;
     margin: auto;
     box-shadow: inset 0 6px 15px rgba(0, 166, 45, 0.5), 0 6px 15px rgba(0, 0, 0, 0.3);
     font-family: Helvetica, sans-serif;
@@ -25,7 +25,7 @@
 }
 .caravan-subheading-container h2 {
     color: whitesmoke;
-    margin-bottom: 2px;
+    margin-bottom: 20px;
     font-size: clamp(12px, 5vw, 20px);
     text-align: center;
 }
@@ -59,21 +59,30 @@
     margin-bottom: 5px;
 }
 
-input[type="number"]{
-    padding: 10px;
-    font-size: clamp(16px, 5vw, 20px);
-    border-radius: 10px;
-    text-align: center;
-    background-color: whitesmoke;
+.input-field {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 24px;
     font-weight: 600;
-    display: flex;
-    margin: 0; 
+    outline: none;
+    width: auto; 
+    text-align: center;/* Adjust width if necessary */
+    transition: border 0.3s ease-in-out; /* Smooth border transition */
+
 }
 
-.caravan-lenght {
-    padding: 0;
-    margin: 0; /* Equal width for all inputs */
+.input-field.red {
+    color: #B04327;
 }
+
+.input-field.black {
+    color: black;
+}
+.input-field.highlight {
+    border: 2px solid red; /* Red border for highlight */
+}
+
 input[type="number"]:focus, select:focus {
     border: 1px solid #00A62D;
 }
@@ -85,31 +94,72 @@ label {
     text-align: left;
     font-size: clamp(16px, 2vw, 18px);
 }
+
+
+
+
+/* ------------Total Area and Select Display ------------*/
+
+.total-area-and-select {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Equal width columns */
+    margin: 0;
+    gap: 10px;
+    padding: 0;
+    align-items: center;
+}
+
+.roof-type-select {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+    padding: 0;
+    align-items: flex-start;
+    width: 100%;
+
+
+}
+
 .caravan-select-container select {
     font-size: clamp(16px, 5vw, 20px);
-    border-radius: 10px;
+    border-radius: 8px;
     text-align: center;
     font-weight: 600;
-    padding: 10px; 
-    display: flex;    
-    margin: 0; 
-  
+    padding: 10px;     
+    width: 100%;
 }
 
 
-
-/* ------------Total Area Display ------------*/
 .caravan-total-area {
     color: whitesmoke;
     font-size: clamp(14px, 5vw, 20px);
-    padding: 10px;
     font-weight: bold;
-    border-radius: 10px;
-    margin-right: 10px;
-    flex-direction: column;
+    border-radius: 8px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
-
+.total-area {
+    color: #00A62D;
+    font-size: clamp(18px, 5vw, 24px);
+    font-weight: bold; 
+    display: flex;   
+    align-items: center;
+}
+.caravan-total-area h4{
+    color: whitesmoke;
+    font-size: clamp(14px, 5vw, 20px);
+    font-weight: bold;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+    margin: 0;
+}
 
 
 /* ------------PRODUCT LIST-------------- */
@@ -127,7 +177,7 @@ label {
 .caravan-product-container {
     display: grid;
     grid-template-columns: 150px auto 70px; /* Specific widths for each column */
-    border-radius: 10px; 
+    border-radius: 8px; 
     background-color: whitesmoke;
     margin-bottom: 10px;
     padding: 5px 20px 5px 5px; /* top: right: bottom: left:  */
@@ -138,10 +188,11 @@ label {
 }
 .nested-grid-for-mobile {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* Equal width columns */
+    grid-template-columns: 3fr 2fr; /* Equal width columns */
     margin: 0;
-    gap: 0;
+    gap: 10px;
     padding: 0;
+    align-items: center;
 }
 /* ----- Image with Checkbox----- */
 .product-image {
@@ -185,23 +236,28 @@ label {
  .product-name {
     color: black;
     font-weight: bold;
-    font-size: clamp(18px, 4vw, 23px);
+    font-size: clamp(18px, 4vw, 22px);
     box-sizing: border-box;
 }
 .info-popup-container {
     position: relative;
 }
+
 .info-popup-bubble {
+    display: block; /* Ensure it is displayed */
     margin-top: 5px;
     background-color: rgba(0, 166, 45, 0.9); /* 60% transparent green */
     border: 1px solid rgba(255, 255, 255, 0.5); /* Light border for contrast */
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    max-width: 200px; /* Adjust as needed */
+    max-width: 250px; /* Adjust as needed */
+    min-width: 200px;
     color: white; /* Change text color to white */
-    z-index: 10;
+    z-index: 100;
+    position: absolute; /* Make sure it's positioned correctly */
 }
+
 .info-popup-link-style {
     color: #00A62D;
     font-size: clamp(12px, 3vw, 14px);
@@ -209,21 +265,9 @@ label {
     cursor: pointer;
     position: relative; /* To position the info icon */
 }
+
 .info-popup-link-style:hover::after {
     margin-left: 5px; /* Space between text and icon */
-}
-.info-popup {
-    display: none;
-    position: absolute;
-    background-color: #00A62D;
-    color: white;
-    padding: 5px;
-    border-radius: 10px;
-    font-size: 12px;
-    max-width: 200px;
-    z-index: 120;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 10px;
 }
 
 
@@ -234,22 +278,32 @@ label {
     justify-self: center; 
     grid-column: 2;
     justify-self: start; /* Align to the left */  
+    margin: 0; /* Remove default margin */
 }
-.product-item h3 {
+.product-item h4 {
     color: black;
-    font-size: clamp(14px, 3vw, 18px);
+    font-size: clamp(13px, 3vw, 17px);
     box-sizing: border-box;
     margin: 0; /* Remove default margin */
     justify-content: center;
+    font-weight: 600;
 
 }
 .product-item {
     color: black;
-    flex-direction: column;
-    font-size: clamp(14px, 3vw, 15px); 
+    font-size: clamp(13px, 3vw, 17px); 
+    margin: 0; /* Remove default margin */
+    justify-content: center;
 }
-.product-item > *:not(:first-child) {
-    margin-top: 3px; /* Adjust as needed */
+
+.no-items-needed {
+    color: #B04327; /* Applies red color to the 'No items needed' message */
+}
+
+.unselected-item {
+    color: #B04327; /* Change text color for unselected items */
+    text-decoration: line-through; /* Adds a line-through for unselected items */
+    opacity: 0.6; /* Optional: make the unselected items a bit faded */
 }
 
 
@@ -261,38 +315,99 @@ label {
 }
 .subtotal-price {
     color: #00A62D;
-    font-size: clamp(13px, 5vw, 20px);
+    font-size: clamp(14px, 5vw, 20px);
     font-weight: bold;
     align-items: flex-end; 
     justify-content: flex-end;  
     text-align: right; /* Aligns text vertically at the bottom */
 }
 
+/* styles/globals.css or your specific CSS file */
+.subtotal-price-container.crossed-out .subtotal-price {
+    position: relative;
+  }
+  
+.subtotal-price-container.crossed-out .subtotal-price::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px; /* Thickness of the line */
+    background-color:#B04327; /* Red color for the line */
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+  .red-zero {
+    color: #B04327;
+}
 
 
-/* -----  Alert Popup -----  */
-.caravan-alert-popup {
+
+
+
+/* CSS for alert popup */
+.alert-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Transparent overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.alert-popup {
     background-color: #B04327;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.alert-content {
+    font-size: 16px;
+    text-align: center;
     color: white;
-    padding: 10px;
-    border-radius: 10px;
-    font-size: 13px;
-    max-width: 200px;
-    z-index: 120;
-    display: block;
-    border-color: transparent transparent #00A62D transparent;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-top: 10px;
+}
+
+/* Optional: Add transition for fading effect */
+.alert-popup {
+    animation: fade-in 0.3s ease-in-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* ----- Button Styles  -----*/
+
+.button-and-text-under {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    text-align: center;
+}
+/* Base button styles */
 .caravan-buy-now-button {
     background-color: #00A62D;
     color: white;
     border: none;
     border-radius: 10px;
     padding: 10px 20px;
-    font-size: clamp(14px, 4vw, 20px);
+    font-size: clamp(18px, 4vw, 20px);
+    font-weight: 600;
     cursor: pointer;
     margin: 10px 0;
     transition: background-color 0.3s, transform 0.2s;
@@ -300,38 +415,83 @@ label {
     flex-direction: column;
     align-items: center;
 }
+
+/* Wiggle effect */
+.caravan-buy-now-button.wiggle-effect {
+    animation: wiggle-pause 8s ease-in-out infinite; /* 3s wiggle + 3s pause */
+}
+
+/* Hover state stops wiggle */
 .caravan-buy-now-button:hover {
     background-color: #a03220;
     transform: scale(1.05);
+    animation: none; /* Stop animation on hover */
 }
 
-.caravan-total-price-button-container{
-    display: flex;
-    justify-content: space-between;
+/* Combined wiggle and pause keyframes */
+@keyframes wiggle-pause {
+    0%, 40% {
+        transform: rotate(0deg); /* Initial position */
+    }
+    10% {
+        transform: rotate(2deg); /* Wiggle right */
+    }
+    15% {
+        transform: rotate(-2deg); /* Wiggle left */
+    }
+    20%, 100% {
+        transform: rotate(0deg); /* Return to initial position and pause */
+    }
+}
+
+
+.caravan-buy-now-button-subtext {
+    font-size: clamp(12px, 4vw, 16px);
+    font-weight: 600;
+}
+
+
+.caravan-total-price-button-container {
+    display: grid;
+    grid-template-columns: 3fr 2fr; /* Equal width columns */
+    gap: 20px;
+    padding-top: 20px;
+    padding-bottom: 10px;
     align-items: center;
-    gap: 10px;
-    flex: 1;/* Distribute the inputs evenly */
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    align-items: top;
+
 }
 
+
+.caravan-buy-now-button {
+    width: 100%;
+    display: flex;
+}
 /* ----- Total Price Container ----- */
 .caravan-total-price-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    flex: 1;
-    gap: 3px;
+    text-align: right;
+    gap: 8px;    
+}
+
+.caravan-total-price-info {
+    display: flex;
+    color: whitesmoke;
+    font-size: clamp(12px, 5vw, 16px);
+    font-weight: bold;
 }
 .caravan-total-price {
     display: flex;
     margin: 0;
     color: #B04327;
     text-decoration: line-through;
-    font-size: clamp(14px, 5vw, 20px);
+    font-size: clamp(14px, 5vw, 23px);
     border-right: 1px solid white;
     padding-right: 5px;
     display: flex;
-    flex: 1;
+    justify-content: flex-end;
+
 }
 .caravan-total-price-text {
     display: flex;
@@ -340,21 +500,23 @@ label {
     font-weight: bold;
     flex: 1;
     margin-right: 5px;
+    justify-content: flex-end;
+
 }
 .caravan-total-price-info {
     display: flex;
     color: whitesmoke;
-    font-size: clamp(12px, 5vw, 16px);
+    font-size: clamp(12px, 5vw, 15px);
     font-weight: bold;
-    flex: 1;
+
 }
 .caravan-discounted-price {
     display: flex;
     font-weight: bold;
     color: #00A62D;
-    font-size: clamp(14px, 5vw, 20px);
-    flex: 1;
+    font-size: clamp(15px, 5vw, 22px);
     margin-left: 5px;
+
 }
 
 
@@ -363,14 +525,16 @@ label {
     color: whitesmoke;
     font-size: clamp(12px, 5vw, 16px);
     font-weight: bold;
-    flex: 1;
+    justify-content: flex-end;
+    
 }
 .caravan-total-savings {    
     display: flex;
     color: #00A62D;
     font-size: clamp(12px, 5vw, 16px);
     font-weight: bold;
-    flex: 1;
+    justify-content: flex-end; 
+
 }
 .caravan-total-savings-text {
     display: flex;
@@ -379,6 +543,7 @@ label {
     font-weight: bold;
     flex: 1;
     margin-right: 5px;
+   
 }
 
 
@@ -387,10 +552,11 @@ label {
     color: whitesmoke;
     padding: 0;
     margin-top: 2px;
+    text-align: center;
 }
 .caravan-product-gst_shipping p {
-    font-size: clamp(8px, 5vw, 10px);
-    margin: 0;
+    font-size: clamp(10px, 5vw, 12px);
+    margin-top: 3px;
 }
 
 
@@ -415,7 +581,7 @@ label {
         font-size: clamp(14px, 4vw, 18px);
     }
     .product-item {
-        font-size: clamp(12px, 3vw, 14px); 
+        font-size: clamp(13px, 3vw, 15px); 
     }
 }
 
@@ -429,7 +595,28 @@ label {
         flex-direction: column;
         gap: 10px;
     }
+
+    .caravan-total-area {
+        font-size: clamp(15px, 5vw, 20px);
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .caravan-total-price-button-container {
+        grid-template-columns: 1fr; /* Single column for mobile */
+    }
+    .caravan-total-price-container {
+        grid-row: 2;
+      
+    }
+    .caravan-total-price {
+        text-align: left;
+        justify-content: flex-end;
+        
+    }
+
 }
+
 
 @media (max-width: 470px) {
 
@@ -437,6 +624,10 @@ label {
         display: grid;
         grid-template-columns: 90px auto 60px; 
 
+    }
+    .info-popup-bubble {
+        max-width: 200px; /* Adjust as needed */
+        min-width: 150px;
     }
     .nested-grid-for-mobile {
         display: grid;
@@ -455,13 +646,20 @@ label {
     .product-image img {
         width: clamp(100px, 20vw, 140px);
     }
+    .caravan-subheading-container h2 {
+        font-size: clamp(12px, 5vw, 16px);
+    }
+    .subtotal-price {
+        font-size: clamp(14px, 5vw, 18px);
+ 
+    }
 }
 
 @media (max-width: 350px) {
 
     .caravan-product-container {
         display: grid;
-        grid-template-columns: 80px auto 60px; 
+        grid-template-columns: 60px auto 60px; 
     }
     .product-image img {
         width: clamp(80px, 20vw, 140px);
@@ -472,3 +670,4 @@ label {
         padding-left: 0px;
     }
 }
+

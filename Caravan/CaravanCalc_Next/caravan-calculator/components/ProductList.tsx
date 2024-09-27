@@ -1,17 +1,17 @@
+// ProductList.tsx
+
 import React from 'react';
 import useStore from '../hooks/useStore';
 import ProductItem from './ProductItem';
-import { Product } from '../types/index'; // Adjust the import based on your types definition
+import { Product } from '../types/index'; // Import the Product type
 
 const ProductList: React.FC = () => {
-    const { totalArea, roofType, products, selectedProducts } = useStore((state) => ({
+    const { totalArea, roofType, products } = useStore((state) => ({
         totalArea: state.totalArea,
         roofType: state.roofType,
         products: state.products,
-        selectedProducts: state.selectedProducts,
     }));
 
-    // Adjust the product names to match the keys in your products.js object
     const allProducts = [
         { name: 'waterproofSealant', show: true },
         { name: 'geoTextile', show: true },
@@ -26,9 +26,7 @@ const ProductList: React.FC = () => {
             {allProducts.map(({ name, show }, index) => {
                 if (!show) return null;
 
-                // Access the product using the correct key name
                 const productData: Product | undefined = products[name];
-
                 if (!productData) {
                     console.error(`Product not found for: ${name}`);
                     return <div key={index}>Product not found</div>; // Fallback UI if product data is not found
@@ -38,7 +36,7 @@ const ProductList: React.FC = () => {
                     <ProductItem 
                         key={index}
                         product={productData} 
-                        totalArea={totalArea} 
+                        totalArea={totalArea} // Pass the totalArea prop correctly
                     />
                 );
             })}

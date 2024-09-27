@@ -1,18 +1,19 @@
 // components/Checkbox.tsx
-
 import React from 'react';
+import useStore from '../hooks/useStore'; // Zustand store
 
-// Define the CheckboxProps interface outside of the component
 interface CheckboxProps {
   productName: string;
   isSelected: boolean;
-  toggleProductSelection: (productName: string) => void;
 }
 
-// Use the CheckboxProps interface in the functional component
-const Checkbox: React.FC<CheckboxProps> = ({ productName, isSelected, toggleProductSelection }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ productName, isSelected }) => {
+  const { toggleProductSelection } = useStore((state) => ({
+    toggleProductSelection: state.toggleProductSelection, // Access the store's toggle function directly
+  }));
+
   const handleToggle = () => {
-    toggleProductSelection(productName);
+    toggleProductSelection(productName); // Directly call toggle from Zustand
   };
 
   return (
@@ -24,4 +25,4 @@ const Checkbox: React.FC<CheckboxProps> = ({ productName, isSelected, toggleProd
   );
 };
 
-export default Checkbox; // Ensure correct export
+export default Checkbox;

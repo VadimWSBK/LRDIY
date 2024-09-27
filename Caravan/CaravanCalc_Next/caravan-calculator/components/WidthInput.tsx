@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../hooks/useStore';
 
-const LengthInput: React.FC = () => {
-    const { length, setLength } = useStore((state) => ({
-        length: state.length,
-        setLength: state.setLength,
+const WidthInput: React.FC = () => {
+    const { width, setWidth } = useStore((state) => ({
+        width: state.width,
+        setWidth: state.setWidth,
     }));
 
-    const [displayValue, setDisplayValue] = useState<string>(length.toString());
+    const [displayValue, setDisplayValue] = useState<string>(width.toString());
 
     useEffect(() => {
-        setDisplayValue(length.toString());
-    }, [length]);
+        setDisplayValue(width.toString());
+    }, [width]);
 
-    const handleLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let value = e.target.value;
 
         // Replace comma with dot to standardize input
@@ -26,15 +26,15 @@ const LengthInput: React.FC = () => {
             // Parse the input value to a number or 0 if empty
             const parsedValue = value === '' ? 0 : parseFloat(value);
 
-            // Set length to max 20 if value exceeds 20
-            if (parsedValue > 20) {
-                setLength(20);
-                setDisplayValue('20'); // Set maximum length to 20
+            // Set width to max 3 if value exceeds 3
+            if (parsedValue > 3) {
+                setWidth(3);
+                setDisplayValue('3'); // Set maximum width to 3
             } else if (parsedValue < 0 || isNaN(parsedValue)) {
-                setLength(0);
+                setWidth(0);
                 setDisplayValue(''); // Set to empty but treated as 0 internally
             } else {
-                setLength(parsedValue);
+                setWidth(parsedValue);
             }
         }
     };
@@ -42,33 +42,35 @@ const LengthInput: React.FC = () => {
     const handleBlur = () => {
         // Ensure displayed value is within valid range on input blur
         if (displayValue === '' || parseFloat(displayValue) < 0 || isNaN(parseFloat(displayValue))) {
-            setLength(0);
-            setDisplayValue(''); // Keep display empty but set internal length to 0
-        } else if (parseFloat(displayValue) > 20) {
-            setLength(20);
-            setDisplayValue('20'); // Enforce max limit of 20
+            setWidth(0);
+            setDisplayValue(''); // Keep display empty but set internal width to 0
+        } else if (parseFloat(displayValue) > 3) {
+            setWidth(3);
+            setDisplayValue('3'); // Enforce max limit of 3
         }
     };
 
+    // Apply a class to change text color based on conditions
     const inputClassName = `input-field ${displayValue === '' || parseFloat(displayValue) === 0 ? 'red' : 'black'}`;
 
     return (
         <div className="caravan-input-wrapper">
-            <label htmlFor="caravan-length">Enter Length (m):</label>
+            <label htmlFor="caravan-width">Enter Width (m):</label>
             <input
                 type="number" // Use number input type for better UX
-                id="caravan-length"
+                id="caravan-width"
                 value={displayValue}
                 min="0"
-                max="20"
+                max="3"
                 step="0.1" // Allow precise input
-                onChange={handleLengthChange}
+                onChange={handleWidthChange}
                 onBlur={handleBlur}
                 className={inputClassName} // Apply the dynamic class name
-                placeholder="0 - 20"
+                placeholder="0 - 3"
             />
         </div>
     );
 };
 
-export default LengthInput;
+export default WidthInput;
+
