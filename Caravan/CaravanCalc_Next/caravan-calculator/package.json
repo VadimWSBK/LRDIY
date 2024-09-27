@@ -9,11 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@eslint/config-array": "^0.18.0",
-    "@eslint/object-schema": "^2.1.4",
     "autoprefixer": "^10.4.20",
     "glob": "^11.0.0",
-    "inflight": "^1.0.6",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
@@ -21,10 +18,12 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.25.4",
+    "@babel/core": "^7.25.0",
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
+    "@babel/plugin-transform-runtime": "^7.25.4",
+    "@babel/runtime": "^7.25.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

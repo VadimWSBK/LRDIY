@@ -5,15 +5,15 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'storage.googleapis.com',
-        pathname: '/**',
+        pathname: '/**'
       },
       {
         protocol: 'https',
         hostname: 'cdn.shopify.com',
-        pathname: '/**',
-      },
-    ],
-  },
+        pathname: '/**'
+      }
+    ]
+  }
 };
 
-export default nextConfig;
+module.exports = nextConfig;
