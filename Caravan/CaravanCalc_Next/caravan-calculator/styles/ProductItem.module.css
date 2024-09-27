@@ -1,7 +1,7 @@
 /* Main container for the product item */
 .productContainer {
     display: grid;
-    grid-template-columns: 125px auto 70px; /* Adjust columns as needed */
+    grid-template-columns: 150px auto 70px; /* Adjust columns as needed */
     border-radius: 8px;
     background-color: whitesmoke;
     padding: 5px 20px 5px 5px;
@@ -14,15 +14,14 @@
     display: flex;
     align-items: center;
     position: relative;
-    min-width: 80px;
+    min-width: 50px;
     justify-content: flex-start;
+    
 }
-
-/* Styling for the product image */
-.productImageStyle {
-    border-radius: 8px; 
-    width: clamp(100px, 20vw, 120px);
-
+.customImage {
+    width: clamp(100px, 20vw, 140px);
+    height: auto;
+    border-radius: 8px;
 }
 
 /* Styling for the nested grid layout for mobile */
@@ -203,7 +202,7 @@
 
 @media (max-width: 400px) {
     .productContainer {
-        grid-template-columns: 90px auto 40px;
+        grid-template-columns: 100px auto 40px;
         padding-bottom: 15px;
         padding-top: 15px;
     }
