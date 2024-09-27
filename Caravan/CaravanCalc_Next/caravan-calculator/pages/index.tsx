@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom/client'; // Import createRoot from 'react-dom/client'
+import { createRoot } from 'react-dom/client'; // Import createRoot directly from 'react-dom/client'
 import MainCalculator from '../components/MainCalculator';
 
 const CaravanCalculator: React.FC = () => {
@@ -8,8 +8,8 @@ const CaravanCalculator: React.FC = () => {
     const container = document.querySelector(selector);
     if (container) {
       console.log('Container found, rendering MainCalculator');
-      // Use createRoot instead of ReactDOM.render
-      const root = ReactDOM.createRoot(container);
+      // Use createRoot to render the component
+      const root = createRoot(container); // This line is corrected
       root.render(<MainCalculator />);
     } else {
       console.error('Container not found for selector:', selector);
