@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../hooks/useStore';
+import styles from '../styles/LengthInput.module.css'; // Adjust path as needed
 
 const LengthInput: React.FC = () => {
     const { length, setLength } = useStore((state) => ({
@@ -50,18 +51,19 @@ const LengthInput: React.FC = () => {
         }
     };
 
-    const inputClassName = `input-field ${displayValue === '' || parseFloat(displayValue) === 0 ? 'red' : 'black'}`;
+    // Dynamic class names based on conditions
+    const inputClassName = `${styles.lengthInputField} ${displayValue === '' || parseFloat(displayValue) === 0 ? styles.lengthInputFieldRed : styles.lengthInputFieldBlack}`;
 
     return (
-        <div className="caravan-input-wrapper">
-            <label htmlFor="caravan-length">Enter Length (m):</label>
+        <div className={styles.lengthInputWrapper}>
+            <label htmlFor="caravan-length" className={styles.lengthInputLabel}>Enter Length (m):</label>
             <input
-                type="number" // Use number input type for better UX
+                type="number"
                 id="caravan-length"
                 value={displayValue}
                 min="0"
                 max="20"
-                step="0.1" // Allow precise input
+                step="0.1"
                 onChange={handleLengthChange}
                 onBlur={handleBlur}
                 className={inputClassName} // Apply the dynamic class name

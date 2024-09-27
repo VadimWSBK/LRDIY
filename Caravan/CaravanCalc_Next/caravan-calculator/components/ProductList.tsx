@@ -4,6 +4,7 @@ import React from 'react';
 import useStore from '../hooks/useStore';
 import ProductItem from './ProductItem';
 import { Product } from '../types/index'; // Import the Product type
+import styles from '../styles/ProductList.module.css';
 
 const ProductList: React.FC = () => {
     const { totalArea, roofType, products } = useStore((state) => ({
@@ -22,14 +23,18 @@ const ProductList: React.FC = () => {
     ];
 
     return (
-        <div className="caravan-product-list-container">
+        <div className={styles.productListContainer}>
             {allProducts.map(({ name, show }, index) => {
                 if (!show) return null;
 
                 const productData: Product | undefined = products[name];
                 if (!productData) {
                     console.error(`Product not found for: ${name}`);
-                    return <div key={index}>Product not found</div>; // Fallback UI if product data is not found
+                    return (
+                        <div key={index} className={styles.productNotFound}>
+                            Product not found
+                        </div>
+                    ); // Fallback UI if product data is not found
                 }
 
                 return (

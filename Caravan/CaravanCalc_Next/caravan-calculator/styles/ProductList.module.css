@@ -1,0 +1,25 @@
+/* ProductList.module.css */
+
+/* Container for the entire product list */
+.productListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between each product item */
+    background-color: black; /* Background color for the product list */
+    padding: 20px; /* Add padding around the list */
+    border-radius: 10px; /* Rounded corners */
+    margin-top: 20px; /* Spacing from the content above */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: add a shadow for depth */
+}
+
+/* Style for the fallback message when a product is not found */
+.productNotFound {
+    color: #B04327; /* Red color for emphasis */
+    font-size: clamp(14px, 4vw, 18px); /* Responsive font size */
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    background-color: #fff3f3; /* Light red background for the message */
+    border: 1px solid #f0a0a0; /* Border for better visibility */
+    border-radius: 5px; /* Rounded corners */
+}

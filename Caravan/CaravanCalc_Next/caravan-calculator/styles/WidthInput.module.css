@@ -1,0 +1,56 @@
+/* WidthInput.module.css */
+
+/* Wrapper for the input field */
+.widthInputWrapper {
+    display: flex;
+    flex-direction: column; /* Column layout for individual inputs */
+    gap: 5px; /* Space between label and input */
+    margin-bottom: 10px;
+}
+
+/* Styles for the label */
+.widthInputLabel {
+    font-weight: bold;
+    color: whitesmoke;
+    margin-bottom: 5px;
+    text-align: left;
+    font-size: clamp(16px, 2vw, 18px);
+}
+
+/* Base styles for the input field */
+.widthInputField {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 24px;
+    font-weight: 600;
+    outline: none;
+    width: auto; 
+    text-align: center; /* Centered text */
+    transition: border 0.3s ease-in-out; /* Smooth border transition */
+}
+
+/* Styles when input value is empty or zero */
+.widthInputFieldRed {
+    color: #B04327; /* Red text color */
+}
+
+/* Styles when input has valid value */
+.widthInputFieldBlack {
+    color: black;
+}
+
+/* Highlighted state */
+.widthInputFieldHighlight {
+    border: 2px solid red; /* Red border for highlight */
+}
+
+/* Focus state */
+.widthInputField:focus {
+    border: 1px solid #00A62D; /* Green border on focus */
+}
+
+/* Placeholder styles */
+.widthInputField::placeholder {
+    color: #999; /* Grey placeholder text */
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import useStore from '../hooks/useStore'; // Import Zustand store
+import styles from '../styles/RoofTypeSelect.module.css'; // Import component styles
 
 interface RoofTypeSelectProps {
     onRoofTypeChange: (newRoofType: string) => void;
@@ -15,9 +16,14 @@ const RoofTypeSelect: React.FC<RoofTypeSelectProps> = ({ onRoofTypeChange }) => 
     };
 
     return (
-        <div className="roof-type-select">
-            <label htmlFor="roof-type">Select Roof Type:</label>
-            <select id="roof-type" value={roofType} onChange={handleChange}>
+        <div className={styles.roofTypeSelect}>
+            <label htmlFor="roof-type" className={styles.label}>Select Roof Type:</label>
+            <select 
+                id="roof-type" 
+                value={roofType} 
+                onChange={handleChange}
+                className={styles.selectDropdown} // Apply the selectDropdown class
+            >
                 <option value="painted">Painted Roof</option>
                 <option value="raw metal">Raw Metal Roof</option>
             </select>

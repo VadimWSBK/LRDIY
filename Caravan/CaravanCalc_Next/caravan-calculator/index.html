@@ -3,14 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Caravan Calculator</title>
+  <title>Caravan Calculator Widget</title>
 </head>
 <body>
+  <!-- This is where your calculator widget will be rendered -->
   <div id="caravan-calculator"></div>
-  <script src="dist/caravan-calculator.bundle.js"></script>
+  
+  <!-- Include the bundled JavaScript file -->
+  <script src="https://cdn.jsdelivr.net/gh/VadimWSBK/LRDIY@refs/heads/main/Caravan/CaravanCalc_Next/caravan-calculator/dist/caravan-calculator.bundle.js"></script>
+  
+  <!-- Initialize the widget with the global method -->
   <script>
-    // Initialize your widget here, assuming you have a global method exposed
-    CaravanCalculatorWidget.init('#caravan-calculator');
+    // Wait for the DOM content to load before initializing the widget
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOMContentLoaded event fired.');
+      if (window.CaravanCalculatorWidget && window.CaravanCalculatorWidget.init) {
+        console.log('Initializing the calculator widget.');
+        window.CaravanCalculatorWidget.init('#caravan-calculator');
+      } else {
+        console.error("CaravanCalculatorWidget is not available or init function is missing.");
+      }
+    });
   </script>
 </body>
 </html>

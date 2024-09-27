@@ -1,6 +1,7 @@
 // components/AlertPopup.tsx
 
 import React from 'react';
+import styles from '../styles/AlertPopup.module.css';
 
 // Define the props interface for AlertPopup
 interface AlertPopupProps {
@@ -12,9 +13,9 @@ const AlertPopup: React.FC<AlertPopupProps> = ({ isVisible, message }) => {
     if (!isVisible) return null;
 
     return (
-        <div className="alert-popup-overlay">
-            <div className="alert-popup">
-                <div className="alert-content">
+        <div className={styles.alertPopupOverlay}>
+            <div className={styles.alertPopup}>
+                <div className={styles.alertContent}>
                     <p>{message}</p>
                 </div>
             </div>

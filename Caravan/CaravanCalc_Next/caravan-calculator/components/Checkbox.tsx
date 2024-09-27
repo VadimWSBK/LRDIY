@@ -1,6 +1,7 @@
 // components/Checkbox.tsx
 import React from 'react';
 import useStore from '../hooks/useStore'; // Zustand store
+import styles from '../styles/Checkbox.module.css'; // Component styles
 
 interface CheckboxProps {
   productName: string;
@@ -17,12 +18,18 @@ const Checkbox: React.FC<CheckboxProps> = ({ productName, isSelected }) => {
   };
 
   return (
-    <input
-      type="checkbox"
-      checked={isSelected}
-      onChange={handleToggle}
-    />
+<div className={styles.checkboxContainer}>
+<input
+    type="checkbox"
+    className={styles.checkbox}
+    checked={isSelected}
+    onChange={handleToggle}
+    id="custom-checkbox"
+/>
+</div>
   );
 };
 
 export default Checkbox;
+
+

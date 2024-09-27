@@ -1,6 +1,7 @@
 // utils/generateShopifyPermalink.ts
 import { SelectedProductVariant } from '../types/index';
 
+
 export const generateShopifyPermalink = (
   cartItems: SelectedProductVariant[], // Array of variant ID and quantity pairs
   discountCode?: string,

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import useStore from '../hooks/useStore';
+import styles from '../styles/Popup.module.css';
 
 interface PopupProps {
     infoText: string;
@@ -40,12 +41,12 @@ const Popup: React.FC<PopupProps> = ({ infoText, id }) => {
     };
 
     return (
-        <div className="info-popup-container" ref={popupRef}>
-            <a href="#" className="info-popup-link-style" onClick={handleToggleVisibility}>
+        <div className={styles.popupContainer} ref={popupRef}>
+            <a href="#" className={styles.popupLink} onClick={handleToggleVisibility}>
                 Why do I need this?
             </a>
             {isVisible && (
-                <div className="info-popup-bubble">
+                <div className={styles.popupBubble}>
                     {infoText}
                 </div>
             )}

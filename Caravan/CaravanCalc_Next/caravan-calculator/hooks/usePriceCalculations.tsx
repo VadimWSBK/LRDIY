@@ -8,12 +8,14 @@ export const usePriceCalculations = () => {
         selectedProducts,
         setTotalPrice,
         setDiscountedPrice,
+        setTotalSavings,
     } = useStore((state) => ({
         bucketCost: state.bucketCost,
         variantCost: state.variantCost,
         selectedProducts: state.selectedProducts,
         setTotalPrice: state.setTotalPrice,
         setDiscountedPrice: state.setDiscountedPrice,
+        setTotalSavings: state.setTotalSavings, // Add this to update total savings
     }));
 
     // Calculate total price based on bucket and variant costs for selected products only
@@ -42,11 +44,18 @@ export const usePriceCalculations = () => {
         return parseFloat((totalPrice * 0.9).toFixed(2)); // Apply a 10% discount
     }, [totalPrice]);
 
+    // Calculate discounted price
+    const totalSavings = useMemo(() => {
+        return parseFloat((totalPrice - discountedPrice).toFixed(2)); // Calculate the savings
+    }, [totalPrice, discountedPrice]);
+
     // Update total and discounted prices in Zustand store
     useEffect(() => {
         setTotalPrice(totalPrice);
         setDiscountedPrice(discountedPrice);
-    }, [totalPrice, discountedPrice, setTotalPrice, setDiscountedPrice]);
+        setTotalSavings(totalSavings);
 
-    return { totalPrice, discountedPrice };
+    }, [totalPrice, discountedPrice, totalSavings, setTotalPrice, setDiscountedPrice ,setTotalSavings]);
+
+    return { totalPrice, discountedPrice, totalSavings}; // Optionally return totalQuantity
 };

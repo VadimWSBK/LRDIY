@@ -10,6 +10,7 @@ interface StoreState {
     totalArea: number;
     totalPrice: number;
     discountedPrice: number;
+    totalSavings: number;
     length: number;
     width: number;
     roofType: string;
@@ -23,6 +24,7 @@ interface StoreState {
     bucketsNeeded: Record<string, BucketCount[]>;
     bucketCost: Record<string, number>;
     variantCost: Record<string, number>;
+    totalQuantity: number;
 
 
     setBucketCost: (payload: { productName: string; cost: number }) => void;
@@ -32,6 +34,7 @@ interface StoreState {
     setProducts: (products: Products) => void;
     setTotalArea: (area: number) => void;
     setTotalPrice: (price: number) => void;
+    setTotalSavings: (savings: number) => void;
     setDiscountedPrice: (price: number) => void;
     setLength: (length: number) => void;
     setWidth: (width: number) => void;
@@ -43,6 +46,7 @@ interface StoreState {
     setRequiredVolume: (payload: { productName: string; volume: number }) => void;
     setBucketsNeeded: (payload: { productName: string; buckets: BucketCount[] }) => void;
     toggleProductSelection: (productName: string) => void; // Ensure toggle function is defined
+    setTotalQuantity: (totalQuantity: number) => void;
 }
 
 // Create the Zustand store using `devtools` middleware
@@ -58,6 +62,7 @@ const useStore = create<StoreState>()(
                 totalArea: 15,
                 totalPrice: 0,
                 discountedPrice: 0,
+                totalSavings: 0,
                 length: 6,
                 width: 2.5,
                 roofType: 'painted',
@@ -71,6 +76,7 @@ const useStore = create<StoreState>()(
                 popupVisibility: {},
                 bucketCost: {}, // Initialize bucket cost as an empty object
                 variantCost: {}, // Initialize variant cost as an empty object
+                totalQuantity: 0,
 
                 // Actions for updating the state
                 setSubtotalCost: ({ productName, cost }) =>
@@ -113,9 +119,13 @@ const useStore = create<StoreState>()(
 
                 setDiscountedPrice: (price) => set(() => ({ discountedPrice: price })),
 
+                setTotalSavings: (savings) => set(() => ({ totalSavings: savings })),
+
                 setLength: (length) => set({ length }),
 
                 setWidth: (width) => set({ width }),
+
+                setTotalQuantity: (totalQuantity) => set({ totalQuantity }),
 
                 setRoofType: (roofType) =>
                     set((state) => {

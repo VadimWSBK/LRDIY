@@ -5,8 +5,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'caravan-calculator.bundle.js',
-    library: 'CaravanCalculatorWidget',
-    libraryTarget: 'umd', // This makes the bundle compatible with various module systems
+    library: 'CaravanCalculatorWidget', // This should match the global object name
+    libraryTarget: 'umd', // Use UMD to make it compatible with various module systems
   },
   module: {
     rules: [
@@ -16,13 +16,13 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/i, // Matches any .css file
-        use: ['style-loader', 'css-loader'], // Use style-loader and css-loader for CSS files
+        test: /\.module\.css$/, // Use .module.css for CSS modules
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  mode: 'production', // Set this to 'production' or 'development'
+  mode: 'production', // Use 'development' for easier debugging
 };

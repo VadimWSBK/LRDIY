@@ -47,7 +47,7 @@ const useVariantCalculations = ({ totalArea, productVariants, type }: VariantCal
 
             default:
                 selectedVariant = productVariants[0] || null; // Fallback to the first variant
-                quantityNeeded = 1; // Default to 1 if no special calculation needed
+                quantityNeeded = 0; // Default to 1 if no special calculation needed
                 break;
         }
 

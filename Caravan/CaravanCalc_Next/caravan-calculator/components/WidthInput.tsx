@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../hooks/useStore';
+import styles from '../styles/WidthInput.module.css';
 
 const WidthInput: React.FC = () => {
     const { width, setWidth } = useStore((state) => ({
@@ -50,19 +51,19 @@ const WidthInput: React.FC = () => {
         }
     };
 
-    // Apply a class to change text color based on conditions
-    const inputClassName = `input-field ${displayValue === '' || parseFloat(displayValue) === 0 ? 'red' : 'black'}`;
+    // Dynamic class names based on conditions
+    const inputClassName = `${styles.widthInputField} ${displayValue === '' || parseFloat(displayValue) === 0 ? styles.widthInputFieldRed : styles.widthInputFieldBlack}`;
 
     return (
-        <div className="caravan-input-wrapper">
-            <label htmlFor="caravan-width">Enter Width (m):</label>
+        <div className={styles.widthInputWrapper}>
+            <label htmlFor="caravan-width" className={styles.widthInputLabel}>Enter Width (m):</label>
             <input
-                type="number" // Use number input type for better UX
+                type="number"
                 id="caravan-width"
                 value={displayValue}
                 min="0"
                 max="3"
-                step="0.1" // Allow precise input
+                step="0.1"
                 onChange={handleWidthChange}
                 onBlur={handleBlur}
                 className={inputClassName} // Apply the dynamic class name
