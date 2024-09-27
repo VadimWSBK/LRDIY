@@ -2,11 +2,11 @@
 
 // Interface for a single product variant, which may or may not have a size.
 export interface ProductVariant {
-    size?: number; // Optional for bucket products
-    variant?: string; // Optional for non-bucket products
-    price: number;
-    variantId: string; // Variant ID must be available for the permalink
-  }
+  size?: number; // Optional for variants without size
+  variant?: string; // Optional for variants without size
+  price: number;
+  variantId: string;
+}
   
   // Define a Bucket interface for products that have a defined size (used in bucket calculations).
   export interface Bucket {
@@ -19,11 +19,11 @@ export interface ProductVariant {
   export interface Product {
     name: string;
     image: string;
-    infoText?: string;
-    coveragePerLitre?: number;
-    variants: ProductVariant[]; // List of product variants available
-    bucketsNeeded?: BucketCount[]; // Optional bucket counts for product
-    recommendedVariant?: ProductVariant | null; // Optional recommended variant details
+    imageWidth: number; // Add imageWidth property
+    imageHeight: number; // Add imageHeight property
+    coveragePerLitre?: number; // Optional, not all products have this
+    variants: ProductVariant[];
+    infoText: string;
   }
   
   // Interface for BucketCount with variantId and count

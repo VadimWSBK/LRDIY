@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import useStore from '../hooks/useStore';
 import styles from '../styles/Popup.module.css';
 
 interface PopupProps {
     infoText: string;
-    id: string; // Add a unique id prop to identify each popup
+    id: string;
 }
 
 const Popup: React.FC<PopupProps> = ({ infoText, id }) => {
@@ -13,15 +13,15 @@ const Popup: React.FC<PopupProps> = ({ infoText, id }) => {
         togglePopup: state.togglePopup,
     }));
 
-    const isVisible = popupVisibility[id] || false; // Get visibility state for the specific popup
-
+    const isVisible = popupVisibility[id] || false;
     const popupRef = useRef<HTMLDivElement>(null);
 
-    const handleClickOutside = (event: MouseEvent) => {
+    // Memoize handleClickOutside to prevent re-renders
+    const handleClickOutside = useCallback((event: MouseEvent) => {
         if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
             togglePopup(id, false);
         }
-    };
+    }, [togglePopup, id]); // Include necessary dependencies
 
     useEffect(() => {
         if (isVisible) {
@@ -33,7 +33,7 @@ const Popup: React.FC<PopupProps> = ({ infoText, id }) => {
         return () => {
             window.removeEventListener('click', handleClickOutside);
         };
-    }, [isVisible]);
+    }, [isVisible, handleClickOutside]); // Add handleClickOutside to dependencies
 
     const handleToggleVisibility = (e: React.MouseEvent) => {
         e.preventDefault();

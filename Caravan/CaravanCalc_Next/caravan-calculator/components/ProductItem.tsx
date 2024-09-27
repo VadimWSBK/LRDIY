@@ -7,6 +7,7 @@ import { Product, BucketCount } from '../types/index';
 import { useBucketCalculations } from '../hooks/useBucketCalculations';
 import useVariantCalculations from '../hooks/useVariantCalculations';
 import styles from '../styles/ProductItem.module.css';
+import Image from 'next/image'; // Import the Image component from Next.js
 
 interface ProductItemProps {
   product: Product;
@@ -59,67 +60,69 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, totalArea }) => {
   const hasBuckets = bucketsNeeded && bucketsNeeded.length > 0;
   const hasVariant = recommendedVariant && recommendedVariant.variant !== null;
 
-
-
-  
   return (
-        <div className={styles.productContainer}>
-          <div className={styles.productImage}>
-              <img src={product.image} alt={product.name} />
-                  <Checkbox productName={product.name} isSelected={isSelected} />
+    <div className={styles.productContainer}>
+      <div className={styles.productImage}>
+        <Image 
+          src={product.image} 
+          alt={product.name} 
+          width={product.imageWidth} // Using the width from product details
+          height={product.imageHeight} // Using the height from product details
+        />
+        <Checkbox productName={product.name} isSelected={isSelected} />
+      </div>
+
+      <div className={styles.nestedGridForMobile}>
+        <div className={styles.productNameAndLinkContainer}>
+          <div className={styles.productName}>{product.name}</div>
+          <div className={styles.infoPopupLinkStyle}>
+            {product.infoText && (
+              <Popup id={`${product.name}-popup`} infoText={product.infoText} />
+            )}
           </div>
+        </div>
 
-          <div className={styles.nestedGridForMobile}>
-              <div className={styles.productNameAndLinkContainer}>
-                  <div className={styles.productName}>{product.name}</div>
-                  <div className={styles.infoPopupLinkStyle}>
-                      {product.infoText && (
-                          <Popup id={`${product.name}-popup`} infoText={product.infoText} />
-                      )}
-                  </div>
+        <div className={styles.productItemContainer}>
+          {totalArea === 0 ? (
+            <div className={styles.noItemsNeeded}>No items needed.</div>
+          ) : hasBuckets ? (
+            <div className={styles.productItem}>
+              <h4>Items</h4>
+              {bucketsNeeded.map((bucket: BucketCount, index: number) => (
+                <div 
+                  key={`${bucket.size}-${index}`} 
+                  className={!isSelected ? styles.unselectedItem : ''}
+                >
+                  {bucket.count} x {bucket.size}L Bucket
+                </div>
+              ))}
+            </div>
+          ) : hasVariant && recommendedVariant.variant ? (
+            <div className={styles.productItem}>
+              <h4>Items</h4>
+              <div className={!isSelected ? styles.unselectedItem : ''}>
+                {recommendedVariant.quantity} x {recommendedVariant.variant.variant}
               </div>
-
-            <div className={styles.productItemContainer}>
-                {totalArea === 0 ? (
-                    <div className={styles.noItemsNeeded}>No items needed.</div>
-                ) : hasBuckets ? (
-                    <div className={styles.productItem}>
-                        <h4>Items</h4>
-                        {bucketsNeeded.map((bucket: BucketCount, index: number) => (
-                            <div 
-                                key={`${bucket.size}-${index}`} 
-                                className={!isSelected ? styles.unselectedItem : ''}
-                            >
-                                {bucket.count} x {bucket.size}L Bucket
-                            </div>
-                        ))}
-                    </div>
-                ) : hasVariant && recommendedVariant.variant ? (
-                    <div className={styles.productItem}>
-                        <h4>Items</h4>
-                        <div className={!isSelected ? styles.unselectedItem : ''}>
-                            {recommendedVariant.quantity} x {recommendedVariant.variant.variant}
-                        </div>
-                    </div>
-                ) : (
-                    <div className={styles.noItemsNeeded}>No items needed.</div>
-                )}
             </div>
+          ) : (
+            <div className={styles.noItemsNeeded}>No items needed.</div>
+          )}
         </div>
+      </div>
 
-        <div className={`${styles.subtotalPriceContainer} ${!isSelected ? styles.crossedOut : ''}`}>
-            <div className={`${styles.subtotalPrice} ${totalArea === 0 ? styles.redZero : ''}`}>
-                {totalArea === 0 ? (
-                    <div>$0</div>
-                ) : hasBuckets ? (
-                    <div>{`$${bucketCost.toFixed(2)}`}</div>
-                ) : hasVariant && recommendedVariant.variant ? (
-                    <div>{`$${variantCost.toFixed(2)}`}</div>
-                ) : (
-                    <div>$0</div>
-                )}
-            </div>
+      <div className={`${styles.subtotalPriceContainer} ${!isSelected ? styles.crossedOut : ''}`}>
+        <div className={`${styles.subtotalPrice} ${totalArea === 0 ? styles.redZero : ''}`}>
+          {totalArea === 0 ? (
+            <div>$0</div>
+          ) : hasBuckets ? (
+            <div>{`$${bucketCost.toFixed(2)}`}</div>
+          ) : hasVariant && recommendedVariant.variant ? (
+            <div>{`$${variantCost.toFixed(2)}`}</div>
+          ) : (
+            <div>$0</div>
+          )}
         </div>
+      </div>
     </div>
   );
 };

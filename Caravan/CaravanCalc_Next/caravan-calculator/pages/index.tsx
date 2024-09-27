@@ -1,31 +1,31 @@
-// pages/index.tsx
-
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import MainCalculator from '../components/MainCalculator'; // Adjust the path if needed
+import ReactDOM from 'react-dom/client'; // Import createRoot from 'react-dom/client'
+import MainCalculator from '../components/MainCalculator';
 
-const HomePage: React.FC = () => {
-  // Create an init function to render the calculator
+const CaravanCalculator: React.FC = () => {
   const init = (selector: string) => {
     console.log('Init function called with selector:', selector);
     const container = document.querySelector(selector);
     if (container) {
       console.log('Container found, rendering MainCalculator');
-      ReactDOM.render(<MainCalculator />, container);
+      // Use createRoot instead of ReactDOM.render
+      const root = ReactDOM.createRoot(container);
+      root.render(<MainCalculator />);
     } else {
       console.error('Container not found for selector:', selector);
     }
   };
 
   useEffect(() => {
-    // Check if the window object is available
     if (typeof window !== 'undefined') {
-      // Expose the init method on the global window object
+      console.log("Setting global CaravanCalculatorWidget object");
       (window as any).CaravanCalculatorWidget = {
-        init, // Ensure the init function is being correctly assigned
+        init,
       };
+    } else {
+      console.error("Window is undefined");
     }
-  }, []); // Empty dependency array ensures this runs only on mount
+  }, []);
 
   return (
     <div>
@@ -34,4 +34,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default CaravanCalculator;

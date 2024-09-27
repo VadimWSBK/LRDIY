@@ -4,12 +4,10 @@
 .productListContainer {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Space between each product item */
     background-color: black; /* Background color for the product list */
-    padding: 20px; /* Add padding around the list */
-    border-radius: 10px; /* Rounded corners */
     margin-top: 20px; /* Spacing from the content above */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Optional: add a shadow for depth */
+    gap: 10px; /* Gap between each product item */
+
 }
 
 /* Style for the fallback message when a product is not found */

@@ -1,16 +1,10 @@
-/* ProductItem.module.css */
-
 /* Main container for the product item */
-
-
 .productContainer {
     display: grid;
-    grid-template-columns: 130px auto 70px; /* Adjust columns as needed */
+    grid-template-columns: 125px auto 70px; /* Adjust columns as needed */
     border-radius: 8px;
     background-color: whitesmoke;
-    margin-bottom: 10px;
     padding: 5px 20px 5px 5px;
-    box-shadow: 0 6px 12px rgba(0, 166, 45, 0.5);
     align-items: center;
     gap: 10px;
 }
@@ -22,13 +16,13 @@
     position: relative;
     min-width: 80px;
     justify-content: flex-start;
-    object-fit: cover;
 }
 
 /* Styling for the product image */
-.productImage img {
-    width: clamp(80px, 20vw, 120px);
-    height: auto;
+.productImageStyle {
+    border-radius: 8px; 
+    width: clamp(100px, 20vw, 120px);
+
 }
 
 /* Styling for the nested grid layout for mobile */
@@ -52,12 +46,13 @@
 .infoPopupLinkStyle {
     margin: 0;
     padding: 0;
-    }
+}
+
 /* Styling for the product name */
 .productName {
     color: black;
     font-weight: bold;
-    font-size: clamp(17px, 4vw, 21px);
+    font-size: clamp(17px, 4vw, 22px);
     box-sizing: border-box;
 }
 
@@ -67,7 +62,6 @@
     flex-direction: column;
     grid-column: 2;
     justify-self: start;
-
 }
 
 /* Styling for product item text */
@@ -77,8 +71,8 @@
     justify-content: center;
     display: flex;
     flex-direction: column;
-
 }
+
 .productItem h4 {
     margin: 0;
 }
@@ -132,17 +126,14 @@
     color: #B04327;
 }
 
-
+/* Responsive styling adjustments */
 @media (max-width: 630px) {
-    
     .productContainer {
-        grid-template-columns: 130px auto 70px; /* Adjust columns as needed */
+        grid-template-columns: 130px auto 70px;
     }
     .nestedGridForMobile {
         grid-template-columns: 4fr 3fr;
-        flex-direction: column;
     }
-    /* Container for product name and info link */
     .productNameAndLinkContainer {
         flex-direction: column;
     }
@@ -152,24 +143,18 @@
     .productName {
         font-size: clamp(16px, 5vw, 20px);
     }
-    .productImage img {
-        width: clamp(80px, 20vw, 120px);
-    }
     .subtotalPrice {
         font-size: clamp(14px, 5vw, 20px);
     }
 }
 
-
 @media (max-width: 560px) {
-    
     .productContainer {
-        grid-template-columns: 120px auto 70px; /* Adjust columns as needed */
+        grid-template-columns: 120px auto 70px;
     }
     .nestedGridForMobile {
         grid-template-columns: 3fr 2fr;
     }
-    /* Container for product name and info link */
     .productNameAndLinkContainer {
         grid-column: 1;
     }
@@ -180,26 +165,20 @@
     .productName {
         font-size: clamp(18px, 4vw, 20px);
     }
-    .productImage img {
-        width: clamp(80px, 20vw, 120px);
-    }
     .subtotalPrice {
         font-size: clamp(14px, 5vw, 18px);
     }
 }
 
 @media (max-width: 530px) {
-    
     .productContainer {
-        grid-template-columns: 115px auto 30px; /* Adjust columns as needed */
+        grid-template-columns: 115px auto 30px;
         padding-bottom: 15px;
         padding-top: 15px;
     }
     .nestedGridForMobile {
         grid-template-columns: 1fr 0fr;
-        flex-direction: column;
     }
-    /* Container for product name and info link */
     .productNameAndLinkContainer {
         grid-column: 1;
     }
@@ -213,28 +192,25 @@
     .productName {
         font-size: clamp(18px, 4vw, 20px);
     }
-    .productImage img {
-        width: clamp(80px, 20vw, 120px);
+    .productImageStyle {
+        width: clamp(100px, 20vw, 130px);
+        height: auto;
     }
     .productImage {
         min-width: 90px;
     }
-    
-    /* Styling for the product image */
-    .productImage img {
-        width: clamp(100px, 20vw, 130px);
-        height: auto;
-    }
 }
 
 @media (max-width: 400px) {
-
     .productContainer {
-        grid-template-columns: 100px auto 40px; /* Adjust columns as needed */
+        grid-template-columns: 90px auto 40px;
         padding-bottom: 15px;
         padding-top: 15px;
     }
-    .img {
-        width: clamp(60px, 20vw, 120px);
+    .productImageStyle {
+        border-radius: 8px; 
+        width: clamp(90px, 20vw, 120px);
+    
     }
+
 }
