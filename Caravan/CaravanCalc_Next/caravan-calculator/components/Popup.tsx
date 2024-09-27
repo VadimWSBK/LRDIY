@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react';
+import React from 'react';
 import useStore from '../hooks/useStore';
 import styles from '../styles/Popup.module.css';
 
