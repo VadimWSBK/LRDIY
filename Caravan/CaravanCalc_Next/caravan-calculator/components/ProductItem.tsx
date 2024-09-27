@@ -68,7 +68,6 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, totalArea }) => {
           alt={product.name} 
           width={product.imageWidth} // Using the width from product details
           height={product.imageHeight}
-          objectFit="contain" // Contain within the container size while maintaining aspect ratio
           className={styles.customImage} // Using the height from product details
         />
         <Checkbox productName={product.name} isSelected={isSelected} />
