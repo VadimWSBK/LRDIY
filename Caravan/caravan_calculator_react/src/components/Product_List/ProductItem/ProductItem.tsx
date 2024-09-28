@@ -1,17 +1,20 @@
 // components/ProductItem.tsx
 import React, { useEffect } from 'react';
-import useStore from '../hooks/useStore';
-import Checkbox from './Checkbox';
-import Popup from './Popup';
-import { Product, BucketCount } from '../types/index';
-import { useBucketCalculations } from '../hooks/useBucketCalculations';
-import useVariantCalculations from '../hooks/useVariantCalculations';
-import styles from '../styles/ProductItem.module.css';
-import Image from 'next/image'; // Import the Image component from Next.js
+import useStore from '../../../store/useStore';
+import Checkbox from '../../Inputs/Checkbox/Checkbox';
+import Popup from '../../Popups/WhyDoIneedThis/Popup'
+import { Product, BucketCount } from '../../../types/index';
+import { useBucketCalculations } from '../../../hooks/useBucketCalculations';
+import useVariantCalculations from '../../../hooks/useVariantCalculations';
+import styles from './ProductItem.module.css';
 
 interface ProductItemProps {
   product: Product;
   totalArea: number;
+}
+
+interface PopupVisibility {
+  [key: string]: boolean;
 }
 
 const ProductItem: React.FC<ProductItemProps> = ({ product, totalArea }) => {
@@ -47,8 +50,9 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, totalArea }) => {
   const variantCost = product.variants[0]?.variant
     ? recommendedVariant?.variant
       ? recommendedVariant.variant.price * recommendedVariant.quantity
-      : 0
-    : 0;
+      : 0: 
+      0;
+   
 
   // Store bucket cost and variant cost in Zustand store
   useEffect(() => {
@@ -63,12 +67,8 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, totalArea }) => {
   return (
     <div className={styles.productContainer}>
       <div className={styles.productImage}>
-        <Image 
-          src={product.image} 
-          alt={product.name} 
-          width={product.imageWidth} // Using the width from product details
-          height={product.imageHeight}
-          className={styles.customImage} // Using the height from product details
+        <img
+          className={styles.customImage} 
         />
         <Checkbox productName={product.name} isSelected={isSelected} />
       </div>
@@ -78,7 +78,7 @@ const ProductItem: React.FC<ProductItemProps> = ({ product, totalArea }) => {
           <div className={styles.productName}>{product.name}</div>
           <div className={styles.infoPopupLinkStyle}>
             {product.infoText && (
-              <Popup id={`${product.name}-popup`} infoText={product.infoText} />
+              <Popup id= {`${product.name}-popup`} infoText={product.infoText} />
             )}
           </div>
         </div>

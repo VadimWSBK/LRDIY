@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../../../store/useStore'; // Zustand store
-import styles from './WidthInput'; // Import component styles
+import styles from './WidthInput.module.css'; // Import component styles
 
 const WidthInput: React.FC = () => {
     const { width, setWidth } = useStore((state) => ({

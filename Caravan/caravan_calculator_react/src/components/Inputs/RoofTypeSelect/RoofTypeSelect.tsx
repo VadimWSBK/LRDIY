@@ -1,6 +1,6 @@
 import React from 'react';
 import useStore from '../../../store/useStore'; // Zustand store
-import styles from './RoofTypeSelect'; // Import component styles
+import styles from './RoofTypeSelect.module.css'; // Import component styles
 
 interface RoofTypeSelectProps {
     onRoofTypeChange: (newRoofType: string) => void;

@@ -1,7 +1,7 @@
 // components/Checkbox.tsx
 import React from 'react';
 import useStore from '../../../store/useStore'; // Zustand store
-import styles from './Checkbox'; // Component styles
+import styles from './Checkbox.module.css'; // Component styles
 
 interface CheckboxProps {
   productName: string;

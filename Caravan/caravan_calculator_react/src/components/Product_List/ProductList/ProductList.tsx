@@ -1,10 +1,10 @@
 // ProductList.tsx
 
 import React from 'react';
-import useStore from '../hooks/useStore';
+import useStore from '../../../store/useStore'; // Import the useStore hook
 import ProductItem from '../ProductItem/ProductItem';
-import { Product } from '../types/index'; // Import the Product type
-import styles from '../styles/ProductList.module.css';
+import { Product } from '../../../types/index'; // Import the Product type
+import styles from './ProductList.module.css';
 
 const ProductList: React.FC = () => {
     const { totalArea, roofType, products } = useStore((state) => ({

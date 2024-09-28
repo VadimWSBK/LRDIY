@@ -6,8 +6,8 @@ import WidthInput from '../components/Inputs/WidthInput/WidthInput'; // Import t
 import RoofTypeSelect from '../components/Inputs/RoofTypeSelect/RoofTypeSelect'; // Import the RoofTypeSelect component
 import ProductList from '../components/Product_List/ProductList/ProductList';
 import { usePriceCalculations } from '../hooks/usePriceCalculations';
-import styles from './MainCalculator'; // Import the scoped styles
-import AlertPopup from '../components/AlertPopup'; // Updated import path
+import styles from './MainCalculator.module.css'; // Import the scoped styles
+import AlertPopup from '../components/Popups/AlertPopup/AlertPopup' // Updated import path
 import useAlertPopup from '../hooks/useAlertPopup'; // Updated import path
 import useShopifyPermalink from '../hooks/useShopifyPermalink'; // Import custom hook for permalink
 import useQuantityCalculations from '../hooks/useQuantityCalculations'; // Import the new hook
@@ -15,7 +15,7 @@ import useQuantityCalculations from '../hooks/useQuantityCalculations'; // Impor
 
 
 const MainCalculator: React.FC = () => {
-    const { length, width, totalArea, setTotalArea, selectedProducts, products } = useStore((state) => ({
+    const { length, width, totalArea, setTotalArea, selectedProducts } = useStore((state) => ({
         length: state.length,
         width: state.width,
         totalArea: state.totalArea,

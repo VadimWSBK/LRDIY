@@ -141,12 +141,11 @@ const useStore = create<StoreState>()(
 
                         return { roofType, selectedProducts: updatedSelectedProducts };
                     }),
-
-                togglePopup: (id, isVisible) =>
+                    togglePopup: (id, isVisible) =>
                     set((state) => ({
                         popupVisibility: {
-                            ...state.popupVisibility,
-                            [id]: isVisible,
+                            ...state.popupVisibility, // Spread current state
+                            [id]: isVisible, // Update visibility for the specific id
                         },
                     })),
 

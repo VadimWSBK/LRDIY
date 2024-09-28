@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import useStore from '../../../store/useStore'; // Zustand store
-import styles from './LengthInput'; // Adjust path as needed
+import styles from './LengthInput.module.css'; // Ensure the path is correct relative to LengthInput.tsx
 
 const LengthInput: React.FC = () => {
     const { length, setLength } = useStore((state) => ({

@@ -3,17 +3,22 @@
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false, // Set to false to check all types
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": false, // Make sure this is false to allow emitting
+    "noEmit": true, // Set to true to suppress emitting files for type-check only
     "esModuleInterop": true,
-    "module": "esnext",
+    "module": "es2020", // Try changing to "commonjs" if issues persist
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "src", // Optional: set baseUrl for absolute imports
+    "paths": {
+      "*": ["*"]
+    },
+    "types": ["node", "react", "react-dom"] // Ensure these are available globally
   },
-  "include": ["src"]
+  "include": ["src/**/*", "**/*.d.ts", "global.d.ts"], // Include all declaration files
+  "exclude": ["node_modules"]
 }
-
