@@ -29,7 +29,6 @@ const ProductList: React.FC = () => {
 
                 const productData: Product | undefined = products[name];
                 if (!productData) {
-                    console.error(`Product not found for: ${name}`);
                     return (
                         <div key={index} className={styles.productNotFound}>
                             Product not found

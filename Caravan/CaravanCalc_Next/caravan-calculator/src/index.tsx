@@ -1,35 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import MainCalculator from '../components/MainCalculator';
 
-// Extend the Window interface
-declare global {
-  interface Window {
-    CaravanCalculatorWidget: {
-      init: (selector: string) => void;
-    };
-  }
-}
-
 const init = (selector: string) => {
-  console.log('Init function called with selector:', selector);
   const container = document.querySelector(selector);
   if (container) {
-    console.log('Container found, rendering MainCalculator');
-    const root = ReactDOM.createRoot(container);
+    const root = createRoot(container);
     root.render(<MainCalculator />);
-  } else {
-    console.error('Container not found for selector:', selector);
   }
 };
 
-// Set the global object
-if (typeof window !== 'undefined') {
-  console.log("Setting global CaravanCalculatorWidget object");
-  window.CaravanCalculatorWidget = {
-    init,
-  };
-}
+const CaravanCalculator: React.FC = () => {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      (window as any).CaravanCalculatorWidget = { init };
+    }
+  }, []);
 
-// Export the MainCalculator component
-export default MainCalculator;
+  return null; // Avoid rendering anything directly
+};
+
+export default CaravanCalculator;

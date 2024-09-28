@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caravan Calculator Widget</title>
+</head>
+<body>
+    <div id="calculator-container"></div>
+    <!-- Load the bundled JavaScript file -->
+    <script src="bundle.js"></script> 
+    <script>
+        window.addEventListener('load', function() {
+            // Ensure the global object and init function are defined before calling it
+            if (window.CaravanCalculatorWidget && window.CaravanCalculatorWidget.init) {
+                window.CaravanCalculatorWidget.init('#calculator-container');
+            } else {
+                console.error('CaravanCalculatorWidget is not defined or init function is missing.');
+            }
+        });
+    </script>
+</body>
+</html>

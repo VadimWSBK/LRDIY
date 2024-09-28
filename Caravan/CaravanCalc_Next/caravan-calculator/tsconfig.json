@@ -8,13 +8,13 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
-    "noEmit": false, // Set this to false
+    "noEmit": false, // Keep this as false for webpack bundling
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", // Changed from "bundler" to "node" for better compatibility
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve", // Change this to "react"
+    "jsx": "react", // Changed from "preserve" to "react" to handle JSX syntax correctly
     "incremental": true,
     "plugins": [
       {

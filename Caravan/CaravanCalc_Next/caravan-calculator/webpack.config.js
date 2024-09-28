@@ -1,51 +1,49 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src/index.tsx',
   output: {
-    filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.css'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    fallback: {
+      process: false, // This prevents process from being included in the bundle
+    },
   },
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        use: 'ts-loader',
         exclude: /node_modules/,
-      },
-      {
-        test: /\.jsx?$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-          },
-        },
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.module\.css$/, // For CSS Modules
         use: [
-          'style-loader',
           {
-            loader: 'css-loader',
+            loader: 'babel-loader',
             options: {
-              modules: {
-                localIdentName: '[name]__[local]__[hash:base64:5]', // Customize the class names
-              },
+              presets: [
+                '@babel/preset-env',
+                '@babel/preset-react', // JSX support
+                '@babel/preset-typescript', // TypeScript support
+              ],
+              plugins: [
+                ['@babel/plugin-transform-runtime', { regenerator: true }],
+              ],
             },
           },
         ],
       },
       {
-        test: /\.css$/, // For global CSS
-        exclude: /\.module\.css$/,
-        use: ['style-loader', 'css-loader'],
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'], // This will handle CSS files
       },
     ],
   },
-  mode: 'development', // or 'production' depending on your needs
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'), // Set environment variables
+    }),
+  ],
+  mode: 'production', // Switch to 'development' for development mode
 };

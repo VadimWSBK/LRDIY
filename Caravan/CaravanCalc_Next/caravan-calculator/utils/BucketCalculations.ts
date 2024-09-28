@@ -27,7 +27,6 @@ export const calculateBuckets = (
       product.variants.length === 0 ||
       !product.variants.some(variant => typeof variant.size === 'number' && variant.size > 0)
     ) {
-      console.warn(`Skipping non-bucket product: ${product.name}`);
       return [];
     }
 
@@ -38,7 +37,6 @@ export const calculateBuckets = (
   
     if (validVariants.length === 0) {
       // Skip products like 'Geo Textile' and 'BONUS' that use 'variant' instead of 'size'
-      console.warn(`Skipping non-bucket product: ${product.name}`);
       return [];
     }
   

@@ -41,17 +41,9 @@ const useShopifyPermalink = () => {
         }
       }
 
-      // Log each bucket and variant item for debugging
-      console.log(`Bucket Items for ${productName}:`, bucketItems);
-      console.log(`Variant Items for ${productName}:`, variantItems);
-
       // Return bucket items if available, otherwise return variant items
       return bucketItems.length > 0 ? bucketItems : variantItems;
     });
-
-    // Log the final cart items to be sent in the permalink
-    console.log('Final Cart Items for Permalink:', cartItems);
-
     // Generate Shopify permalink with cart items, discount code, and UTM parameters
     return generateShopifyPermalink(
       cartItems,

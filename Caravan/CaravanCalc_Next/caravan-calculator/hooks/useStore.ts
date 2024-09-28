@@ -191,10 +191,6 @@ const useStore = create<StoreState>()(
                     const updatedProducts = isSelected
                     ? state.selectedProducts.filter((name) => name !== productName) // Remove if already selected
                     : [...state.selectedProducts, productName]; // Add if not selected
-
-                    // Log the updated selected products
-                    console.log('Updated Selected Products:', updatedProducts);
-
                     return {
                     selectedProducts: updatedProducts,
                     };

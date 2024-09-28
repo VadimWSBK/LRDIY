@@ -1,37 +1,40 @@
 import React, { useEffect } from 'react';
-import { createRoot } from 'react-dom/client'; // Import createRoot directly from 'react-dom/client'
+import { createRoot } from 'react-dom/client';
 import MainCalculator from '../components/MainCalculator';
 
-const CaravanCalculator: React.FC = () => {
-  const init = (selector: string) => {
-    console.log('Init function called with selector:', selector);
-    const container = document.querySelector(selector);
-    if (container) {
-      console.log('Container found, rendering MainCalculator');
-      // Use createRoot to render the component
-      const root = createRoot(container); // This line is corrected
-      root.render(<MainCalculator />);
-    } else {
-      console.error('Container not found for selector:', selector);
-    }
-  };
+// Define the init function globally so it can be accessed from outside
+const init = (selector: string) => {
+  const container = document.querySelector(selector);
+  if (container) {
+    // Use createRoot to render the component
+    const root = createRoot(container);
+    root.render(<MainCalculator />);
+    console.log(`MainCalculator rendered in ${selector}`);
+  } else {
+    console.error(`Container not found for selector: ${selector}`);
+  }
+};
 
+const CaravanCalculator: React.FC = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      console.log("Setting global CaravanCalculatorWidget object");
+      // Set the global object with the init function
       (window as any).CaravanCalculatorWidget = {
-        init,
+        init: (selector: string) => {
+          try {
+            init(selector); // Call the init function
+          } catch (error) {
+            console.error('Error during initialization:', error);
+          }
+        },
       };
     } else {
-      console.error("Window is undefined");
+      console.error('Window object is not available.');
     }
   }, []);
 
-  return (
-    <div>
-      <MainCalculator />
-    </div>
-  );
+  // Return null as this component does not render anything directly
+  return null;
 };
 
 export default CaravanCalculator;

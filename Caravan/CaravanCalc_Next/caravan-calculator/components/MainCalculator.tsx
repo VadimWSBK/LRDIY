@@ -69,8 +69,6 @@ const MainCalculator: React.FC = () => {
 
     // Generate Shopify permalink and open in new tab
     const checkoutUrl = generatePermalink();
-    console.log("Generated Checkout URL:", checkoutUrl);
-
     window.open(checkoutUrl, '_blank');
   };
     
