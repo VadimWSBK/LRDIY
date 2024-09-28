@@ -2,16 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: './index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
+  target: 'web', // Ensure the target is set to 'web' for browser builds
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
-    fallback: {
-      process: false, // This prevents process from being included in the bundle
-    },
   },
   module: {
     rules: [
@@ -24,11 +22,8 @@ module.exports = {
             options: {
               presets: [
                 '@babel/preset-env',
-                '@babel/preset-react', // JSX support
-                '@babel/preset-typescript', // TypeScript support
-              ],
-              plugins: [
-                ['@babel/plugin-transform-runtime', { regenerator: true }],
+                '@babel/preset-react',
+                '@babel/preset-typescript',
               ],
             },
           },
@@ -36,14 +31,17 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'], // This will handle CSS files
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
   plugins: [
+    // Define process.env for the browser
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'), // Set environment variables
+      'process.env.NODE_ENV': JSON.stringify('production'), // or 'development'
+      'process.browser': JSON.stringify(true),
+      'process.env': JSON.stringify({}), // To handle other process.env references
     }),
   ],
-  mode: 'production', // Switch to 'development' for development mode
+  mode: 'production', // or 'development'
 };

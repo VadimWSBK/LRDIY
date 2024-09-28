@@ -8,13 +8,13 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
-    "noEmit": false, // Keep this as false for webpack bundling
+    "noEmit": false,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node", // Changed from "bundler" to "node" for better compatibility
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react", // Changed from "preserve" to "react" to handle JSX syntax correctly
+    "jsx": "react",
     "incremental": true,
     "plugins": [
       {
@@ -30,9 +30,12 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx" , 
+     "global.d.ts",
+    "src/**/*"
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  
 }

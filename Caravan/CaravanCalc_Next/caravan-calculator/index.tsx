@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import MainCalculator from '../components/MainCalculator';
+import MainCalculator from './components/MainCalculator';
 
 // Define the init function globally so it can be accessed from outside
 const init = (selector: string) => {
@@ -9,7 +9,6 @@ const init = (selector: string) => {
     // Use createRoot to render the component
     const root = createRoot(container);
     root.render(<MainCalculator />);
-    console.log(`MainCalculator rendered in ${selector}`);
   } else {
     console.error(`Container not found for selector: ${selector}`);
   }

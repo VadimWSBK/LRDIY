@@ -1,5 +1,5 @@
 // store/useStore.ts
-import { create, StateCreator } from 'zustand';
+import { create} from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { products } from '../utils/products'; // Import your product data
 import { Products, BucketCount, ProductVariant } from '../types/index'; // Import ProductVariant here
