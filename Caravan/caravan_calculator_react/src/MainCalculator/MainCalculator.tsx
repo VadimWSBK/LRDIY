@@ -1,4 +1,3 @@
-import React, { useEffect} from 'react';
 import useStore from '../store/useStore';
 import useRoofType from '../hooks/useRoofType'; // Import custom hook
 import LengthInput from '../components/Inputs/LenghtInput/LengthInput'; // Import the LengthInput component
@@ -14,7 +13,7 @@ import styles from './MainCalculator.module.css';
 
 
 const MainCalculator: React.FC = () => {
-    const { length, width, totalArea, setTotalArea, selectedProducts } = useStore((state) => ({
+    const {totalArea, selectedProducts } = useStore((state) => ({
         length: state.length,
         width: state.width,
         totalArea: state.totalArea,
@@ -34,18 +33,6 @@ const MainCalculator: React.FC = () => {
 
     // Get the bucket count from the store
     const { totalQuantity } = useQuantityCalculations(); // Use the new hook
-
-
-
-    // Calculate the total area whenever length or width changes
-    useEffect(() => {
-        if (length > 0 && width > 0) {
-            const area = length * width;
-            setTotalArea(area);
-        } else {
-            setTotalArea(0); // Set total area to 0 if either length or width is 0
-        }
-    }, [length, width, setTotalArea]);
     
 
     // Custom hook for shown alert popup
