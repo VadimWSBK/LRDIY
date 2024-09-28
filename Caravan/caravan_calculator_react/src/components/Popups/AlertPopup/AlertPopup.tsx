@@ -1,7 +1,7 @@
 // components/AlertPopup.tsx
 
 import React from 'react';
-import styles from '../styles/AlertPopup.module.css';
+import styles from './AlertPopup.module.css';
 
 // Define the props interface for AlertPopup
 interface AlertPopupProps {

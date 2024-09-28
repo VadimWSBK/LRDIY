@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import useStore from '../../../store/useStore';
-import styles from '../styles/Popup.module.css';
+import styles from './Popup.module.css';
 import { PopupProps,  } from '../../../types/index';
 
 

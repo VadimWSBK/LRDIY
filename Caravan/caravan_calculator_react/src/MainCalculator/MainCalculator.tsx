@@ -6,12 +6,11 @@ import WidthInput from '../components/Inputs/WidthInput/WidthInput'; // Import t
 import RoofTypeSelect from '../components/Inputs/RoofTypeSelect/RoofTypeSelect'; // Import the RoofTypeSelect component
 import ProductList from '../components/Product_List/ProductList/ProductList';
 import { usePriceCalculations } from '../hooks/usePriceCalculations';
-import styles from './MainCalculator.module.css'; // Import the scoped styles
 import AlertPopup from '../components/Popups/AlertPopup/AlertPopup' // Updated import path
 import useAlertPopup from '../hooks/useAlertPopup'; // Updated import path
 import useShopifyPermalink from '../hooks/useShopifyPermalink'; // Import custom hook for permalink
 import useQuantityCalculations from '../hooks/useQuantityCalculations'; // Import the new hook
-
+import styles from './MainCalculator.module.css';
 
 
 const MainCalculator: React.FC = () => {
@@ -28,7 +27,7 @@ const MainCalculator: React.FC = () => {
     const { totalPrice, discountedPrice, totalSavings } = usePriceCalculations();
 
     // Use custom hook for roof type logic
-    const { roofType, handleRoofTypeChange } = useRoofType();
+    const { handleRoofTypeChange } = useRoofType();
 
     // Call custom hook to get permalink function
     const { generatePermalink } = useShopifyPermalink(); 
