@@ -2,17 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caravan Calculator Widget</title>
+    <title>Your App</title>
 </head>
 <body>
     <div id="calculator-container"></div>
-    <!-- Load the bundled JavaScript file -->
-    <script src="bundle.js"></script> 
+    <script src="bundle.js"></script> <!-- Ensure this path is correct -->
     <script>
         window.addEventListener('load', function() {
-            // Ensure the global object and init function are defined before calling it
-            if (window.CaravanCalculatorWidget && window.CaravanCalculatorWidget.init) {
+            // Check if the global object and init function exist
+            if (window.CaravanCalculatorWidget && typeof window.CaravanCalculatorWidget.init === 'function') {
                 window.CaravanCalculatorWidget.init('#calculator-container');
             } else {
                 console.error('CaravanCalculatorWidget is not defined or init function is missing.');

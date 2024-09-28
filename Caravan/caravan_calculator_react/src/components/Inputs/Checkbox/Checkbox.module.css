@@ -1,0 +1,25 @@
+/* Checkbox.module.css */
+
+/* Container for the checkbox */
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* The actual checkbox input */
+.checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #00A62D; /* Custom checkbox color */
+    transform: scale(1.2); /* Make the checkbox slightly larger */
+    margin-right: 10px; /* Space between checkbox and label */
+}
+
+/* Optional: focus state */
+.checkbox:focus {
+    outline: 2px solid #00A62D; /* Green outline on focus */
+}

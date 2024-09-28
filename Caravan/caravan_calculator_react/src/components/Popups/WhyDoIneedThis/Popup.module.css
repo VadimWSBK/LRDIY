@@ -1,0 +1,45 @@
+/* Popup.module.css */
+
+/* Container for the popup and trigger link */
+.popupContainer {
+    position: relative;
+    display: inline-block; /* Ensures proper positioning of the popup */
+}
+
+/* Style for the link that toggles the popup */
+.popupLink {
+    color: #00A62D;
+    font-size: clamp(12px, 3vw, 13px);
+    cursor: pointer;
+    position: relative; /* To position the info icon */
+}
+
+/* Style for the popup bubble */
+.popupBubble {
+    display: block; /* Ensure it is displayed */
+    margin-top: 5px;
+    background-color: rgba(0, 166, 45, 0.9); /* 60% transparent green */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Light border for contrast */
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    max-width: 250px; /* Adjust as needed */
+    min-width: 200px;
+    color: white; /* Change text color to white */
+    z-index: 100;
+    position: absolute; /* Make sure it's positioned correctly */
+}
+
+/* Hover state for the link */
+.popupLink:hover::after {
+    margin-left: 5px; /* Space between text and icon */
+}
+
+
+@media (max-width: 530px) {
+    /* Adjust the popup bubble for smaller screens */
+    .popupBubble {
+        max-width: 170px;
+        min-width: 160px;
+    }
+}

@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 
 module.exports = {
@@ -36,12 +37,19 @@ module.exports = {
     ],
   },
   plugins: [
-    // Define process.env for the browser
+    new Dotenv(), // Loads variables from .env file
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'), // or 'development'
-      'process.browser': JSON.stringify(true),
-      'process.env': JSON.stringify({}), // To handle other process.env references
+      'process.env.NODE_ENV': JSON.stringify('production'), // Explicitly set NODE_ENV
+      'process.env.API_KEY': JSON.stringify(process.env.API_KEY), // Keep other needed variables
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser', // Polyfill for process
     }),
   ],
-  mode: 'production', // or 'development'
+  mode: 'production',
+  optimization: {
+    splitChunks: {
+      chunks: 'all', // Enable code splitting
+    },
+  },
 };
