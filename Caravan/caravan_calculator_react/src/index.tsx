@@ -3,15 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import MainCalculator from './MainCalculator/MainCalculator';
+import ErrorBoundary from './components/ErrorBoundary';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <MainCalculator />
-  </React.StrictMode>
-);
+const rootElement = document.getElementById('root');
+
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <ErrorBoundary>
+      <React.StrictMode>
+        <MainCalculator />
+      </React.StrictMode>
+    </ErrorBoundary>
+  );
+} else {
+  console.error("Root element not found. Unable to render the application.");
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

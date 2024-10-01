@@ -1,202 +1,242 @@
-// store/useStore.ts
-import { create} from 'zustand';
+import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { products } from '../utils/products'; // Import your product data
-import { Products, BucketCount, ProductVariant } from '../types/index'; // Import ProductVariant here
+import { produce } from 'immer';
+import { Product, BucketCount, ProductVariant } from '../types/index';
 
 // Define the StoreState interface with all properties and methods
 interface StoreState {
-    products: Products;
-    totalArea: number;
-    totalPrice: number;
-    discountedPrice: number;
-    totalSavings: number;
-    length: number;
-    width: number;
-    roofType: string;
-    isVisible: boolean;
-    isSelected: boolean;
-    subtotalCost: Record<string, number>;
-    popupVisibility: Record<string, boolean>;
-    selectedProducts: string[];
-    recommendedVariants: Record<string, { variant: ProductVariant; quantity: number }>; // Use ProductVariant type here
-    requiredVolume: Record<string, number>;
-    bucketsNeeded: Record<string, BucketCount[]>;
-    bucketCost: Record<string, number>;
-    variantCost: Record<string, number>;
-    totalQuantity: number;
+  // Product Data
+  products: Product[];
+  setProducts: (products: Product[]) => void;
 
+  // Area Calculations
+  totalArea: number;
+  setTotalArea: (area: number) => void;
 
-    setBucketCost: (payload: { productName: string; cost: number }) => void;
-    setVariantCost: (payload: { productName: string; cost: number }) => void;
-    setSubtotalCost: (payload: { productName: string; cost: number }) => void;
-    setSelectedProducts: (selectedProducts: string[] | ((prevSelected: string[]) => string[])) => void;
-    setProducts: (products: Products) => void;
-    setTotalArea: (area: number) => void;
-    setTotalPrice: (price: number) => void;
-    setTotalSavings: (savings: number) => void;
-    setDiscountedPrice: (price: number) => void;
-    setLength: (length: number) => void;
-    setWidth: (width: number) => void;
-    setRoofType: (roofType: string) => void;
-    togglePopup: (id: string, isVisible: boolean) => void;
-    selectProduct: (productName: string) => void;
-    deselectProduct: (productName: string) => void;
-    setRecommendedVariant: (payload: { productType: string; variant: ProductVariant; quantity: number }) => void;
-    setRequiredVolume: (payload: { productName: string; volume: number }) => void;
-    setBucketsNeeded: (payload: { productName: string; buckets: BucketCount[] }) => void;
-    toggleProductSelection: (productName: string) => void; // Ensure toggle function is defined
-    setTotalQuantity: (totalQuantity: number) => void;
+  // Price Calculations
+  subtotalCost: Record<string, number>;
+  setSubtotalCost: (productName: string, cost: number) => void;
+
+  totalPrice: number;
+  setTotalPrice: (price: number) => void;
+
+  totalSavings: number;
+  setTotalSavings: (savings: number) => void;
+
+  discountedPrice: number;
+  setDiscountedPrice: (price: number) => void;
+
+  // Buckets and Variants Calculations
+  bucketsNeeded: Record<string, BucketCount[]>;
+  setBucketsNeeded: (productName: string, buckets: BucketCount[]) => void;
+
+  recommendedVariants: Record<
+    string,
+    { variant: ProductVariant | null; quantity: number }
+  >;
+  setRecommendedVariants: (
+    productName: string,
+    variant: { variant: ProductVariant | null; quantity: number }
+  ) => void;
+
+  // Product Calculations (grouped by product)
+  productCalculations: Record<
+    string,
+    {
+      requiredVolume: number;
+      bucketCost: number;
+      variantCost: number;
+      recommendedVariant: {
+        variant: ProductVariant | null;
+        quantity: number;
+      };
+      totalQuantity: number; // Add this line
+
+    }
+  >;
+  setProductCalculations: (
+    productName: string,
+    calculations: Partial<StoreState['productCalculations'][string]>
+  ) => void;
+  
+
+  // Input and Product Selection
+  length: number;
+  setLength: (length: number) => void;
+
+  width: number;
+  setWidth: (width: number) => void;
+
+  roofType: string;
+  setRoofType: (roofType: string) => void;
+
+  selectedProducts: string[];
+  setSelectedProducts: (
+    selectedProducts: string[] | ((prevSelected: string[]) => string[])
+  ) => void;
+  toggleProductSelection: (productName: string) => void;
+
+  // Popup Visibility
+  popupVisibility: Record<string, boolean>;
+  togglePopup: (id: string, isVisible: boolean) => void;
+
+  // Total Quantity
+  totalQuantity: number;
+  setTotalQuantity: (totalQuantity: number) => void;
 }
 
-// Create the Zustand store using `devtools` middleware
+// Create the Zustand store using `devtools` middleware and `produce` from Immer
 const useStore = create<StoreState>()(
-    devtools(
-        (set, get) => {
-            const initialSelectedProducts = Object.values(products)
-                .map((product) => product.name)
-                .filter((name) => name !== 'Etch Primer');
+  devtools(
+    (set, get) => ({
+      // Product Data
+      products: [],
+      setProducts: (products: Product[]) =>
+        set({ products }, false, 'setProducts'),
 
-            return {
-                products, // Use imported products data
-                totalArea: 15,
-                totalPrice: 0,
-                discountedPrice: 0,
-                totalSavings: 0,
-                length: 6,
-                width: 2.5,
-                roofType: 'painted',
-                isVisible: false,
-                isSelected: false,
-                selectedProducts: initialSelectedProducts, // Default selected products
-                recommendedVariants: {},
-                requiredVolume: {}, // Ensure it's initialized as an empty object
-                bucketsNeeded: {},
-                subtotalCost: {}, // Initialize as an empty object
-                popupVisibility: {},
-                bucketCost: {}, // Initialize bucket cost as an empty object
-                variantCost: {}, // Initialize variant cost as an empty object
-                totalQuantity: 0,
+      // Area Calculations
+      totalArea: 15,
+      setTotalArea: (area: number) =>
+        set({ totalArea: area }, false, 'setTotalArea'),
 
-                // Actions for updating the state
-                setSubtotalCost: ({ productName, cost }) =>
-                    set((state) => ({
-                        subtotalCost: {
-                            ...state.subtotalCost,
-                            [productName]: cost,
-                        },
-                    })),
+      // Price Calculations
+      subtotalCost: {},
+      setSubtotalCost: (productName: string, cost: number) =>
+        set(
+          produce((state: StoreState) => {
+            state.subtotalCost[productName] = cost;
+          }),
+          false,
+          'setSubtotalCost'
+        ),
 
-                setBucketCost: ({ productName, cost }) =>
-                    set((state) => ({
-                        bucketCost: {
-                            ...state.bucketCost,
-                            [productName]: cost,
-                        },
-                    })),
+      totalPrice: 0,
+      setTotalPrice: (price: number) =>
+        set({ totalPrice: price }, false, 'setTotalPrice'),
 
-                setVariantCost: ({ productName, cost }) =>
-                    set((state) => ({
-                        variantCost: {
-                            ...state.variantCost,
-                            [productName]: cost,
-                        },
-                    })),
+      totalSavings: 0,
+      setTotalSavings: (savings: number) =>
+        set({ totalSavings: savings }, false, 'setTotalSavings'),
 
-                setSelectedProducts: (selectedProducts) =>
-                    set((state) => ({
-                        selectedProducts:
-                            typeof selectedProducts === 'function'
-                                ? selectedProducts(state.selectedProducts)
-                                : selectedProducts,
-                    })),
+      discountedPrice: 0,
+      setDiscountedPrice: (price: number) =>
+        set({ discountedPrice: price }, false, 'setDiscountedPrice'),
 
-                setProducts: (products) => set({ products }),
+      // Buckets and Variants Calculations
+      bucketsNeeded: {},
+      setBucketsNeeded: (productName: string, buckets: BucketCount[]) =>
+        set(
+          produce((state: StoreState) => {
+            state.bucketsNeeded[productName] = buckets;
+          }),
+          false,
+          'setBucketsNeeded'
+        ),
 
-                setTotalArea: (area) => set({ totalArea: area }),
+      recommendedVariants: {},
+      setRecommendedVariants: (
+        productName: string,
+        variant: { variant: ProductVariant | null; quantity: number }
+      ) =>
+        set(
+          produce((state: StoreState) => {
+            state.recommendedVariants[productName] = variant;
+          }),
+          false,
+          'setRecommendedVariants'
+        ),
 
-                setTotalPrice: (price) => set(() => ({ totalPrice: price })),
-
-                setDiscountedPrice: (price) => set(() => ({ discountedPrice: price })),
-
-                setTotalSavings: (savings) => set(() => ({ totalSavings: savings })),
-
-                setLength: (length) => set({ length }),
-
-                setWidth: (width) => set({ width }),
-
-                setTotalQuantity: (totalQuantity) => set({ totalQuantity }),
-
-                setRoofType: (roofType) =>
-                    set((state) => {
-                        let updatedSelectedProducts = state.selectedProducts.filter(
-                            (product) => product !== 'Sealer / Primer' && product !== 'Etch Primer'
-                        );
-
-                        if (roofType === 'painted') {
-                            updatedSelectedProducts.push('Sealer / Primer'); // Select Sealer / Primer for painted
-                        } else if (roofType === 'raw metal') {
-                            updatedSelectedProducts.push('Etch Primer'); // Select Etch Primer for raw metal
-                        }
-
-                        return { roofType, selectedProducts: updatedSelectedProducts };
-                    }),
-                    togglePopup: (id, isVisible) =>
-                    set((state) => ({
-                        popupVisibility: {
-                            ...state.popupVisibility, // Spread current state
-                            [id]: isVisible, // Update visibility for the specific id
-                        },
-                    })),
-
-                selectProduct: (productName) =>
-                    set((state) => ({
-                        selectedProducts: [...state.selectedProducts, productName],
-                    })),
-
-                deselectProduct: (productName) =>
-                    set((state) => ({
-                        selectedProducts: state.selectedProducts.filter(
-                            (name) => name !== productName
-                        ),
-                    })),
-
-                // Set the recommended variant for a product
-                setRecommendedVariant: ({ productType, variant, quantity }) =>
-                set((state) => ({
-                    recommendedVariants: {
-                    ...state.recommendedVariants,
-                    [productType]: { variant, quantity },
-                    },
-                })),
-
-                setRequiredVolume: ({ productName, volume }) =>
-                    set((state) => ({
-                        requiredVolume: { ...state.requiredVolume, [productName]: volume },
-                    })),
-
-                    setBucketsNeeded: ({ productName, buckets }) =>
-                    set((state) => ({
-                      bucketsNeeded: {
-                        ...state.bucketsNeeded,
-                        [productName]: buckets, // Assign BucketCount[] to the productName key
-                      },
-                    })),
-
-                // Zustand store (Example)
-                toggleProductSelection: (productName: string) =>
-                set((state) => {
-                    const isSelected = state.selectedProducts.includes(productName);
-                    const updatedProducts = isSelected
-                    ? state.selectedProducts.filter((name) => name !== productName) // Remove if already selected
-                    : [...state.selectedProducts, productName]; // Add if not selected
-                    return {
-                    selectedProducts: updatedProducts,
-                    };
-                }),
+      // Product Calculations
+      productCalculations: {},
+      setProductCalculations: (
+        productName: string,
+        calculations: Partial<StoreState['productCalculations'][string]>
+      ) =>
+      set(
+        produce((state: StoreState) => {
+          if (!state.productCalculations[productName]) {
+            state.productCalculations[productName] = {
+              requiredVolume: 0,
+              bucketCost: 0,
+              variantCost: 0,
+              recommendedVariant: { variant: null, quantity: 0 },
+              totalQuantity: 0, // Add this line to include totalQuantity
             };
+          }
+      
+          // Proceed with updating the state
+          Object.assign(state.productCalculations[productName], calculations);
+        }),
+        false,
+        'setProductCalculations'
+      ),
+
+      // Input and Product Selection
+      length: 6,
+      setLength: (length: number) => set({ length }, false, 'setLength'),
+
+      width: 2.5,
+      setWidth: (width: number) => set({ width }, false, 'setWidth'),
+
+      roofType: 'painted',
+      setRoofType: (roofType: string) =>
+        set({ roofType }, false, 'setRoofType'),
+
+      selectedProducts: [],
+      setSelectedProducts: (
+        selectedProducts:
+          | string[]
+          | ((prevSelected: string[]) => string[])
+      ) => {
+        if (typeof selectedProducts === 'function') {
+          set(
+            (state) => ({
+              selectedProducts: selectedProducts(state.selectedProducts),
+            }),
+            false,
+            'setSelectedProducts'
+          );
+        } else {
+          set({ selectedProducts }, false, 'setSelectedProducts');
         }
-    )
+      },
+      toggleProductSelection: (productName: string) =>
+        set(
+          produce((state: StoreState) => {
+            const isSelected = state.selectedProducts.includes(productName);
+            if (isSelected) {
+              state.selectedProducts = state.selectedProducts.filter(
+                (name) => name !== productName
+              );
+            } else {
+              state.selectedProducts.push(productName);
+            }
+          }),
+          false,
+          'toggleProductSelection'
+        ),
+
+      // Popup Visibility
+      popupVisibility: {},
+      togglePopup: (id: string, isVisible: boolean) =>
+        set(
+          produce((state: StoreState) => {
+            state.popupVisibility[id] = isVisible;
+          }),
+          false,
+          'togglePopup'
+        ),
+
+      // Total Quantity
+      totalQuantity: 0,
+      setTotalQuantity: (totalQuantity: number) =>
+        set({ totalQuantity }, false, 'setTotalQuantity'),
+    }),
+    { name: 'MyStore' }
+  )
 );
 
 export default useStore;
+export type { StoreState };
+
+

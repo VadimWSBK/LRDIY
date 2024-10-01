@@ -27,7 +27,8 @@ const ProductList: React.FC = () => {
             {allProducts.map(({ name, show }, index) => {
                 if (!show) return null;
 
-                const productData: Product | undefined = products[name];
+                const productData: Product | undefined = products.find(product => product.name === name);
+
                 if (!productData) {
                     return (
                         <div key={index} className={styles.productNotFound}>

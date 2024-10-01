@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6", // Modern JS target
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true, // To reduce unnecessary type-checking on external libraries
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": false, // This should be false to allow emitting
+    "noEmit": false, // Ensures files are emitted
     "esModuleInterop": true,
-    "module": "es2020",
+    "module": "esnext", // More modern module target
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -17,15 +17,12 @@
     "paths": {
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"]
-    }
+    },
+    "allowSyntheticDefaultImports": true // Allow default imports from modules that might not have them
   },
   "include": ["src/**/*", "**/*.d.ts", "global.d.ts"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules"]
 }
-
-  
-
-
 
 
 

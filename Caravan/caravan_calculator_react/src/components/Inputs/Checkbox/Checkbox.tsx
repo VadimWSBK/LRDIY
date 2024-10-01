@@ -1,35 +1,30 @@
-// components/Checkbox.tsx
+// Checkbox.tsx
 import React from 'react';
-import useStore from '../../../store/useStore'; // Zustand store
-import styles from './Checkbox.module.css'; // Component styles
+import styles from './Checkbox.module.css';
 
 interface CheckboxProps {
-  productName: string;
-  isSelected: boolean;
+    productName: string;
+    isSelected: boolean;
+    onChange: () => void; // Add onChange as a required prop
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ productName, isSelected }) => {
-  const { toggleProductSelection } = useStore((state) => ({
-    toggleProductSelection: state.toggleProductSelection, // Access the store's toggle function directly
-  }));
+const Checkbox: React.FC<CheckboxProps> = ({ productName, isSelected, onChange }) => {
 
-  const handleToggle = () => {
-    toggleProductSelection(productName); // Directly call toggle from Zustand
-  };
+    const handleToggle = () => {
+        onChange(); // Call the onChange prop when the checkbox is toggled
+    };
 
-  return (
-<div className={styles.checkboxContainer}>
-<input
-    type="checkbox"
-    className={styles.checkbox}
-    checked={isSelected}
-    onChange={handleToggle}
-    id="custom-checkbox"
-/>
-</div>
-  );
+    return (
+        <div className={styles.checkboxContainer}>
+            <input
+                type="checkbox"
+                className={styles.checkbox}
+                checked={isSelected}
+                onChange={handleToggle} // Use handleToggle function to manage onChange
+                id={`custom-checkbox-${productName}`}
+            />
+        </div>
+    );
 };
 
 export default Checkbox;
-
-
