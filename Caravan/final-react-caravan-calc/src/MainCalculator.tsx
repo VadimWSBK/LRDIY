@@ -9,6 +9,7 @@ import { products } from './utils/products';
 import calculateProductWithCosts from './utils/calculateProductWithCosts';
 import useShopifyPermalink from './hooks/useShopifyPermalink';
 import { useAlertPopup } from './hooks/useAlertPopup';
+import useTotalArea from './hooks/useTotalArea';
 
 // Memoized components that don't change frequently
 const Header = React.memo(() => (
@@ -24,8 +25,7 @@ const Footer = React.memo(() => (
 ));
 
 const MainCalculator: React.FC = () => {
-  const [length, setLength] = useState<number>(6);
-  const [width, setWidth] = useState<number>(2.5);
+  const totalArea = useTotalArea();
 
   const { isVisible, alertMessage, showAlert, alertRef } = useAlertPopup();
 
@@ -37,7 +37,6 @@ const MainCalculator: React.FC = () => {
     bucketsNeeded,
     recommendedVariants,
     setProductSelection,
-    setTotalArea,
   } = useStore();
 
   // Initialize selected products on component mount
@@ -50,13 +49,6 @@ const MainCalculator: React.FC = () => {
     console.log('Selected Products:', selectedProducts);
   }, [selectedProducts]);
 
-  // Memoize total area calculation
-  const calculatedArea = useMemo(() => length * width, [length, width]);
-
-  // Update Zustand store with total area
-  useEffect(() => {
-    setTotalArea(calculatedArea);
-  }, [calculatedArea, setTotalArea]);
 
   // Update Zustand store with roof type
   useEffect(() => {
@@ -82,7 +74,7 @@ const MainCalculator: React.FC = () => {
         recommendedVariant,
         bucketCost,
         variantCost,
-      } = calculateProductWithCosts(product, calculatedArea, isSelected);
+      } = calculateProductWithCosts(product, totalArea, isSelected);
 
       return {
         ...product,
@@ -95,7 +87,7 @@ const MainCalculator: React.FC = () => {
         show, // include 'show' property
       };
     });
-  }, [products, calculatedArea, selectedProducts, roofType]);
+  }, [products, totalArea, selectedProducts, roofType]);
 
   // Calculate total cost for selected products
   const totalCost = useMemo(() => {
@@ -128,7 +120,7 @@ const MainCalculator: React.FC = () => {
 
   const handleBuyNowClick = () => {
     // Check if total area is zero or negative
-    if (calculatedArea <= 0) {
+    if (totalArea <= 0) {
       showAlert('Please enter valid dimensions for length and width.');
       return;
     }
@@ -164,7 +156,6 @@ const MainCalculator: React.FC = () => {
     window.open(shopifyPermalink, '_blank');
   };
   
-  
 
   const handleToggleSelection = (productKey: string, isChecked: boolean) => {
     setProductSelection(productKey, isChecked);
@@ -178,10 +169,10 @@ const MainCalculator: React.FC = () => {
 
         <div className={styles.inputRow}>
           <div className={styles.inputContainer}>
-            <LengthInput length={length} setLength={setLength} />
+          <LengthInput />
           </div>
           <div className={styles.inputContainer}>
-            <WidthInput width={width} setWidth={setWidth} />
+          <WidthInput />
           </div>
         </div>
 
@@ -193,7 +184,7 @@ const MainCalculator: React.FC = () => {
           <div className={styles.totalArea}>
             <h4 className={styles.totalAreaHeading}>Total Area:</h4>
             <div className={styles.totalAreaValue}>
-              {calculatedArea.toFixed(2)} m<sup>2</sup>
+              {totalArea.toFixed(2)} m<sup>2</sup>
             </div>
           </div>
         </div>

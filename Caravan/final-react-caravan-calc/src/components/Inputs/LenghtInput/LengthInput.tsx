@@ -1,37 +1,32 @@
+// components/Inputs/LengthInput/LengthInput.tsx
 import React from 'react';
+import useLength from '../../../hooks/useLengthInput';
 import styles from './LengthInput.module.css';
 
-interface LengthInputProps {
-  length: number;
-  setLength: (length: number) => void;
-}
+const LengthInput: React.FC = () => {
+  const { displayValue, handleLengthChange, handleBlur, isInvalid } = useLength();
 
-const LengthInput: React.FC<LengthInputProps> = ({ length, setLength }) => {
-  const handleLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(',', '.');
-    const parsedValue = value === '' ? 0 : Math.min(20, Math.max(0, parseFloat(value) || 0));
-    setLength(parsedValue); // Update via prop
-  };
+  const inputClassName = `${styles.lengthInputField} ${
+    isInvalid ? styles.lengthInputFieldRed : styles.lengthInputFieldBlack
+  }`;
 
   return (
     <div className={styles.lengthInputWrapper}>
-
-        <label htmlFor="caravan-length" className={styles.lengthInputLabel}>
-            Enter Length (m):
-        </label>
-        <input 
-            type="number"
-            id="caravan-length"
-            value={length}
-            min="0"
-            max="20"
-            step="0.1"
-            onChange={handleLengthChange}
-            placeholder="0 - 20"
-            className={styles.lengthInputField}
-        />
+      <label htmlFor="caravan-length" className={styles.lengthInputLabel}>
+        Enter Length (m):
+      </label>
+      <input
+        type="text"
+        id="caravan-length"
+        value={displayValue}
+        onChange={(e) => handleLengthChange(e.target.value)}
+        onBlur={handleBlur}
+        className={inputClassName}
+        placeholder="0 - 20"
+      />
     </div>
   );
 };
 
 export default LengthInput;
+

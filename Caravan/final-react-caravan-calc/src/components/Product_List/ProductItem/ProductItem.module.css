@@ -1,7 +1,7 @@
 /* Main container for the product item */
 .productContainer {
     display: grid;
-    grid-template-columns: 150px auto 70px; /* Adjust columns as needed */
+    grid-template-columns: 140px auto 70px; /* Adjust columns as needed */
     border-radius: 8px;
     background-color: whitesmoke;
     padding: 5px 20px 5px 5px;
@@ -69,6 +69,12 @@
     grid-column: 1;
 }
 
+.infoPopupLinkStyle {
+    position: relative; /* This ensures the popup is positioned relative to the link */
+    display: inline-block;
+}
+
+
 .infoPopupLinkStyle a {
     color: #00A62D;
     display: inline-block; /* Ensures transform works properly */
@@ -79,9 +85,7 @@
 }
 .infoPopupLinkStyle a:hover {
     transform: scale(1.1); /* Increase the size by 10% */
-
 }
-
 /* Container for the popup and trigger link */
 .popupContainer {
     position: absolute; /* or fixed */
@@ -93,24 +97,35 @@
     border: 1px solid #ccc;
     padding: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
   }
 
-/* Style for the popup bubble */
-.popupBubble {
-    display: block; /* Ensure it is displayed */
-    margin-top: 5px;
-    background-color: rgba(0, 166, 45, 0.9); /* 60% transparent green */
-    border: 1px solid rgba(255, 255, 255, 0.5); /* Light border for contrast */
+  .popupBubble {
+    position: absolute;
+    top: 20px; /* Adjust to position the popup below the link */
+    left: 0; /* Align with the link */
+    z-index: 1000;
+    background-color: rgba(0, 166, 45, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    max-width: 250px; /* Adjust as needed */
-    min-width: 200px;
-    color: white; /* Change text color to white */
-    z-index: 100;
-    position: absolute; /* Make sure it's positioned correctly */
+    max-width: 250px;
+    color: white;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.crossedOut {
+    text-decoration: line-through;
+    color: gray;
 }
 
+/* Smooth appearance */
+.popupBubble.popupHidden {
+    opacity: 0;
+    visibility: hidden;
+}
 
 /* Styling for the product name */
 .productName {
@@ -167,12 +182,12 @@
 }
 
 /* Styling for subtotal price when crossed out */
-.crossedOut .subtotalPrice {
+.crossedOut  {
     position: relative;
 }
 
 /* Styling for the red line through the crossed-out price */
-.crossedOut .subtotalPrice::after {
+.crossedOut::after {
     content: '';
     position: absolute;
     top: 50%;

@@ -39,12 +39,26 @@ interface StoreState {
   totalQuantity: number;
   setTotalQuantity: (totalQuantity: number) => void;
   
+  length  : number;
+  setLength : (length : number) => void;
+  width : number;
+  setWidth : (width : number) => void;
+
 }
 
 // Correct Zustand store definition
 const useStore = create<StoreState>()(
   devtools(
     (set, get) => ({
+
+
+
+      length: 6,
+      width: 2.5,
+      setLength: (length: number) => set({ length }),
+      setWidth: (width: number) => set({ width }),
+
+
       /*** Product Data ***/
       products: initialProducts,
       setProducts: (products: Record<string, Product>) =>
