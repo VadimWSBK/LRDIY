@@ -6,7 +6,7 @@ module.exports = {
   entry: './src/index.tsx', 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contenthash].js', // Add contenthash for cache busting
+    filename: 'bundle.js', // Static filename for JavaScript output
     publicPath: '/',
     library: 'CaravanCalculator',
     libraryTarget: 'umd',
@@ -14,12 +14,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
-    alias: {
-      MainCalculator: path.resolve(__dirname, 'src/MainCalculator'),
-      components: path.resolve(__dirname, 'src/components'),
-      store: path.resolve(__dirname, 'src/store'),
-      hooks: path.resolve(__dirname, 'src/hooks'),
-    },
   },
   module: {
     rules: [
@@ -61,7 +55,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash].[ext]',
+              name: '[name].[ext]', // Static filename for images
               outputPath: 'images',
             },
           },
@@ -71,8 +65,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css', // Add contenthash for CSS files
-      chunkFilename: '[id].[contenthash].css',
+      filename: 'style.css', // Static filename for CSS output
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
@@ -92,9 +85,6 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    concatenateModules: false, // Important for profiling to work
-    splitChunks: {
-      chunks: 'all', // This will split vendor code if needed
-    },
+    concatenateModules: false,
   },
 };
