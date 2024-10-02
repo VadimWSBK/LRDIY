@@ -6,7 +6,7 @@ module.exports = {
   entry: './src/index.tsx', 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].[contenthash].js', // Add contenthash for cache busting
     publicPath: '/',
     library: 'CaravanCalculator',
     libraryTarget: 'umd',
@@ -71,8 +71,8 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+      filename: '[name].[contenthash].css', // Add contenthash for CSS files
+      chunkFilename: '[id].[contenthash].css',
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
@@ -93,5 +93,8 @@ module.exports = {
   optimization: {
     minimize: true,
     concatenateModules: false, // Important for profiling to work
+    splitChunks: {
+      chunks: 'all', // This will split vendor code if needed
+    },
   },
 };
