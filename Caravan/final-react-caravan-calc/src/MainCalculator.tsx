@@ -126,13 +126,19 @@ const MainCalculator: React.FC = () => {
   
   const { generatePermalink } = useShopifyPermalink(calculatedProducts);
 
-  // Handle the "Buy Now" button click
   const handleBuyNowClick = () => {
+    // Check if total area is zero or negative
+    if (calculatedArea <= 0) {
+      showAlert('Please enter valid dimensions for length and width.');
+      return;
+    }
+  
     // Check if no product is selected
     if (!calculatedProducts.some((product) => product.isSelected)) {
       showAlert('Please select at least one product.');
       return;
     }
+  
     // Check if only BONUS product is selected
     const selectedProductKeys = calculatedProducts
       .filter((product) => product.isSelected)
@@ -142,14 +148,22 @@ const MainCalculator: React.FC = () => {
       selectedProductKeys.length === 1 &&
       selectedProductKeys.includes('bonusProduct')
     ) {
-      showAlert('Please select at least one other product.');
+      showAlert('Only BONUS selected! Please select at least one other product.');
       return;
     }
   
     // Generate Shopify permalink and open in new tab
     const shopifyPermalink = generatePermalink();
+  
+    // Check if the generated link is empty (no products with quantities > 0)
+    if (!shopifyPermalink) {
+      showAlert('No products needed. Please check your inputs.');
+      return;
+    }
+  
     window.open(shopifyPermalink, '_blank');
   };
+  
   
 
   const handleToggleSelection = (productKey: string, isChecked: boolean) => {
