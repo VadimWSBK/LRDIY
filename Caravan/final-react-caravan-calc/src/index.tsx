@@ -1,26 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import MainCalculator from './MainCalculator'; // Your main calculator component
+import MainCalculator from './MainCalculator';
+import reportWebVitals from './reportWebVitals';
 
-// Create the render function that will be exposed globally
-const render = (config: { elementId: string }) => {
-  const elementId = config.elementId || 'caravan-calculator-root'; // Default ID if none is provided
-  const rootElement = document.getElementById(elementId) as HTMLElement;
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
+root.render(
+  <React.StrictMode>
+    <MainCalculator />
+  </React.StrictMode>
+);
 
-  if (!rootElement) {
-    console.error(`Element with ID "${elementId}" not found`);
-    return;
-  }
-
-  const root = ReactDOM.createRoot(rootElement);
-
-  root.render(
-    <React.StrictMode>
-      <MainCalculator />
-    </React.StrictMode>
-  );
-};
-
-// Expose CaravanCalculator globally
-export const CaravanCalculator = { render };
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

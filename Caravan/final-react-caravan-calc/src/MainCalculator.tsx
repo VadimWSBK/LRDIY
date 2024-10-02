@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import LengthInput from './components/Inputs/LenghtInput/LengthInput';
 import WidthInput from './components/Inputs/WidthInput/WidthInput';
 import RoofTypeSelect from './components/Inputs/RoofTypeSelect/RoofTypeSelect';
@@ -34,8 +34,6 @@ const MainCalculator: React.FC = () => {
     setRoofType,
     selectedProducts,
     roofType,
-    bucketsNeeded,
-    recommendedVariants,
     setProductSelection,
   } = useStore();
 
@@ -87,7 +85,7 @@ const MainCalculator: React.FC = () => {
         show, // include 'show' property
       };
     });
-  }, [products, totalArea, selectedProducts, roofType]);
+  }, [totalArea, selectedProducts, roofType]);
 
   // Calculate total cost for selected products
   const totalCost = useMemo(() => {

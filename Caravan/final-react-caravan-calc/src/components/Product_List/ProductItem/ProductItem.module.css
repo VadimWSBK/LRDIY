@@ -74,16 +74,18 @@
     display: inline-block;
 }
 
-
-.infoPopupLinkStyle a {
+.linkButton {
     color: #00A62D;
-    display: inline-block; /* Ensures transform works properly */
+    background: none;
     font-size: clamp(12px, 3vw, 13px);
+    border: none;
+    text-decoration: underline;
     cursor: pointer;
+    padding: 0;
     transition: transform 0.3s ease; /* Smooth transition for the scale effect */
 
-}
-.infoPopupLinkStyle a:hover {
+  }
+.linkButton:hover {
     transform: scale(1.1); /* Increase the size by 10% */
 }
 /* Container for the popup and trigger link */

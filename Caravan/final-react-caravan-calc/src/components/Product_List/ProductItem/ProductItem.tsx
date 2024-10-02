@@ -30,24 +30,30 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
       <div className={styles.nestedGridForMobile}>
         <div className={styles.productNameAndLinkContainer}>
-          <div className={styles.productName}>{product.name}</div>
+            <div className={styles.productName}>
+              {product.name}
+            </div>
 
           <div className={styles.infoPopupLinkStyle}>
-            {product.infoText && (
-              <>
-                <a href="#" onClick={() => showPopup(product.infoText ?? '')}>
-                  Why do I need this?
-                </a>
+              {product.infoText && (
+                <>
+                  <button
+                    className={styles.linkButton}
+                    onClick={() => showPopup(product.infoText ?? '')}
+                  >
+                    Why do I need this?
+                  </button>
 
-                {popupVisible && (
-                  <div className={styles.popupBubble} ref={popupRef}>
-                    {popupContent}
-                  </div>
-                )}
-              </>
-            )}
+                  {popupVisible && (
+                    <div className={styles.popupBubble} ref={popupRef}>
+                      {popupContent}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+
 
         <div className={styles.productItemContainer}>
           {hasBuckets ? (
