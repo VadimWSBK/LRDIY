@@ -1,57 +1,46 @@
 import { useCallback } from 'react';
-import useStore from '../store/useStore'; // Zustand store
 import { generateShopifyPermalink } from '../utils/generateShopifyPermalink';
-import { SelectedProductVariant, BucketCount } from '../types/index';
+import { SelectedProductVariant } from '../types/index';
+import { CalculatedProduct } from '../types/index';
 
-const useShopifyPermalink = () => {
-  // Access the store to get selected products and their details
-  const { selectedProducts, bucketsNeeded, recommendedVariants } = useStore((state) => ({
-    selectedProducts: state.selectedProducts,
-    bucketsNeeded: state.bucketsNeeded, // Access bucketsNeeded from the store
-    recommendedVariants: state.recommendedVariants, // Access recommendedVariants from the store
-  }));
-
-  // Generate permalink only for selected products
+const useShopifyPermalink = (calculatedProducts: CalculatedProduct[]) => {
   const generatePermalink = useCallback(() => {
-    // Iterate over selected products and generate cart items for each product
-    const cartItems: SelectedProductVariant[] = selectedProducts.flatMap((productName) => {
+    const selectedProducts = calculatedProducts.filter((product) => product.isSelected);
+
+    const cartItems: SelectedProductVariant[] = selectedProducts.flatMap((product) => {
       const bucketItems: SelectedProductVariant[] = [];
       const variantItems: SelectedProductVariant[] = [];
 
-      // Check if there are bucket items for the product
-      if (bucketsNeeded[productName]?.length > 0) {
-        bucketsNeeded[productName].forEach((bucket: BucketCount) => {
+      // Add bucket items
+      if (product.bucketsNeeded && product.bucketsNeeded.length > 0) {
+        product.bucketsNeeded.forEach((bucket) => {
           bucketItems.push({
-            productName,
-            variantId: bucket.variantId, // Use variantId from the bucket
-            quantity: bucket.count, // Use count as quantity for buckets
+            productKey: product.productKey,
+            variantId: bucket.variantId,
+            quantity: bucket.count,
           });
         });
       }
 
-  // Check if there are variant items for the product (only add if no buckets are present)
-  if (!bucketsNeeded[productName] || bucketsNeeded[productName].length === 0) {
-    const recommendedVariant = recommendedVariants[productName];
+      // Add variant items
+      if (product.recommendedVariant && product.recommendedVariant.quantity > 0) {
+        const recommendedVariant = product.recommendedVariant;
+        if (recommendedVariant.variant && recommendedVariant.variant.variantId) {
+          variantItems.push({
+            productKey: product.productKey,
+            variantId: recommendedVariant.variant.variantId,
+            quantity: recommendedVariant.quantity,
+          });
+        }
+      }
 
-    // Ensure recommendedVariant is not null and has a valid variant with a variantId
-    if (recommendedVariant?.quantity > 0 && recommendedVariant.variant && recommendedVariant.variant.variantId) {
-      variantItems.push({
-        productName,
-        variantId: recommendedVariant.variant.variantId, // Access variantId only if the variant exists
-        quantity: recommendedVariant.quantity, // Use calculated quantity
-      });
-    }
-  }
-
-      // Return bucket items if available, otherwise return variant items
+      // Return bucket items if available, else variant items
       return bucketItems.length > 0 ? bucketItems : variantItems;
     });
-    // Generate Shopify permalink with cart items, discount code, and UTM parameters
-    return generateShopifyPermalink(
-      cartItems,
-      'Caravan-KIT-10OFF-Offer', // Discount code
-    );
-  }, [selectedProducts, bucketsNeeded, recommendedVariants]);
+
+    // Generate the Shopify permalink
+    return generateShopifyPermalink(cartItems, 'Caravan-KIT-10OFF-Offer');
+  }, [calculatedProducts]);
 
   return { generatePermalink };
 };

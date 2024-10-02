@@ -1,62 +1,53 @@
-// store/useStore.ts
-
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { produce } from 'immer';
 import { Product, BucketCount, ProductVariant, ProductCost } from '../types/index';
+import { products as initialProducts } from '../utils/products'; // Assuming you have a product list
 
 // Define the StoreState interface with all properties and methods
 interface StoreState {
-  // Product Data
-  products: Product[];
-  setProducts: (products: Product[]) => void;
+  products: Record<string, Product>;
+  setProducts: (products: Record<string, Product>) => void;
 
-  // Area Calculations
   totalArea: number;
   setTotalArea: (area: number) => void;
 
-  // Price Calculations
   productCosts: Record<string, ProductCost>;
   setProductCosts: (productName: string, bucketCost: number, variantCost: number) => void;
   totalCost: number;
   calculateTotalCost: () => void;
 
-  // Buckets and Variants Calculations
   bucketsNeeded: Record<string, BucketCount[]>;
   setBucketsNeeded: (productName: string, buckets: BucketCount[]) => void;
 
   recommendedVariants: Record<string, { variant: ProductVariant | null; quantity: number }>;
-  setRecommendedVariants: (
-    productName: string,
-    variant: { variant: ProductVariant | null; quantity: number }
-  ) => void;
+  setRecommendedVariants: (productName: string, variant: { variant: ProductVariant | null; quantity: number }) => void;
 
-  // Input and Product Selection
   roofType: string;
   setRoofType: (roofType: string) => void;
 
   selectedProducts: string[];
-  setSelectedProducts: (
-    selectedProducts: string[] | ((prevSelected: string[]) => string[])
-  ) => void;
-  toggleProductSelection: (productName: string) => void;
+  setSelectedProducts: (selectedProducts: string[] | ((prevSelected: string[]) => string[])) => void;
+  
+  setProductSelection: (productName: string, isSelected: boolean) => void; // Added this
 
-  // Popup Visibility
+  initializeSelectedProducts: () => void;
+
   popupVisibility: Record<string, boolean>;
   togglePopup: (id: string, isVisible: boolean) => void;
 
-  // Total Quantity
   totalQuantity: number;
   setTotalQuantity: (totalQuantity: number) => void;
+  
 }
 
-// Create the Zustand store using `devtools` middleware and `produce` from Immer
+// Correct Zustand store definition
 const useStore = create<StoreState>()(
   devtools(
     (set, get) => ({
       /*** Product Data ***/
-      products: [],
-      setProducts: (products: Product[]) =>
+      products: initialProducts,
+      setProducts: (products: Record<string, Product>) =>
         set({ products }, false, 'setProducts'),
 
       /*** Area Calculations ***/
@@ -73,7 +64,6 @@ const useStore = create<StoreState>()(
             [productName]: { bucketCost, variantCost },
           };
 
-          // Update totalCost whenever productCosts change
           const totalCost = Object.values(updatedProductCosts).reduce(
             (total, costs) => total + costs.bucketCost + costs.variantCost,
             0
@@ -85,6 +75,7 @@ const useStore = create<StoreState>()(
           };
         }, false, 'setProductCosts');
       },
+
       totalCost: 0,
       calculateTotalCost: () => {
         const totalCost = Object.values(get().productCosts).reduce(
@@ -120,13 +111,18 @@ const useStore = create<StoreState>()(
 
       /*** Input and Product Selection ***/
       roofType: 'painted',
-      setRoofType: (roofType: string) =>
-        set({ roofType }, false, 'setRoofType'),
 
-      selectedProducts: [],
-      setSelectedProducts: (
-        selectedProducts: string[] | ((prevSelected: string[]) => string[])
-      ) =>
+      selectedProducts: [], // Initialize selectedProducts
+
+      setProductSelection: (productKey: string, isSelected: boolean) =>
+      set((state) => {
+        const selectedProducts = isSelected
+          ? [...state.selectedProducts, productKey]
+          : state.selectedProducts.filter((key) => key !== productKey);
+        return { selectedProducts };
+      }),
+
+      setSelectedProducts: (selectedProducts: string[] | ((prevSelected: string[]) => string[])) =>
         set((state) => {
           const newSelectedProducts =
             typeof selectedProducts === 'function'
@@ -135,14 +131,43 @@ const useStore = create<StoreState>()(
           return { selectedProducts: newSelectedProducts };
         }, false, 'setSelectedProducts'),
 
-      toggleProductSelection: (productName: string) =>
+
+        initializeSelectedProducts: () => {
+          set((state) => {
+            const selectedProducts = Object.keys(state.products).filter(
+              (productKey) => productKey !== 'etchPrimer' && productKey !== 'sealerPrimer'
+            );
+        
+            // Add sealerPrimer or etchPrimer based on the roof type
+            if (state.roofType === 'painted') {
+              selectedProducts.push('sealerPrimer');
+            } else if (state.roofType === 'raw metal') {
+              selectedProducts.push('etchPrimer');
+            }
+        
+            return { selectedProducts };
+          }, false, 'initializeSelectedProducts');
+        },
+
+      // Set the roof type and adjust selected products
+      setRoofType: (newRoofType: string) => {
         set((state) => {
-          const isSelected = state.selectedProducts.includes(productName);
-          const newSelectedProducts = isSelected
-            ? state.selectedProducts.filter((name) => name !== productName)
-            : [...state.selectedProducts, productName];
-          return { selectedProducts: newSelectedProducts };
-        }, false, 'toggleProductSelection'),
+          const updatedSelectedProducts = Object.keys(state.products).filter(
+            (productName) => productName !== 'etchPrimer' && productName !== 'sealerPrimer'
+          );
+
+          if (newRoofType === 'painted') {
+            updatedSelectedProducts.push('sealerPrimer');
+          } else if (newRoofType === 'raw metal') {
+            updatedSelectedProducts.push('etchPrimer');
+          }
+
+          return {
+            roofType: newRoofType,
+            selectedProducts: updatedSelectedProducts,
+          };
+        }, false, 'setRoofType');
+      },
 
       /*** Popup Visibility ***/
       popupVisibility: {},
@@ -166,4 +191,3 @@ const useStore = create<StoreState>()(
 
 export default useStore;
 export type { StoreState };
-

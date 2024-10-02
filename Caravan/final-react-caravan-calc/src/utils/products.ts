@@ -3,6 +3,7 @@ import { Product } from '../types/index';
 
 export const products: Record<string, Product> = {
     waterproofSealant: {
+      productKey: 'thermalCoating',
       name: 'Waterproof Sealant',
       image: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d2066e697100ccddc6e54f.webp',
       coveragePerLitre: 1,
@@ -14,6 +15,7 @@ export const products: Record<string, Product> = {
       infoText: 'Liquid Rubber Waterproof Sealant is essential for keeping your roof protected from water damage.',
     },
     thermalCoating: {
+      productKey: 'sealerPrimer',
       name: 'Thermal Coating',
       image: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d57ded61d985c90720ed72.webp',
       coveragePerLitre: 2,
@@ -25,6 +27,7 @@ export const products: Record<string, Product> = {
       infoText: 'Thermal Coating reflects UV rays, keeps the interior cool, and shields your roof from the elements.',
     },
     sealerPrimer: {
+      productKey: 'Sealer / Primer',
       name: 'Sealer / Primer',
       image: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d57ded61d9850ff720ed71.webp',
       coveragePerLitre: 8,
@@ -35,6 +38,7 @@ export const products: Record<string, Product> = {
       infoText: 'Sealer/Primer enhances adhesion on painted roofs, ensuring a strong bond for Thermal Coating.',
     },
     etchPrimer: {
+      productKey: 'Etch Primer',
       name: 'Etch Primer',
       image: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d57ded766f982f5e25b033.webp',
       coveragePerLitre: 6,
@@ -45,6 +49,7 @@ export const products: Record<string, Product> = {
       infoText: 'Etch Primer enhances adhesion on raw metal roofs and prevents rust, ensuring a strong bond for Thermal Coating.',
     },
     geoTextile: {
+      productKey: 'Geo Textile',
       name: 'Geo Textile',
       image: 'https://storage.googleapis.com/msgsndr/ewm9gNGbZG828XI4tybh/media/66d206a057f60d1680e999ad.webp',
       variants: [
@@ -54,6 +59,7 @@ export const products: Record<string, Product> = {
       infoText: 'Geo Textile reinforces the roof coating system and helps with waterproofing.',
     },
     bonusProduct: {
+      productKey: 'BONUS',
       name: 'BONUS',
       image: 'https://cdn.shopify.com/s/files/1/0556/0614/9253/files/Brush_and_Roller_Kit.png?v=1726414468',
       variants: [

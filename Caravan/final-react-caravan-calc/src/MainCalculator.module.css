@@ -312,6 +312,57 @@
 }
 
 
+/* AlertPopup.module.css */
+
+/* Overlay for the popup */
+.alertPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Transparent dark overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Ensure it appears above other elements */
+}
+
+/* Main popup container */
+.alertPopup {
+  background-color: #B04327; /* Red background */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  padding: 20px; /* Increased padding for better spacing */
+}
+
+/* Content inside the popup */
+.alertContent {
+  font-size: 16px;
+  text-align: center;
+  color: white;
+  line-height: 1.5; /* Better line spacing */
+}
+
+/* Optional: Add transition for fading effect */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+/* Apply fade-in effect to the popup */
+.alertPopup {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+
+
 
 
 /* --------------- Responsive Styles -------------------- */

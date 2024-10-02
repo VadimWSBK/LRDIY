@@ -1,58 +1,35 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
-const useAlertPopup = () => {
-    const [isVisible, setIsVisible] = useState<boolean>(false);
-    const [alertMessage, setAlertMessage] = useState<string>('');
-    const timeoutRef = useRef<number | null>(null);
+export const useAlertPopup = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [alertMessage, setAlertMessage] = useState<string>('');
+  const alertRef = useRef<HTMLDivElement | null>(null);
 
-    // Show alert with a specific message and auto-hide after 3 seconds
-    const show = (message: string) => {
-        setAlertMessage(message);
-        setIsVisible(true);
+  const showAlert = useCallback((message: string) => {
+    setAlertMessage(message);
+    setIsVisible(true);
+  }, []);
 
-        // Automatically hide the popup after 3 seconds
-        if (timeoutRef.current) {
-            clearTimeout(timeoutRef.current); // Clear any previous timeout
-        }
-        timeoutRef.current = window.setTimeout(() => {
-            hide();
-        }, 3000);
+  const closeAlert = useCallback(() => {
+    setIsVisible(false);
+  }, []);
+
+  // Handle clicks outside or on the alert to close it
+  useEffect(() => {
+    const handleClickOutsideOrInside = (event: MouseEvent) => {
+      if (alertRef.current && !alertRef.current.contains(event.target as Node)) {
+        closeAlert(); // Close when clicking outside the alert
+      }
     };
 
-    // Hide alert
-    const hide = () => {
-        setIsVisible(false);
-        clearTimeout(timeoutRef.current!); // Ensure timeout is cleared
-        timeoutRef.current = null;
+    if (isVisible) {
+      document.addEventListener('mousedown', handleClickOutsideOrInside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutsideOrInside);
     };
+  }, [isVisible, closeAlert]);
 
-    // Handle clicks outside the popup
-    const handleOutsideClick = (e: MouseEvent) => {
-        if ((e.target as HTMLElement).closest('.alert-popup') === null) {
-            hide(); // Hide the popup if clicked outside
-        }
-    };
-
-    // Manage adding/removing the event listener when the popup is visible
-    useEffect(() => {
-        if (isVisible) {
-            document.addEventListener('mousedown', handleOutsideClick);
-        } else {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        }
-
-        // Cleanup event listener on unmount
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        };
-    }, [isVisible]); // Only re-run the effect when `isVisible` changes
-
-    return {
-        isVisible,
-        show,
-        alertMessage,
-        setAlertMessage
-    };
+  return { isVisible, alertMessage, showAlert, closeAlert, alertRef };
 };
-
-export default useAlertPopup;

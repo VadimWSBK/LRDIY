@@ -3,11 +3,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.tsx', // Correct entry path
+  entry: './src/index.tsx', 
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/', // Set to '/'
+    publicPath: '/',
     library: 'CaravanCalculator',
     libraryTarget: 'umd',
     globalObject: 'typeof self !== "undefined" ? self : this',
@@ -78,16 +78,20 @@ module.exports = {
       template: './public/index.html',
       filename: 'index.html',
       inject: 'body',
-      publicPath: '/', // Set to '/'
+      publicPath: '/',
     }),
   ],
   mode: process.env.NODE_ENV || 'development',
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'), // Serve from dist folder
+      directory: path.join(__dirname, 'dist'),
     },
     compress: true,
     port: 9000,
     historyApiFallback: true,
+  },
+  optimization: {
+    minimize: true,
+    concatenateModules: false, // Important for profiling to work
   },
 };

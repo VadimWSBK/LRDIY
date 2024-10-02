@@ -1,13 +1,3 @@
-// index.d.ts
-
-// Zustand Store State Interface
-export interface StoreState {
-  popupVisibility: Record<string, boolean>;
-  togglePopup: (id: string, isVisible: boolean) => void;
-  bucketsNeeded: Record<string, BucketDetails>; // Store calculated bucket details for each product
-  setBucketsNeeded: (productName: string, bucketDetails: BucketDetails) => void; // Corrected method signature
-  // ... other state properties and methods ...
-}
 
 // Popup Properties
 export interface PopupProps {
@@ -19,16 +9,19 @@ export interface PopupProps {
 export interface AlertPopupProps {
   id: string;
   infoText: string;
+  isVisible: boolean;
+  
   // Any other props your component needs
 }
 
 // Product and Product Variants
 export interface ProductVariant {
   size?: number; // Optional for bucket products
-  variant?: string; // Optional for non-bucket products
-  price: number;
-  variantId: string;
+  variant?: string; // For products like Geo Textile
+  price: number;    // Ensure price is a number, not a string
+  variantId: string; // Unique identifier for the variant
 }
+
 
 export interface Variant {
   size?: number;  // For most products
@@ -38,16 +31,17 @@ export interface Variant {
 }
 
 export interface Product {
+  productKey: string;
   name: string;
   image: string;
   coveragePerLitre?: number;
-  variants: Variant[];
+  variants: ProductVariant[]; // Variants should be an array of ProductVariant, not strings
   infoText?: string;
 }
 
 export interface ProductCost {
-  bucketCost: number;
-  variantCost: number;
+  bucketCost: number; // Calculated cost of the buckets for the product
+  variantCost: number; // Calculated cost of the variant for the product
 }
 
 
@@ -95,14 +89,49 @@ export type Products = Record<string, Product>;
 
 // Selected Product Variant Interface
 export interface SelectedProductVariant {
-  productName: string;
+  productKey: string;
   variantId: string;
   quantity: number;
 }
 
-// Product Item Properties
 export interface ProductItemProps {
-  product: Product;
+  product: CalculatedProduct;
+  onToggleSelection: (isChecked: boolean) => void;
 }
 
-export {};
+// Corrected ProductListProps interface
+export interface ProductListProps {
+  products: CalculatedProduct[];
+  onToggleSelection: (productKey: string, isChecked: boolean) => void;
+}
+
+
+export interface ProductCalculationResult {
+  bucketsNeeded: BucketCount[]; // Array of calculated buckets needed
+  recommendedVariant: RecommendedVariant | null; // Recommended variant and quantity
+  bucketCost: number; // Total cost of the buckets
+  variantCost: number; // Total cost of the recommended variant
+}
+
+export interface RecommendedVariant {
+  variant: ProductVariant | null; // The actual variant recommended
+  quantity: number; // Quantity needed
+}
+interface CalculatedProduct {
+  productKey: string;
+  name: string;
+  image: string;
+  // ... other product properties
+  bucketsNeeded: BucketCount[];
+  recommendedVariant: {
+    variant: ProductVariant | null;
+    quantity: number;
+  };
+  bucketCost: number;
+  variantCost: number;
+  isSelected: boolean;
+  show: boolean;
+  infoText?: string;
+}
+
+export {CalculatedProduct};
