@@ -1,4 +1,3 @@
-// components/Inputs/LengthInput/LengthInput.tsx
 import React from 'react';
 import useLength from '../../../hooks/useLengthInput';
 import styles from './LengthInput.module.css';
@@ -16,13 +15,16 @@ const LengthInput: React.FC = () => {
         Enter Length (m):
       </label>
       <input
-        type="text"
+        type="number" // Change input type to 'number'
         id="caravan-length"
         value={displayValue}
         onChange={(e) => handleLengthChange(e.target.value)}
         onBlur={handleBlur}
         className={inputClassName}
         placeholder="0 - 20"
+        step="0.1" // Allow increments of 0.1
+        min="0" // Optional: set minimum value if needed
+        max="20" // Optional: set maximum value if needed
       />
     </div>
   );

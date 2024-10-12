@@ -1,4 +1,3 @@
-// hooks/useWidth.ts
 import { useState, useEffect } from 'react';
 import useStore from '../store/useStore';
 
@@ -9,13 +8,20 @@ const useWidth = () => {
   const [displayValue, setDisplayValue] = useState<string>(width.toString());
 
   useEffect(() => {
-    setDisplayValue(width.toString());
+    // Update displayValue when width changes, ensuring the decimal separator is always a period
+    setDisplayValue(width.toLocaleString('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+      useGrouping: false,
+    }));
   }, [width]);
 
   const handleWidthChange = (value: string) => {
+    // Replace comma with a decimal point for internal consistency
     value = value.replace(',', '.');
 
-    if (value === '' || /^\d*\.?\d{0,2}$/.test(value)) {
+    // Allow empty string and valid decimal numbers without leading zeros and up to two decimal places
+    if (value === '' || /^(0|[1-9]\d*)(\.\d{0,2})?$/.test(value)) {
       const parsedValue = parseFloat(value);
 
       if (!isNaN(parsedValue)) {
@@ -23,17 +29,17 @@ const useWidth = () => {
           // If value exceeds 3, set to 3
           setWidth(3);
           setDisplayValue('3');
-        } else if (parsedValue <= 0) {
-          // If value is zero or negative, set width to zero
+        } else if (parsedValue < 0) {
+          // If value is negative, set width to zero
           setWidth(0);
-          setDisplayValue(value);
+          setDisplayValue('0');
         } else {
           // Valid value within range
           setWidth(parsedValue);
           setDisplayValue(value);
         }
       } else {
-        // If parsedValue is NaN, update displayValue but not width
+        // If parsedValue is NaN (e.g., empty input), update displayValue but not width
         setDisplayValue(value);
         setWidth(0);
       }
@@ -41,10 +47,17 @@ const useWidth = () => {
   };
 
   const handleBlur = () => {
-    // Additional validation on blur if necessary
     if (displayValue === '') {
       setWidth(0);
-      setDisplayValue('');
+      setDisplayValue('0');
+    } else {
+      // Format the value to ensure consistent decimal representation
+      const formattedValue = parseFloat(displayValue).toLocaleString('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+        useGrouping: false,
+      });
+      setDisplayValue(formattedValue);
     }
   };
 

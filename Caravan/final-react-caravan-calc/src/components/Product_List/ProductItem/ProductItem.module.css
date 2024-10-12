@@ -121,6 +121,7 @@
 .crossedOut {
     text-decoration: line-through;
     color: gray;
+    position: relative;
 }
 
 /* Smooth appearance */
@@ -184,9 +185,7 @@
 }
 
 /* Styling for subtotal price when crossed out */
-.crossedOut  {
-    position: relative;
-}
+
 
 /* Styling for the red line through the crossed-out price */
 .crossedOut::after {

@@ -1,4 +1,3 @@
-// components/Inputs/WidthInput/WidthInput.tsx
 import React from 'react';
 import useWidth from '../../../hooks/useWidthInput';
 import styles from './WidthInput.module.css';
@@ -16,13 +15,16 @@ const WidthInput: React.FC = () => {
         Enter Width (m):
       </label>
       <input
-        type="text"
+        type="number" // Change input type to 'number'
         id="caravan-width"
         value={displayValue}
         onChange={(e) => handleWidthChange(e.target.value)}
         onBlur={handleBlur}
         className={inputClassName}
         placeholder="0 - 3"
+        step="0.1" // Allow increments of 0.1
+        min="0" // Optional: set minimum value if needed
+        max="3" // Optional: set maximum value if needed
       />
     </div>
   );
