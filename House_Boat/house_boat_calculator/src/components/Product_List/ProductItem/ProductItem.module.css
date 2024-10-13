@@ -1,0 +1,299 @@
+/* Main container for the product item */
+.productContainer {
+    display: grid;
+    grid-template-columns: 140px auto 70px; /* Adjust columns as needed */
+    border-radius: 8px;
+    background-color: whitesmoke;
+    padding: 5px 20px 5px 5px;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Container for the product image and checkbox */
+.productImage {
+    display: flex;
+    align-items: center;
+    position: relative;
+    min-width: 50px;
+    justify-content: flex-start;
+    
+}
+.customImage {
+    width: clamp(100px, 20vw, 140px);
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Container for the checkbox */
+.checkboxContainer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* The actual checkbox input */
+.checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #00A62D; /* Custom checkbox color */
+    transform: scale(1.2); /* Make the checkbox slightly larger */
+    margin-right: 10px; /* Space between checkbox and label */
+}
+
+/* Optional: focus state */
+.checkbox:focus {
+    outline: 2px solid #00A62D; /* Green outline on focus */
+}
+
+
+
+
+/* Styling for the nested grid layout for mobile */
+.nestedGridForMobile {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    margin: 0;
+    gap: 10px;
+    padding: 0;
+    align-items: center;
+}
+
+/* Container for product name and info link */
+.productNameAndLinkContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    grid-column: 1;
+}
+
+.infoPopupLinkStyle {
+    position: relative; /* This ensures the popup is positioned relative to the link */
+    display: inline-block;
+}
+
+.linkButton {
+    color: #00A62D;
+    background: none;
+    font-size: clamp(12px, 3vw, 13px);
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.3s ease; /* Smooth transition for the scale effect */
+
+  }
+.linkButton:hover {
+    transform: scale(1.1); /* Increase the size by 10% */
+}
+/* Container for the popup and trigger link */
+.popupContainer {
+    position: absolute; /* or fixed */
+    top: 0;  /* Adjust as needed */
+    left: 0; /* Adjust as needed */
+    z-index: 1000; /* Ensure it stays above other elements */
+    width: auto; /* Or set a specific width */
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+  }
+
+  .popupBubble {
+    position: absolute;
+    top: 20px; /* Adjust to position the popup below the link */
+    left: 0; /* Align with the link */
+    z-index: 1000;
+    background-color: rgba(0, 166, 45, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    max-width: 250px;
+    color: white;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.crossedOut {
+    text-decoration: line-through;
+    color: gray;
+    position: relative;
+}
+
+/* Smooth appearance */
+.popupBubble.popupHidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Styling for the product name */
+.productName {
+    color: black;
+    font-weight: bold;
+    font-size: clamp(17px, 4vw, 22px);
+    box-sizing: border-box;
+}
+
+/* Container for product items (buckets or variants) */
+.productItemContainer {
+    display: flex;
+    grid-column: 2;
+    justify-self: start;
+}
+
+/* Styling for product item text */
+.productItem {
+    color: black;
+    font-size: clamp(13px, 5vw, 16px);
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.productItem h4 {
+    margin: 0;
+}
+
+/* Styling for when no items are needed */
+.noItemsNeeded {
+    color: #B04327;
+}
+
+/* Styling for unselected items */
+.unselectedItem {
+    color: #B04327;
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+/* Container for subtotal price */
+.subtotalPriceContainer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Styling for subtotal price */
+.subtotalPrice {
+    color: #00A62D;
+    font-size: clamp(14px, 5vw, 20px);
+    font-weight: bold;
+    text-align: right;
+}
+
+/* Styling for subtotal price when crossed out */
+
+
+/* Styling for the red line through the crossed-out price */
+.crossedOut::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #B04327;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+/* Styling for $0 value in red */
+.redZero {
+    color: #B04327;
+}
+
+/* Responsive styling adjustments */
+@media (max-width: 630px) {
+    .productContainer {
+        grid-template-columns: 130px auto 70px;
+    }
+    .nestedGridForMobile {
+        grid-template-columns: 4fr 3fr;
+    }
+    .productNameAndLinkContainer {
+        flex-direction: column;
+    }
+    .productItem {
+        font-size: clamp(13px, 5vw, 16px);
+    }
+    .productName {
+        font-size: clamp(16px, 5vw, 20px);
+    }
+    .subtotalPrice {
+        font-size: clamp(14px, 5vw, 20px);
+    }
+}
+
+@media (max-width: 560px) {
+    .productContainer {
+        grid-template-columns: 120px auto 70px;
+    }
+    .nestedGridForMobile {
+        grid-template-columns: 3fr 2fr;
+    }
+    .productNameAndLinkContainer {
+        grid-column: 1;
+    }
+    .productItem {
+        font-size: clamp(13px, 5vw, 15px);
+        grid-column: 1;
+    }
+    .productName {
+        font-size: clamp(18px, 4vw, 20px);
+    }
+    .subtotalPrice {
+        font-size: clamp(14px, 5vw, 18px);
+    }
+}
+
+@media (max-width: 530px) {
+    .productContainer {
+        grid-template-columns: 115px auto 30px;
+        padding-bottom: 15px;
+        padding-top: 15px;
+    }
+    .nestedGridForMobile {
+        grid-template-columns: 1fr 0fr;
+    }
+    .productNameAndLinkContainer {
+        grid-column: 1;
+    }
+    .productItemContainer {
+        grid-column: 1;
+    }
+    .productItem {
+        font-size: clamp(12px, 5vw, 14px);
+        grid-column: 1;
+    }
+    .productName {
+        font-size: clamp(18px, 4vw, 20px);
+    }
+    .productImageStyle {
+        width: clamp(100px, 20vw, 130px);
+        height: auto;
+    }
+    .productImage {
+        min-width: 90px;
+    }
+    .popupBubble {
+        max-width: 170px;
+        min-width: 160px;
+    }
+}
+
+@media (max-width: 400px) {
+    .productContainer {
+        grid-template-columns: 100px auto 40px;
+        padding-bottom: 15px;
+        padding-top: 15px;
+    }
+    .productImageStyle {
+        border-radius: 8px; 
+        width: clamp(90px, 20vw, 120px);
+    
+    }
+
+}

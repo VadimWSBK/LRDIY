@@ -1,0 +1,40 @@
+/* RoofTypeSelect.module.css */
+
+/* Wrapper for the roof type select dropdown */
+.roofTypeSelect {
+    display: flex;
+    flex-direction: column; /* Arrange label and select vertically */
+    gap: 5px; /* Space between label and select */
+    margin-bottom: 15px; /* Space below the component */
+}
+
+/* Styles for the label */
+.label {
+    font-weight: bold;
+    color: whitesmoke;
+    text-align: left;
+    font-size: clamp(16px, 2vw, 18px);
+}
+
+/* Styles for the select dropdown */
+.selectDropdown {
+    font-size: clamp(16px, 5vw, 20px);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    padding: 10px;     
+    width: 100%;
+    border: 1px solid #ccc; /* Light border */
+    outline: none; /* Remove default outline */
+    transition: border 0.3s ease-in-out; /* Smooth transition for border */
+}
+
+/* Focus state for the select dropdown */
+.selectDropdown:focus {
+    border: 1px solid #00A62D; /* Green border on focus */
+}
+
+/* Placeholder styles */
+.selectDropdown::placeholder {
+    color: #999; /* Grey placeholder text */
+}
