@@ -1,8 +1,7 @@
 // useShopifyPermalink.ts
 import { useCallback } from 'react';
 import { generateShopifyPermalink } from '../utils/generateShopifyPermalink';
-import { SelectedProductVariant } from '../types/index';
-import { CalculatedProduct } from '../types/index';
+import { SelectedProductVariant, CalculatedProduct } from '../types/index';
 
 const useShopifyPermalink = (calculatedProducts: CalculatedProduct[]) => {
   const generatePermalink = useCallback(() => {
@@ -34,10 +33,8 @@ const useShopifyPermalink = (calculatedProducts: CalculatedProduct[]) => {
 
         // Add variant items if quantity is greater than zero
         if (
-          product.recommendedVariant &&
-          product.recommendedVariant.quantity > 0 &&
-          product.recommendedVariant.variant &&
-          product.recommendedVariant.variant.variantId
+          product.recommendedVariant?.variant?.variantId &&
+          product.recommendedVariant.quantity > 0
         ) {
           variantItems.push({
             productKey: product.productKey,

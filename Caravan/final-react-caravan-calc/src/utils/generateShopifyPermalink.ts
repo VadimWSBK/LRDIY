@@ -7,14 +7,18 @@ export const generateShopifyPermalink = (
 ): string => {
   // Create the cart items string based on variantId and quantity
   const cartItemsString = cartItems
-    .map((item) => `${item.variantId}:${item.quantity}`)
-    .join(',');
+    .map((item) => `id=${item.variantId}&quantity=${item.quantity}`)
+    .join('&');
 
   const discountParameter = discountCode
-    ? `discount=${encodeURIComponent(discountCode)}`
+    ? `&discount=${encodeURIComponent(discountCode)}`
     : '';
 
-  const checkoutUrl = `https://www.liquidrubberdiy.com.au/cart/${cartItemsString}?${discountParameter}&utm_source=calculator&utm_medium=web&utm_campaign=caravan_kit`;
+  // Add the referral ID
+  const referralId = `&sca_ref=3419258.V3jzDInQbZ`;
 
-  return checkoutUrl;
+  // Redirect to cart instead of checkout
+  const cartUrl = `https://www.liquidrubberdiy.com.au/cart/add?${cartItemsString}${discountParameter}${referralId}&utm_source=calculator&utm_medium=web&utm_campaign=caravan_kit`;
+
+  return cartUrl;
 };

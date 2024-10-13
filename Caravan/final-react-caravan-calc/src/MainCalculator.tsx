@@ -18,6 +18,8 @@ const Header = React.memo(() => (
   </div>
 ));
 
+const isVisible = true; // Declare the isVisible variable
+
 const Footer = React.memo(() => (
   <div className={styles.gstShippingInfo}>
     <p>GST Included + FREE Shipping</p>
@@ -151,7 +153,7 @@ const MainCalculator: React.FC = () => {
       return;
     }
   
-    window.open(shopifyPermalink, '_blank');
+    window.location.href = shopifyPermalink;
   };
   
 
@@ -236,9 +238,6 @@ const MainCalculator: React.FC = () => {
         </div>
 
         <Footer />
-
-        {/* Render the alert popup when it's visible */}
-        const isVisible = true; // Declare the isVisible variable
 
         {isVisible && (
           <div className={styles.alertPopupOverlay}>
