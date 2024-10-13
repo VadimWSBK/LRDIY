@@ -7,10 +7,10 @@ const ProductItem: React.FC<ProductItemProps> = ({
   product,
   onToggleSelection,
 }) => {
-  const { isSelected, bucketCost, variantCost, bucketsNeeded, recommendedVariant } = product;
+  const { isSelected, bucketCost, variantCost, bucketsNeeded, recommendedVariants } = product;
 
   const hasBuckets = bucketsNeeded && bucketsNeeded.length > 0;
-  const hasVariant = recommendedVariant && recommendedVariant.variant !== null;
+  const hasVariants = recommendedVariants && recommendedVariants.length > 0;
 
   const { popupVisible, popupContent, showPopup, popupRef } = usePopup();
 
@@ -67,12 +67,17 @@ const ProductItem: React.FC<ProductItemProps> = ({
                 </div>
               ))}
             </div>
-          ) : hasVariant ? (
+          ) : hasVariants ? (
             <div className={styles.productItem}>
-              <h4>Variant</h4>
-              <div className={!isSelected ? styles.crossedOut : undefined}>
-                {recommendedVariant.quantity} x {recommendedVariant.variant?.variant}
-              </div>
+              <h4>Variants</h4>
+              {recommendedVariants.map((variant, index) => (
+                <div
+                  key={index}
+                  className={!isSelected ? styles.crossedOut : undefined}
+                >
+                  {variant.quantity} x {variant.variant?.variant}
+                </div>
+              ))}
             </div>
           ) : (
             <div className={styles.noItemsNeeded}>No items needed.</div>
@@ -85,7 +90,7 @@ const ProductItem: React.FC<ProductItemProps> = ({
           {hasBuckets ? (
             bucketCost > 0 ? `$${bucketCost.toFixed(2)}` : '$0'
           ) : (
-            hasVariant && variantCost > 0 ? `$${variantCost.toFixed(2)}` : '$0'
+            hasVariants && variantCost > 0 ? `$${variantCost.toFixed(2)}` : '$0'
           )}
         </div>
       </div>

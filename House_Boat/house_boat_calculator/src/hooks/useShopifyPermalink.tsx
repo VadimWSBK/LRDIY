@@ -31,20 +31,21 @@ const useShopifyPermalink = (calculatedProducts: CalculatedProduct[]) => {
           });
         }
 
-        // Add variant items if quantity is greater than zero
-        if (
-          product.recommendedVariant?.variant?.variantId &&
-          product.recommendedVariant.quantity > 0
-        ) {
-          variantItems.push({
-            productKey: product.productKey,
-            variantId: product.recommendedVariant.variant.variantId,
-            quantity: product.recommendedVariant.quantity,
+        // Add variant items if quantities are greater than zero
+        if (Array.isArray(product.recommendedVariants) && product.recommendedVariants.length > 0) {
+          product.recommendedVariants.forEach((variant) => {
+            if (variant.variant?.variantId && variant.quantity > 0) {
+              variantItems.push({
+                productKey: product.productKey,
+                variantId: variant.variant.variantId,
+                quantity: variant.quantity,
+              });
+            }
           });
         }
 
-        // Return bucket items if available; otherwise, return variant items
-        return bucketItems.length > 0 ? bucketItems : variantItems;
+        // Return combined bucket and variant items
+        return [...bucketItems, ...variantItems];
       }
     );
 

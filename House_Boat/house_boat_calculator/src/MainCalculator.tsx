@@ -73,7 +73,7 @@ const MainCalculator: React.FC = () => {
       // Calculate the product with costs considering length, width, and totalArea
       const {
         bucketsNeeded,
-        recommendedVariant,
+        recommendedVariants,
         bucketCost,
         variantCost,
       } = calculateProductWithCosts(product, totalArea, isSelected, length, width);
@@ -82,7 +82,7 @@ const MainCalculator: React.FC = () => {
         ...product,
         productKey,
         bucketsNeeded,
-        recommendedVariant,
+        recommendedVariants,
         bucketCost,
         variantCost,
         isSelected,
@@ -111,7 +111,12 @@ const MainCalculator: React.FC = () => {
             (sum, bucket) => sum + bucket.count,
             0
           ) || 0;
-        const variantQuantity = product.recommendedVariant?.quantity || 0;
+
+        const variantQuantity = product.recommendedVariants?.reduce(
+          (sum, variant) => sum + variant.quantity,
+          0
+        ) || 0;
+
         return total + bucketQuantity + variantQuantity;
       }
       return total;

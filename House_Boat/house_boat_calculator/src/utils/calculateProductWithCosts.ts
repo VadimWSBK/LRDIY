@@ -1,3 +1,4 @@
+// calculateProductWithCosts.ts
 import { Product, ProductVariant, BucketCount, ProductCost } from '../types/index';
 import { calculateBuckets } from '../utils/BucketCalculations';
 import calculateGeoTextileCoverage from '../utils/GeoTextileCalculations';
@@ -5,10 +6,10 @@ import calculateGeoTextileCoverage from '../utils/GeoTextileCalculations';
 // Define a unified result type
 interface ProductCalculationResult extends ProductCost {
   bucketsNeeded: BucketCount[];
-  recommendedVariant: {
+  recommendedVariants: {
     variant: ProductVariant | null;
     quantity: number;
-  };
+  }[];
 }
 
 export const calculateProductWithCosts = (
@@ -23,7 +24,7 @@ export const calculateProductWithCosts = (
     console.error('Product variants are missing or empty for product:', product.name);
     return {
       bucketsNeeded: [],
-      recommendedVariant: { variant: null, quantity: 0 },
+      recommendedVariants: [],
       bucketCost: 0,
       variantCost: 0,
     };
@@ -33,7 +34,7 @@ export const calculateProductWithCosts = (
   if (totalArea === 0) {
     return {
       bucketsNeeded: [],
-      recommendedVariant: { variant: null, quantity: 0 },
+      recommendedVariants: [],
       bucketCost: 0,
       variantCost: 0,
     };
@@ -46,8 +47,7 @@ export const calculateProductWithCosts = (
 
   // Calculate buckets needed
   let bucketsNeeded: BucketCount[] = [];
-  let recommendedVariant: ProductVariant | null = null;
-  let quantityNeeded = 0;
+  let recommendedVariants: { variant: ProductVariant | null; quantity: number }[] = [];
 
   // Check if the product is a "bucket" type or a "variant" type
   const isBucketProduct = product.coveragePerLitre !== undefined; // Products with coverage are treated as bucket products
@@ -59,23 +59,40 @@ export const calculateProductWithCosts = (
   } else if (product.name === 'BONUS') {
     // Handle the BONUS product logic based on totalArea
     if (totalArea > 3) {
-      recommendedVariant = product.variants.find(
-        (variant) => variant.variant === 'Brush Kit + Roller'
-      ) || null;
+      recommendedVariants.push({
+        variant: product.variants.find(
+          (variant) => variant.variant === 'Brush Kit + Roller'
+        ) || null,
+        quantity: 1,
+      });
     } else if (totalArea > 0 && totalArea <= 3) {
-      recommendedVariant = product.variants.find(
-        (variant) => variant.variant === 'Brush Kit'
-      ) || null;
+      recommendedVariants.push({
+        variant: product.variants.find(
+          (variant) => variant.variant === 'Brush Kit'
+        ) || null,
+        quantity: 1,
+      });
     }
-    quantityNeeded = 1; // Only one bonus item is needed
   } else if (product.name === 'Geo Textile') {
     // Use the separate Geo Textile calculator
-    const geoTextileResult = calculateGeoTextileCoverage(product, length, width);
-    recommendedVariant = geoTextileResult.variant;
-    quantityNeeded = geoTextileResult.quantity;
+    const seamsAlongLength = 2; // Hardcoded value or derived from user input
+    const seamsAlongWidth = 3; // Hardcoded value or derived from user input
+
+    const geoTextileResult = calculateGeoTextileCoverage(
+      product,
+      length,
+      width,
+      seamsAlongLength,
+      seamsAlongWidth
+    );
+
+    recommendedVariants = geoTextileResult.variants;
   } else {
     // Safeguard: Ensure we are accessing a valid variant
-    recommendedVariant = product.variants[0] || null;
+    recommendedVariants.push({
+      variant: product.variants[0] || null,
+      quantity: 1,
+    });
   }
 
   // Calculate bucket cost and variant cost (if selected)
@@ -89,14 +106,17 @@ export const calculateProductWithCosts = (
     }
 
     // Calculate variant cost for variant-type products
-    if (isVariantProduct && recommendedVariant) {
-      variantCost = recommendedVariant.price * quantityNeeded;
+    if (isVariantProduct && recommendedVariants.length > 0) {
+      variantCost = recommendedVariants.reduce(
+        (total, variant) => total + (variant.variant?.price || 0) * variant.quantity,
+        0
+      );
     }
   }
 
   return {
     bucketsNeeded,
-    recommendedVariant: { variant: recommendedVariant, quantity: quantityNeeded },
+    recommendedVariants,
     bucketCost,
     variantCost,
   };
