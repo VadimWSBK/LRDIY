@@ -1,4 +1,3 @@
-
 // Popup Properties
 export interface PopupProps {
   id: string;
@@ -10,7 +9,6 @@ export interface AlertPopupProps {
   id: string;
   infoText: string;
   isVisible: boolean;
-  
   // Any other props your component needs
 }
 
@@ -18,18 +16,11 @@ export interface AlertPopupProps {
 export interface ProductVariant {
   size?: number; // Optional for bucket products
   variant?: string; // For products like Geo Textile
-  price: number;    // Ensure price is a number, not a string
+  price: number; // Ensure price is always defined and not optional
   variantId: string; // Unique identifier for the variant
 }
 
-
-export interface Variant {
-  size?: number;  // For most products
-  variant?: string; // For Geo Textile and Bonus Product
-  price: number;
-  variantId: string;
-}
-
+// Product Interface
 export interface Product {
   productKey: string;
   name: string;
@@ -39,26 +30,19 @@ export interface Product {
   infoText?: string;
 }
 
-export interface ProductCost {
-  bucketCost: number; // Calculated cost of the buckets for the product
-  variantCost: number; // Calculated cost of the variant for the product
-}
-
-
 // Bucket Calculations
 export interface BucketCount {
   size: number;
   count: number;
-  price: number;
   variantId: string;
   variant?: string;
+  price: number; // Ensure price is correctly included here
 }
 
 export interface BucketCombination {
   buckets: BucketCount[];
   totalVolume: number;
-  totalCost: number;
-  waste: number;
+  waste: number; // Removed `totalCost` since we are not calculating costs anymore
 }
 
 export interface BucketsNeeded {
@@ -74,14 +58,28 @@ export interface BucketDetails {
 
 export interface Bucket {
   size: number; // Required for bucket calculations
-  price: number;
   variantId: string;
+  price: number; // Make sure this is required
 }
 
-// Add the missing RecommendedVariant interface
+// Recommended Variant Interface
 export interface RecommendedVariant {
-  variant: ProductVariant | null;
-  quantity: number;
+  variant: ProductVariant | null; // The actual variant recommended
+  quantity: number; // Quantity needed
+}
+
+// Product Calculation Result Interface
+export interface ProductCalculationResult {
+  bucketsNeeded: BucketCount[]; // Array of calculated buckets needed
+  recommendedVariants: RecommendedVariant[]; // Array of recommended variants and their quantities
+}
+
+// Calculated Product Interface
+export interface CalculatedProduct extends Product {
+  bucketsNeeded: BucketCount[];
+  recommendedVariants: RecommendedVariant[];
+  isSelected: boolean;
+  show: boolean;
 }
 
 // Products Type Collection
@@ -94,44 +92,16 @@ export interface SelectedProductVariant {
   quantity: number;
 }
 
+// Product Item Props Interface
 export interface ProductItemProps {
   product: CalculatedProduct;
   onToggleSelection: (isChecked: boolean) => void;
 }
 
-// Corrected ProductListProps interface
+// Product List Props Interface
 export interface ProductListProps {
   products: CalculatedProduct[];
   onToggleSelection: (productKey: string, isChecked: boolean) => void;
 }
 
-
-export interface ProductCalculationResult {
-  bucketsNeeded: BucketCount[]; // Array of calculated buckets needed
-  recommendedVariant: RecommendedVariant | null; // Recommended variant and quantity
-  bucketCost: number; // Total cost of the buckets
-  variantCost: number; // Total cost of the recommended variant
-}
-
-export interface RecommendedVariant {
-  variant: ProductVariant | null; // The actual variant recommended
-  quantity: number; // Quantity needed
-}
-interface CalculatedProduct {
-  productKey: string;
-  name: string;
-  image: string;
-  // ... other product properties
-  bucketsNeeded: BucketCount[];
-  recommendedVariant: {
-    variant: ProductVariant | null;
-    quantity: number;
-  };
-  bucketCost: number;
-  variantCost: number;
-  isSelected: boolean;
-  show: boolean;
-  infoText?: string;
-}
-
-export {CalculatedProduct};
+export { CalculatedProduct };

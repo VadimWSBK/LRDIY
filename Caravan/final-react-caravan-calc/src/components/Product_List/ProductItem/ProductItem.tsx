@@ -2,17 +2,22 @@ import React from 'react';
 import styles from './ProductItem.module.css';
 import { ProductItemProps } from '../../../types/index';
 import { usePopup } from '../../../hooks/usePopup';
+import { calculateBucketCost, calculateVariantCost } from '../../../utils/calculateCosts';
 
 const ProductItem: React.FC<ProductItemProps> = ({
   product,
   onToggleSelection,
 }) => {
-  const { isSelected, bucketCost, variantCost, bucketsNeeded, recommendedVariant } = product;
+  const { isSelected, bucketsNeeded, recommendedVariants } = product;
 
   const hasBuckets = bucketsNeeded && bucketsNeeded.length > 0;
-  const hasVariant = recommendedVariant && recommendedVariant.variant !== null;
+  const hasVariants = recommendedVariants && recommendedVariants.length > 0;
 
   const { popupVisible, popupContent, showPopup, popupRef } = usePopup();
+
+  // Calculate bucket and variant costs dynamically if needed
+  const bucketCost = hasBuckets ? calculateBucketCost(bucketsNeeded) : 0;
+  const variantCost = hasVariants ? calculateVariantCost(recommendedVariants) : 0;
 
   return (
     <div className={styles.productContainer}>
@@ -30,30 +35,29 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
       <div className={styles.nestedGridForMobile}>
         <div className={styles.productNameAndLinkContainer}>
-            <div className={styles.productName}>
-              {product.name}
-            </div>
-
-          <div className={styles.infoPopupLinkStyle}>
-              {product.infoText && (
-                <>
-                  <button
-                    className={styles.linkButton}
-                    onClick={() => showPopup(product.infoText ?? '')}
-                  >
-                    Why do I need this?
-                  </button>
-
-                  {popupVisible && (
-                    <div className={styles.popupBubble} ref={popupRef}>
-                      {popupContent}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+          <div className={styles.productName}>
+            {product.name}
           </div>
 
+          <div className={styles.infoPopupLinkStyle}>
+            {product.infoText && (
+              <>
+                <button
+                  className={styles.linkButton}
+                  onClick={() => showPopup(product.infoText ?? '')}
+                >
+                  Why do I need this?
+                </button>
+
+                {popupVisible && (
+                  <div className={styles.popupBubble} ref={popupRef}>
+                    {popupContent}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
 
         <div className={styles.productItemContainer}>
           {hasBuckets ? (
@@ -68,12 +72,17 @@ const ProductItem: React.FC<ProductItemProps> = ({
                 </div>
               ))}
             </div>
-          ) : hasVariant ? (
+          ) : hasVariants ? (
             <div className={styles.productItem}>
-              <h4>Variant</h4>
-              <div className={!isSelected ? styles.crossedOut : undefined}>
-                {recommendedVariant.quantity} x {recommendedVariant.variant?.variant}
-              </div>
+              <h4>Variants</h4>
+              {recommendedVariants.map((variant, index) => (
+                <div
+                  key={index}
+                  className={!isSelected ? styles.crossedOut : undefined}
+                >
+                  {variant.quantity} x {variant.variant?.variant}
+                </div>
+              ))}
             </div>
           ) : (
             <div className={styles.noItemsNeeded}>No items needed.</div>
@@ -83,11 +92,11 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
       <div className={styles.subtotalPriceContainer}>
         <div className={styles.subtotalPrice}>
-          {hasBuckets ? (
-            bucketCost > 0 ? `$${bucketCost.toFixed(2)}` : '$0'
-          ) : (
-            hasVariant && variantCost > 0 ? `$${variantCost.toFixed(2)}` : '$0'
-          )}
+          {hasBuckets && bucketCost > 0
+            ? `$${bucketCost.toFixed(2)}`
+            : hasVariants && variantCost > 0
+            ? `$${variantCost.toFixed(2)}`
+            : '$0'}
         </div>
       </div>
     </div>

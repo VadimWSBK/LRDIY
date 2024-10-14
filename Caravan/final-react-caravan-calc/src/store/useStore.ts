@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { produce } from 'immer';
-import { Product, BucketCount, ProductVariant, ProductCost } from '../types/index';
+import { Product, BucketCount, ProductVariant } from '../types/index';
 import { products as initialProducts } from '../utils/products'; // Assuming you have a product list
 
 // Define the StoreState interface with all properties and methods
@@ -12,16 +12,14 @@ interface StoreState {
   totalArea: number;
   setTotalArea: (area: number) => void;
 
-  productCosts: Record<string, ProductCost>;
-  setProductCosts: (productName: string, bucketCost: number, variantCost: number) => void;
   totalCost: number;
   calculateTotalCost: () => void;
 
   bucketsNeeded: Record<string, BucketCount[]>;
   setBucketsNeeded: (productName: string, buckets: BucketCount[]) => void;
 
-  recommendedVariants: Record<string, { variant: ProductVariant | null; quantity: number }>;
-  setRecommendedVariants: (productName: string, variant: { variant: ProductVariant | null; quantity: number }) => void;
+  recommendedVariants: Record<string, { variant: ProductVariant | null; quantity: number }[]>;
+  setRecommendedVariants: (productName: string, variants: { variant: ProductVariant | null; quantity: number }[]) => void;
 
   roofType: string;
   setRoofType: (roofType: string) => void;
@@ -29,7 +27,7 @@ interface StoreState {
   selectedProducts: string[];
   setSelectedProducts: (selectedProducts: string[] | ((prevSelected: string[]) => string[])) => void;
   
-  setProductSelection: (productName: string, isSelected: boolean) => void; // Added this
+  setProductSelection: (productName: string, isSelected: boolean) => void;
 
   initializeSelectedProducts: () => void;
 
@@ -39,25 +37,20 @@ interface StoreState {
   totalQuantity: number;
   setTotalQuantity: (totalQuantity: number) => void;
   
-  length  : number;
-  setLength : (length : number) => void;
-  width : number;
-  setWidth : (width : number) => void;
-
+  length: number;
+  setLength: (length: number) => void;
+  width: number;
+  setWidth: (width: number) => void;
 }
 
 // Correct Zustand store definition
 const useStore = create<StoreState>()(
   devtools(
     (set, get) => ({
-
-
-
       length: 6,
       width: 2.5,
       setLength: (length: number) => set({ length }),
       setWidth: (width: number) => set({ width }),
-
 
       /*** Product Data ***/
       products: initialProducts,
@@ -68,36 +61,6 @@ const useStore = create<StoreState>()(
       totalArea: 0,
       setTotalArea: (area: number) =>
         set({ totalArea: area }, false, 'setTotalArea'),
-
-      /*** Price Calculations ***/
-      productCosts: {},
-      setProductCosts: (productName, bucketCost, variantCost) => {
-        set((state) => {
-          const updatedProductCosts = {
-            ...state.productCosts,
-            [productName]: { bucketCost, variantCost },
-          };
-
-          const totalCost = Object.values(updatedProductCosts).reduce(
-            (total, costs) => total + costs.bucketCost + costs.variantCost,
-            0
-          );
-
-          return {
-            productCosts: updatedProductCosts,
-            totalCost,
-          };
-        }, false, 'setProductCosts');
-      },
-
-      totalCost: 0,
-      calculateTotalCost: () => {
-        const totalCost = Object.values(get().productCosts).reduce(
-          (total, costs) => total + costs.bucketCost + costs.variantCost,
-          0
-        );
-        set({ totalCost }, false, 'calculateTotalCost');
-      },
 
       /*** Buckets and Variants Calculations ***/
       bucketsNeeded: {},
@@ -113,15 +76,36 @@ const useStore = create<StoreState>()(
       recommendedVariants: {},
       setRecommendedVariants: (
         productName: string,
-        variant: { variant: ProductVariant | null; quantity: number }
+        variants: { variant: ProductVariant | null; quantity: number }[]
       ) =>
         set(
           produce((state: StoreState) => {
-            state.recommendedVariants[productName] = variant;
+            state.recommendedVariants[productName] = variants;
           }),
           false,
           'setRecommendedVariants'
         ),
+
+      /*** Price Calculations ***/
+      totalCost: 0,
+      calculateTotalCost: () => {
+        const totalCost = Object.entries(get().products).reduce(
+          (total, [productKey, product]) => {
+            const buckets = get().bucketsNeeded[productKey] || [];
+            const variants = get().recommendedVariants[productKey] || [];
+
+            const bucketCost = buckets.reduce((sum, bucket) => sum + bucket.count * bucket.price, 0);
+            const variantCost = variants.reduce(
+              (sum, variant) => sum + (variant.variant?.price || 0) * variant.quantity,
+              0
+            );
+
+            return total + bucketCost + variantCost;
+          },
+          0
+        );
+        set({ totalCost }, false, 'calculateTotalCost');
+      },
 
       /*** Input and Product Selection ***/
       roofType: 'painted',
@@ -129,12 +113,12 @@ const useStore = create<StoreState>()(
       selectedProducts: [], // Initialize selectedProducts
 
       setProductSelection: (productKey: string, isSelected: boolean) =>
-      set((state) => {
-        const selectedProducts = isSelected
-          ? [...state.selectedProducts, productKey]
-          : state.selectedProducts.filter((key) => key !== productKey);
-        return { selectedProducts };
-      }),
+        set((state) => {
+          const selectedProducts = isSelected
+            ? [...state.selectedProducts, productKey]
+            : state.selectedProducts.filter((key) => key !== productKey);
+          return { selectedProducts };
+        }),
 
       setSelectedProducts: (selectedProducts: string[] | ((prevSelected: string[]) => string[])) =>
         set((state) => {
@@ -145,23 +129,22 @@ const useStore = create<StoreState>()(
           return { selectedProducts: newSelectedProducts };
         }, false, 'setSelectedProducts'),
 
+      initializeSelectedProducts: () => {
+        set((state) => {
+          const selectedProducts = Object.keys(state.products).filter(
+            (productKey) => productKey !== 'etchPrimer' && productKey !== 'sealerPrimer'
+          );
 
-        initializeSelectedProducts: () => {
-          set((state) => {
-            const selectedProducts = Object.keys(state.products).filter(
-              (productKey) => productKey !== 'etchPrimer' && productKey !== 'sealerPrimer'
-            );
-        
-            // Add sealerPrimer or etchPrimer based on the roof type
-            if (state.roofType === 'painted') {
-              selectedProducts.push('sealerPrimer');
-            } else if (state.roofType === 'raw metal') {
-              selectedProducts.push('etchPrimer');
-            }
-        
-            return { selectedProducts };
-          }, false, 'initializeSelectedProducts');
-        },
+          // Add sealerPrimer or etchPrimer based on the roof type
+          if (state.roofType === 'painted') {
+            selectedProducts.push('sealerPrimer');
+          } else if (state.roofType === 'raw metal') {
+            selectedProducts.push('etchPrimer');
+          }
+
+          return { selectedProducts };
+        }, false, 'initializeSelectedProducts');
+      },
 
       // Set the roof type and adjust selected products
       setRoofType: (newRoofType: string) => {

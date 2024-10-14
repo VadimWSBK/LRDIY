@@ -6,7 +6,8 @@ import styles from './MainCalculator.module.css';
 import useStore from './store/useStore'; // Zustand store access
 import ProductList from './components/Product_List/ProductList/ProductList';
 import { products } from './utils/products';
-import calculateProductWithCosts from './utils/calculateProductWithCosts';
+import calculateProductAmount from './utils/calculateProductAmount';
+import { calculateBucketCost, calculateVariantCost } from './utils/calculateCosts';
 import useShopifyPermalink from './hooks/useShopifyPermalink';
 import { useAlertPopup } from './hooks/useAlertPopup';
 import useTotalArea from './hooks/useTotalArea';
@@ -18,8 +19,6 @@ const Header = React.memo(() => (
   </div>
 ));
 
-const isVisible = true; // Declare the isVisible variable
-
 const Footer = React.memo(() => (
   <div className={styles.gstShippingInfo}>
     <p>GST Included + FREE Shipping</p>
@@ -28,6 +27,10 @@ const Footer = React.memo(() => (
 
 const MainCalculator: React.FC = () => {
   const totalArea = useTotalArea();
+  
+  // Use Zustand store for length and width
+  const length = useStore((state) => state.length);
+  const width = useStore((state) => state.width);
 
   const { isVisible, alertMessage, showAlert, alertRef } = useAlertPopup();
 
@@ -44,18 +47,23 @@ const MainCalculator: React.FC = () => {
     initializeSelectedProducts();
   }, [initializeSelectedProducts]);
 
-  // Log selected products whenever they change
+  // Update product selection based on roofType
   useEffect(() => {
-    console.log('Selected Products:', selectedProducts);
-  }, [selectedProducts]);
-
+    if (roofType === 'painted') {
+      setProductSelection('sealerPrimer', true);
+      setProductSelection('etchPrimer', false);
+    } else if (roofType === 'raw metal') {
+      setProductSelection('etchPrimer', true);
+      setProductSelection('sealerPrimer', false);
+    }
+  }, [roofType, setProductSelection]);
 
   // Update Zustand store with roof type
   useEffect(() => {
     setRoofType(roofType);
   }, [roofType, setRoofType]);
 
-  // Compute costs for each product
+  // Compute products for each product, dynamically considering length, width, totalArea
   const calculatedProducts = useMemo(() => {
     return Object.entries(products).map(([productKey, product]) => {
       const isSelected = selectedProducts.includes(productKey);
@@ -69,25 +77,28 @@ const MainCalculator: React.FC = () => {
         show = false;
       }
 
+      // Calculate the product amount considering length, width, and totalArea
       const {
         bucketsNeeded,
-        recommendedVariant,
-        bucketCost,
-        variantCost,
-      } = calculateProductWithCosts(product, totalArea, isSelected);
+        recommendedVariants,
+      } = calculateProductAmount(product, totalArea, length, width);
+
+      // Calculate costs separately
+      const bucketCost = calculateBucketCost(bucketsNeeded);
+      const variantCost = calculateVariantCost(recommendedVariants);
 
       return {
         ...product,
         productKey,
         bucketsNeeded,
-        recommendedVariant,
+        recommendedVariants,
         bucketCost,
         variantCost,
         isSelected,
         show, // include 'show' property
       };
     });
-  }, [totalArea, selectedProducts, roofType]);
+  }, [totalArea, selectedProducts, roofType, length, width]);
 
   // Calculate total cost for selected products
   const totalCost = useMemo(() => {
@@ -109,14 +120,19 @@ const MainCalculator: React.FC = () => {
             (sum, bucket) => sum + bucket.count,
             0
           ) || 0;
-        const variantQuantity = product.recommendedVariant?.quantity || 0;
+
+        const variantQuantity = product.recommendedVariants?.reduce(
+          (sum, variant) => sum + variant.quantity,
+          0
+        ) || 0;
+
         return total + bucketQuantity + variantQuantity;
       }
       return total;
     }, 0);
   }, [calculatedProducts]);
   
-  const { generatePermalink } = useShopifyPermalink(calculatedProducts);
+  const { generatePermalink } = useShopifyPermalink(calculatedProducts, roofType, totalArea);
 
   const handleBuyNowClick = () => {
     // Check if total area is zero or negative
@@ -155,12 +171,10 @@ const MainCalculator: React.FC = () => {
   
     window.location.href = shopifyPermalink;
   };
-  
 
   const handleToggleSelection = (productKey: string, isChecked: boolean) => {
     setProductSelection(productKey, isChecked);
   };
-
 
   return (
     <div className={styles.calculatorContainer}>
@@ -169,10 +183,10 @@ const MainCalculator: React.FC = () => {
 
         <div className={styles.inputRow}>
           <div className={styles.inputContainer}>
-          <LengthInput />
+            <LengthInput />
           </div>
           <div className={styles.inputContainer}>
-          <WidthInput />
+            <WidthInput />
           </div>
         </div>
 
@@ -190,10 +204,10 @@ const MainCalculator: React.FC = () => {
         </div>
 
         <div className={styles.productList}>
-        <ProductList
-          products={calculatedProducts}
-          onToggleSelection={handleToggleSelection}
-        />
+          <ProductList
+            products={calculatedProducts}
+            onToggleSelection={handleToggleSelection}
+          />
         </div>
 
         <div className={styles.totalItemAndSubtotalContainer}>

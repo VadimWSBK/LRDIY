@@ -1,13 +1,28 @@
-// useShopifyPermalink.ts
 import { useCallback } from 'react';
 import { generateShopifyPermalink } from '../utils/generateShopifyPermalink';
 import { SelectedProductVariant, CalculatedProduct } from '../types/index';
 
-const useShopifyPermalink = (calculatedProducts: CalculatedProduct[]) => {
+const useShopifyPermalink = (
+  calculatedProducts: CalculatedProduct[],
+  roofType: string,
+  totalArea: number // Add totalArea here
+) => {
   const generatePermalink = useCallback(() => {
-    const selectedProducts = calculatedProducts.filter(
-      (product) => product.isSelected
-    );
+    // Filter selected products based on roof type
+    const selectedProducts = calculatedProducts.filter((product) => {
+      if (!product.isSelected) return false;
+
+      // Exclude products based on roofType
+      if (roofType === 'painted') {
+        // For painted roofs, exclude 'etchPrimer'
+        if (product.productKey === 'etchPrimer') return false;
+      } else if (roofType === 'raw metal') {
+        // For raw metal roofs, exclude 'sealerPrimer'
+        if (product.productKey === 'sealerPrimer') return false;
+      }
+      // Include the product otherwise
+      return true;
+    });
 
     const cartItems: SelectedProductVariant[] = selectedProducts.flatMap(
       (product) => {
@@ -17,8 +32,7 @@ const useShopifyPermalink = (calculatedProducts: CalculatedProduct[]) => {
         // Add bucket items if quantities are greater than zero
         if (
           product.bucketsNeeded &&
-          product.bucketsNeeded.length > 0 &&
-          product.bucketsNeeded.some((bucket) => bucket.count > 0)
+          product.bucketsNeeded.length > 0
         ) {
           product.bucketsNeeded.forEach((bucket) => {
             if (bucket.count > 0) {
@@ -31,20 +45,24 @@ const useShopifyPermalink = (calculatedProducts: CalculatedProduct[]) => {
           });
         }
 
-        // Add variant items if quantity is greater than zero
+        // Add variant items if quantities are greater than zero
         if (
-          product.recommendedVariant?.variant?.variantId &&
-          product.recommendedVariant.quantity > 0
+          Array.isArray(product.recommendedVariants) &&
+          product.recommendedVariants.length > 0
         ) {
-          variantItems.push({
-            productKey: product.productKey,
-            variantId: product.recommendedVariant.variant.variantId,
-            quantity: product.recommendedVariant.quantity,
+          product.recommendedVariants.forEach((variant) => {
+            if (variant.variant?.variantId && variant.quantity > 0) {
+              variantItems.push({
+                productKey: product.productKey,
+                variantId: variant.variant.variantId,
+                quantity: variant.quantity,
+              });
+            }
           });
         }
 
-        // Return bucket items if available; otherwise, return variant items
-        return bucketItems.length > 0 ? bucketItems : variantItems;
+        // Return combined bucket and variant items
+        return [...bucketItems, ...variantItems];
       }
     );
 
@@ -56,11 +74,17 @@ const useShopifyPermalink = (calculatedProducts: CalculatedProduct[]) => {
       return ''; // Return an empty string or handle accordingly
     }
 
+    // Create note with total area and roof type
+    const note = `Total Area: ${totalArea.toFixed(
+      2
+    )} sqm, Roof Type: ${roofType}`;
+
     return generateShopifyPermalink(
       nonZeroCartItems,
-      'Caravan-KIT-10OFF-Offer'
+      'Caravan-KIT-10OFF-Offer',
+      note // Pass the note to the permalink generator
     );
-  }, [calculatedProducts]);
+  }, [calculatedProducts, roofType, totalArea]); // Include totalArea in dependencies
 
   return { generatePermalink };
 };
