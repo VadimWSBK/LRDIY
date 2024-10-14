@@ -6,7 +6,8 @@ import styles from './MainCalculator.module.css';
 import useStore from './store/useStore'; // Zustand store access
 import ProductList from './components/Product_List/ProductList/ProductList';
 import { products } from './utils/products';
-import calculateProductWithCosts from './utils/calculateProductWithCosts';
+import calculateProductAmount from './utils/calculateProductAmount';
+import { calculateBucketCost, calculateVariantCost } from './utils/calculateCosts';
 import useShopifyPermalink from './hooks/useShopifyPermalink';
 import { useAlertPopup } from './hooks/useAlertPopup';
 import useTotalArea from './hooks/useTotalArea';
@@ -46,17 +47,23 @@ const MainCalculator: React.FC = () => {
     initializeSelectedProducts();
   }, [initializeSelectedProducts]);
 
-  // Log selected products whenever they change
+  // Update product selection based on roofType
   useEffect(() => {
-    console.log('Selected Products:', selectedProducts);
-  }, [selectedProducts]);
+    if (roofType === 'painted') {
+      setProductSelection('sealerPrimer', true);
+      setProductSelection('etchPrimer', false);
+    } else if (roofType === 'raw metal') {
+      setProductSelection('etchPrimer', true);
+      setProductSelection('sealerPrimer', false);
+    }
+  }, [roofType, setProductSelection]);
 
   // Update Zustand store with roof type
   useEffect(() => {
     setRoofType(roofType);
   }, [roofType, setRoofType]);
 
-  // Compute costs for each product, dynamically considering length, width, totalArea
+  // Compute products for each product, dynamically considering length, width, totalArea
   const calculatedProducts = useMemo(() => {
     return Object.entries(products).map(([productKey, product]) => {
       const isSelected = selectedProducts.includes(productKey);
@@ -70,13 +77,15 @@ const MainCalculator: React.FC = () => {
         show = false;
       }
 
-      // Calculate the product with costs considering length, width, and totalArea
+      // Calculate the product amount considering length, width, and totalArea
       const {
         bucketsNeeded,
         recommendedVariants,
-        bucketCost,
-        variantCost,
-      } = calculateProductWithCosts(product, totalArea, isSelected, length, width);
+      } = calculateProductAmount(product, totalArea, length, width);
+
+      // Calculate costs separately
+      const bucketCost = calculateBucketCost(bucketsNeeded);
+      const variantCost = calculateVariantCost(recommendedVariants);
 
       return {
         ...product,
@@ -123,7 +132,7 @@ const MainCalculator: React.FC = () => {
     }, 0);
   }, [calculatedProducts]);
   
-  const { generatePermalink } = useShopifyPermalink(calculatedProducts);
+  const { generatePermalink } = useShopifyPermalink(calculatedProducts, roofType, totalArea);
 
   const handleBuyNowClick = () => {
     // Check if total area is zero or negative

@@ -2,17 +2,22 @@ import React from 'react';
 import styles from './ProductItem.module.css';
 import { ProductItemProps } from '../../../types/index';
 import { usePopup } from '../../../hooks/usePopup';
+import { calculateBucketCost, calculateVariantCost } from '../../../utils/calculateCosts';
 
 const ProductItem: React.FC<ProductItemProps> = ({
   product,
   onToggleSelection,
 }) => {
-  const { isSelected, bucketCost, variantCost, bucketsNeeded, recommendedVariants } = product;
+  const { isSelected, bucketsNeeded, recommendedVariants } = product;
 
   const hasBuckets = bucketsNeeded && bucketsNeeded.length > 0;
   const hasVariants = recommendedVariants && recommendedVariants.length > 0;
 
   const { popupVisible, popupContent, showPopup, popupRef } = usePopup();
+
+  // Calculate bucket and variant costs dynamically if needed
+  const bucketCost = hasBuckets ? calculateBucketCost(bucketsNeeded) : 0;
+  const variantCost = hasVariants ? calculateVariantCost(recommendedVariants) : 0;
 
   return (
     <div className={styles.productContainer}>
@@ -87,11 +92,11 @@ const ProductItem: React.FC<ProductItemProps> = ({
 
       <div className={styles.subtotalPriceContainer}>
         <div className={styles.subtotalPrice}>
-          {hasBuckets ? (
-            bucketCost > 0 ? `$${bucketCost.toFixed(2)}` : '$0'
-          ) : (
-            hasVariants && variantCost > 0 ? `$${variantCost.toFixed(2)}` : '$0'
-          )}
+          {hasBuckets && bucketCost > 0
+            ? `$${bucketCost.toFixed(2)}`
+            : hasVariants && variantCost > 0
+            ? `$${variantCost.toFixed(2)}`
+            : '$0'}
         </div>
       </div>
     </div>

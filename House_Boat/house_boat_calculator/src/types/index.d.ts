@@ -16,7 +16,7 @@ export interface AlertPopupProps {
 export interface ProductVariant {
   size?: number; // Optional for bucket products
   variant?: string; // For products like Geo Textile
-  price: number; // Ensure price is a number, not a string
+  price: number; // Ensure price is always defined and not optional
   variantId: string; // Unique identifier for the variant
 }
 
@@ -30,26 +30,19 @@ export interface Product {
   infoText?: string;
 }
 
-// Product Cost Interface
-export interface ProductCost {
-  bucketCost: number; // Calculated cost of the buckets for the product
-  variantCost: number; // Calculated cost of the variant for the product
-}
-
 // Bucket Calculations
 export interface BucketCount {
   size: number;
   count: number;
-  price: number;
   variantId: string;
   variant?: string;
+  price: number; // Ensure price is correctly included here
 }
 
 export interface BucketCombination {
   buckets: BucketCount[];
   totalVolume: number;
-  totalCost: number;
-  waste: number;
+  waste: number; // Removed `totalCost` since we are not calculating costs anymore
 }
 
 export interface BucketsNeeded {
@@ -65,8 +58,8 @@ export interface BucketDetails {
 
 export interface Bucket {
   size: number; // Required for bucket calculations
-  price: number;
   variantId: string;
+  price: number; // Make sure this is required
 }
 
 // Recommended Variant Interface
@@ -76,13 +69,13 @@ export interface RecommendedVariant {
 }
 
 // Product Calculation Result Interface
-export interface ProductCalculationResult extends ProductCost {
+export interface ProductCalculationResult {
   bucketsNeeded: BucketCount[]; // Array of calculated buckets needed
   recommendedVariants: RecommendedVariant[]; // Array of recommended variants and their quantities
 }
 
 // Calculated Product Interface
-export interface CalculatedProduct extends Product, ProductCost {
+export interface CalculatedProduct extends Product {
   bucketsNeeded: BucketCount[];
   recommendedVariants: RecommendedVariant[];
   isSelected: boolean;

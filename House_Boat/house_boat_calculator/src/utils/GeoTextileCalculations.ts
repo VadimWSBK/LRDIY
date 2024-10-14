@@ -1,8 +1,7 @@
 import { Product, ProductVariant } from '../types/index';
 
-const VENT_COUNT = 4;
-const EXTRA_COVERAGE_PER_FEATURE = 2;
-const ADDITIONAL_COVERAGE_PERCENTAGE = 0.1; // Extra 15% coverage for safety
+const OVERLAP_WASTAGE_PERCENTAGE = 0.30; // 15% for overlaps and wastage
+const SAFETY_MARGIN_PERCENTAGE = 0.30;   // 10% safety margin
 
 interface DPEntry {
   totalCost: number;
@@ -20,7 +19,8 @@ interface BestResult {
 function extractVariantLength(variant: ProductVariant): number | null {
   if (!variant.variant) return null;
 
-  const match = variant.variant.match(/x\s*(\d+(?:\.\d+)?)m/);
+  // Adjusted regex to match variants like '100mm x 20m' or 'Roll x 20m'
+  const match = variant.variant.match(/x\s*(\d+(?:\.\d+)?)m/i);
   if (match) {
     const length = parseFloat(match[1]);
     if (!isNaN(length)) {
@@ -34,8 +34,6 @@ export const calculateGeoTextileCoverage = (
   product: Product,
   length: number,
   width: number,
-  seamsAlongLength: number,
-  seamsAlongWidth: number
 ): {
   variants: { variant: ProductVariant; quantity: number }[];
   totalCoverage: number;
@@ -45,27 +43,18 @@ export const calculateGeoTextileCoverage = (
     return { variants: [], totalCoverage: 0 };
   }
 
-  // Calculate the required coverage based on the user's specifications
-  const lengthCoverage = 4 * length; // 5x length
-  const widthCoverage = 5 * width;   // 6x width
+  // Calculate the required coverage based on the specified multiples
+  const lengthCoverage = 4 * length; // 4x length
+  const widthCoverage = 5 * width;   // 5x width
 
-  // Calculate seam coverage
-  const seamCoverageLength = seamsAlongLength * length;
-  const seamCoverageWidth = seamsAlongWidth * width;
+  // Total coverage before allowances
+  let totalCoverageLength = lengthCoverage + widthCoverage;
 
-  // Calculate extra coverage for vents and other features
-  const extraCoverage = VENT_COUNT * EXTRA_COVERAGE_PER_FEATURE;
+  // Add overlap and wastage allowance
+  totalCoverageLength += totalCoverageLength * OVERLAP_WASTAGE_PERCENTAGE;
 
-  // Sum up all coverage requirements
-  let totalCoverageLength =
-    lengthCoverage +
-    widthCoverage +
-    seamCoverageLength +
-    seamCoverageWidth +
-    extraCoverage;
-
-  // Add additional coverage percentage for safety
-  totalCoverageLength += totalCoverageLength * ADDITIONAL_COVERAGE_PERCENTAGE;
+  // Add safety margin
+  totalCoverageLength += totalCoverageLength * SAFETY_MARGIN_PERCENTAGE;
 
   // Process valid variants with extracted lengths
   const validVariants = product.variants

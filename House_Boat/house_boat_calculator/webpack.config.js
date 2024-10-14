@@ -6,9 +6,9 @@ module.exports = {
   entry: './src/index.tsx', 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'Caravan_Kit_Calculator.[contenthash].js', 
+    filename: 'House_Boat_Kit_Calculator.[contenthash].js', 
     publicPath: '/',
-    library: 'CaravanCalculator',
+    library: 'HouseBoat_Calculator',
     libraryTarget: 'umd',
     globalObject: 'typeof self !== "undefined" ? self : this',
   },

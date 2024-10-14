@@ -1,10 +1,11 @@
-// calculateProductWithCosts.ts
-import { Product, ProductVariant, BucketCount, ProductCost } from '../types/index';
+// calculateProductAmount.ts
+
+import { Product, ProductVariant, BucketCount } from '../types/index';
 import { calculateBuckets } from '../utils/BucketCalculations';
 import calculateGeoTextileCoverage from '../utils/GeoTextileCalculations';
 
-// Define a unified result type
-interface ProductCalculationResult extends ProductCost {
+// Define a unified result type without costs
+interface ProductCalculationResult {
   bucketsNeeded: BucketCount[];
   recommendedVariants: {
     variant: ProductVariant | null;
@@ -12,10 +13,9 @@ interface ProductCalculationResult extends ProductCost {
   }[];
 }
 
-export const calculateProductWithCosts = (
+export const calculateProductAmount = (
   product: Product,
   totalArea: number,
-  isSelected: boolean,
   length: number = 0,
   width: number = 0
 ): ProductCalculationResult => {
@@ -25,8 +25,6 @@ export const calculateProductWithCosts = (
     return {
       bucketsNeeded: [],
       recommendedVariants: [],
-      bucketCost: 0,
-      variantCost: 0,
     };
   }
 
@@ -35,8 +33,6 @@ export const calculateProductWithCosts = (
     return {
       bucketsNeeded: [],
       recommendedVariants: [],
-      bucketCost: 0,
-      variantCost: 0,
     };
   }
 
@@ -74,18 +70,7 @@ export const calculateProductWithCosts = (
       });
     }
   } else if (product.name === 'Geo Textile') {
-    // Use the separate Geo Textile calculator
-    const seamsAlongLength = 2; // Hardcoded value or derived from user input
-    const seamsAlongWidth = 3; // Hardcoded value or derived from user input
-
-    const geoTextileResult = calculateGeoTextileCoverage(
-      product,
-      length,
-      width,
-      seamsAlongLength,
-      seamsAlongWidth
-    );
-
+    const geoTextileResult = calculateGeoTextileCoverage(product, length, width);
     recommendedVariants = geoTextileResult.variants;
   } else {
     // Safeguard: Ensure we are accessing a valid variant
@@ -95,31 +80,10 @@ export const calculateProductWithCosts = (
     });
   }
 
-  // Calculate bucket cost and variant cost (if selected)
-  let bucketCost = 0;
-  let variantCost = 0;
-
-  if (isSelected) {
-    // Calculate bucket cost for bucket-type products
-    if (isBucketProduct && bucketsNeeded.length > 0) {
-      bucketCost = bucketsNeeded.reduce((total, bucket) => total + bucket.count * bucket.price, 0);
-    }
-
-    // Calculate variant cost for variant-type products
-    if (isVariantProduct && recommendedVariants.length > 0) {
-      variantCost = recommendedVariants.reduce(
-        (total, variant) => total + (variant.variant?.price || 0) * variant.quantity,
-        0
-      );
-    }
-  }
-
   return {
     bucketsNeeded,
     recommendedVariants,
-    bucketCost,
-    variantCost,
   };
 };
 
-export default calculateProductWithCosts;
+export default calculateProductAmount;
